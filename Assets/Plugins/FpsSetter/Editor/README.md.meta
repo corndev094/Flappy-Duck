@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7626f624cf06a9845975ecf87da8d0ec
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291416
+  packageName: Fps Setter
+  packageVersion: 1.0
+  assetPath: Assets/FpsSetter/Editor/README.md
+  uploadId: 680402

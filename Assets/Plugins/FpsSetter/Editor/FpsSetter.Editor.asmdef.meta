@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b6b9587973ffd5d4cb8b73c91aa2c4da
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291416
+  packageName: Fps Setter
+  packageVersion: 1.0
+  assetPath: Assets/FpsSetter/Editor/FpsSetter.Editor.asmdef
+  uploadId: 680402

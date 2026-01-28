@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc062b6faffc19c40821e2fe9fba21be, type: 3}
+  m_Name: EDebugSettings
+  m_EditorClassIdentifier: Assembly-CSharp-firstpass::EDebugSettings
+  intColor: {r: 0, g: 1, b: 0, a: 1}
+  boolTrueColor: {r: 0.6784314, g: 1, b: 0.1843137, a: 1}
+  boolFalseColor: {r: 1, g: 0, b: 0, a: 1}
+  stringColor: {r: 0.529, g: 0.808, b: 0.922, a: 1}
+  floatColor: {r: 0, g: 1, b: 1, a: 1}
+  listColor: {r: 1, g: 1, b: 1, a: 1}
+  warningColor: {r: 1, g: 0.647, b: 0, a: 1}
+  errorColor: {r: 1, g: 0, b: 0, a: 1}

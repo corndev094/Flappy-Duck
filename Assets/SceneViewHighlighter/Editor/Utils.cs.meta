@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 34dbad502a6219748bd781e3f1232637
+timeCreated: 1516439582
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 109667
+  packageName: SceneView Highlight and Pickup
+  packageVersion: 1.0
+  assetPath: Assets/SceneViewHighlighter/Editor/Utils.cs
+  uploadId: 227158

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 53a0d54d9fd93dd478ef471886581f41
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 53147
+  packageName: RelationsInspector
+  packageVersion: 1.1.5
+  assetPath: Assets/Plugins/Editor/RelationsInspector/Backends/HierarchyExample/SceneHierarchyBackend.cs
+  uploadId: 199175

@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: df67f29bb785c1546bde15e2c2890961
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 53147
+  packageName: RelationsInspector
+  packageVersion: 1.1.5
+  assetPath: Assets/Plugins/Editor/RelationsInspector/SourceCodeRI.zip
+  uploadId: 199175

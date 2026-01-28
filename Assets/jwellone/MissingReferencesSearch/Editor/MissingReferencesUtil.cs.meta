@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: aa8c7e3f9743944da881693954b499f1
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 297500
+  packageName: MissingReferencesSearch
+  packageVersion: 1.0
+  assetPath: Assets/jwellone/MissingReferencesSearch/Editor/MissingReferencesUtil.cs
+  uploadId: 701162

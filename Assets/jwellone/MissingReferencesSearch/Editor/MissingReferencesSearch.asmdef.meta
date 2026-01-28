@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f11abf2979d3f423f8ed4fc2ccdc013c
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 297500
+  packageName: MissingReferencesSearch
+  packageVersion: 1.0
+  assetPath: Assets/jwellone/MissingReferencesSearch/Editor/MissingReferencesSearch.asmdef
+  uploadId: 701162

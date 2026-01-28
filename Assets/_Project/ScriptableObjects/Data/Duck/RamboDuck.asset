@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be5da3b8428583c489fc3440679dd4c9, type: 3}
+  m_Name: RamboDuck
+  m_EditorClassIdentifier: Assembly-CSharp::BirdBaseData
+  Description: Normal Bird
+  Thumbnail: {fileID: 21300000, guid: 534e3ec14cd78434b8676eec8a7fd9ba, type: 3}
+  SkinId: 1
+  HP: 5
+  Stamina: 20
+  UseMP: 0
+  MP: 0
+  JumpForce: 10
+  DefaultMoveSpeed: 5
+  JumpDelay: 0.3
+  ShootDelay: 0.2
+  JumpStamina: 1
+  RefillStaminaSpeed: 5
+  RefillStaminaDelay: 0.5
+  TakeDamageSfx: []
+  FlappingSfx:
+  - {fileID: 8300000, guid: 008ae8527045f9044a6b2e21083cf5b8, type: 3}
+  - {fileID: 8300000, guid: 4df95ddf51598884786f3727268187d7, type: 3}
+  - {fileID: 8300000, guid: bd4bc03bfa078f24a9c8c49e9e0f686e, type: 3}
+  TakeDamageCamShakeSettings:
+    strength: {x: 2, y: 2, z: 2}
+    duration: 0.2
+    frequency: 99
+    enableFalloff: 1
+    falloffEase: 3
+    strengthOverTime:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    asymmetry: 0
+    easeBetweenShakes: 3
+    cycles: 1
+    startDelay: 0
+    endDelay: 0
+    useUnscaledTime: 0
+    _useFixedUpdate: 0
+    _updateType: 1

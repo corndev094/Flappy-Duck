@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe28de305c5dae545a472f0625ceef9d, type: 3}
+  m_Name: DuckList
+  m_EditorClassIdentifier: Assembly-CSharp::DuckList
+  List:
+  - {fileID: 11400000, guid: aba3d8ad47f3fea4da1b19a0e72ca9f9, type: 2}
+  - {fileID: 11400000, guid: 3bfb1da408220f148b0cbfaf9678a38f, type: 2}

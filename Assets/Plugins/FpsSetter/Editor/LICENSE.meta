@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e903a416ea7be3649853362ede0b2754
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291416
+  packageName: Fps Setter
+  packageVersion: 1.0
+  assetPath: Assets/FpsSetter/Editor/LICENSE
+  uploadId: 680402

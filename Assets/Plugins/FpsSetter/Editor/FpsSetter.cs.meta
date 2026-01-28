@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: b1f8b6d08aa6cea439484ec382685489
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291416
+  packageName: Fps Setter
+  packageVersion: 1.0
+  assetPath: Assets/FpsSetter/Editor/FpsSetter.cs
+  uploadId: 680402

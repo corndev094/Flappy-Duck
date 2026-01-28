@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 024bc02e7e2143e4da1f3275d1e1222b
+timeCreated: 1516439339
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 109667
+  packageName: SceneView Highlight and Pickup
+  packageVersion: 1.0
+  assetPath: Assets/SceneViewHighlighter/SceneViewOutline.shader
+  uploadId: 227158
