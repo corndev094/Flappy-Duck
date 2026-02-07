@@ -51,6 +51,7 @@ public abstract class ABaseDuck : MonoBehaviour {
 
     protected const string ATTACK_ACTION = "Attack";
 
+    public bool IsFlying { get => isFlying; }
     public float CurrentStamina {
         get
         {

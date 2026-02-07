@@ -19,7 +19,9 @@ MonoBehaviour:
   m_PlatformBuildProfile:
     rid: 782693259163730006
   m_OverrideGlobalSceneList: 1
-  m_Scenes: []
+  m_Scenes:
+  - m_enabled: 1
+    m_path: Assets/_Project/Scenes/MainMenu.unity
   m_HasScriptingDefines: 1
   m_ScriptingDefines:
   - MOREMOUNTAINS_NICEVIBRATIONS_INSTALLED
@@ -37,7 +39,7 @@ MonoBehaviour:
     - line: '|   useOnDemandResources: 0'
     - line: '|   accelerometerFrequency: 60'
     - line: '|   companyName: Corn'
-    - line: '|   productName: Flappy Duck Online'
+    - line: '|   productName: Flappy Duck'
     - line: '|   defaultCursor: {instanceID: 0}'
     - line: '|   cursorHotspot: {x: 0, y: 0}'
     - line: '|   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b:
@@ -827,7 +829,7 @@ MonoBehaviour:
     - line: '|   qnxGraphicConfPath: '
     - line: '|   apiCompatibilityLevel: 6'
     - line: '|   captureStartupLogs: {}'
-    - line: '|   activeInputHandler: 1'
+    - line: '|   activeInputHandler: 2'
     - line: '|   windowsGamepadBackendHint: 0'
     - line: '|   cloudProjectId: 1db1db32-fd2c-4cd5-a581-503b10d44694'
     - line: '|   framebufferDepthMemorylessMode: 0'
@@ -852,7 +854,7 @@ MonoBehaviour:
     - rid: 782693259163730006
       type: {class: WindowsPlatformSettings, ns: UnityEditor.WindowsStandalone, asm: UnityEditor.WindowsStandalone.Extensions}
       data:
-        m_Development: 1
+        m_Development: 0
         m_ConnectProfiler: 0
         m_BuildWithDeepProfilingSupport: 0
         m_AllowDebugging: 0

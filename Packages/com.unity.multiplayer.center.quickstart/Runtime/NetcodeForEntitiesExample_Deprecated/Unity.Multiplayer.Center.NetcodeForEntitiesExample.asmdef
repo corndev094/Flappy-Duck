@@ -1,0 +1,45 @@
+{
+    "name": "Unity.Multiplayer.Center.NetcodeForEntitiesExample",
+    "rootNamespace": "",
+    "references": [
+        "Unity.InputSystem",
+        "Unity.Entities",
+        "Unity.Entities.Hybrid",
+        "Unity.Collections",
+        "Unity.Networking.Transport",
+        "Unity.Mathematics",
+        "Unity.Burst",
+        "Unity.NetCode",
+        "Unity.NetCode.Hybrid",
+        "Unity.NetCode.Authoring.Hybrid",
+        "Unity.Transforms"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "ENTITIES_INSTALLED",
+        "N4E_INSTALLED"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.unity.entities",
+            "expression": "1.0",
+            "define": "ENTITIES_INSTALLED"
+        },
+        {
+            "name": "com.unity.netcode",
+            "expression": "1.0",
+            "define": "N4E_INSTALLED"
+        },
+        {
+            "name": "com.unity.inputsystem",
+            "expression": "1.4.0",
+            "define": "NEW_INPUT_SYSTEM_INSTALLED"
+        }
+    ],
+    "noEngineReferences": false
+}

@@ -67,5 +67,6 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Flappy Duck.slnx"
+    "dotnet.defaultSolution": "Flappy Duck.slnx",
+    "Codegeex.RepoIndex": true
 }

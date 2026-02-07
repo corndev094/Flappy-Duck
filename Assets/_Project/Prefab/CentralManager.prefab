@@ -31,9 +31,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5410382277649537975}
   - {fileID: 7203047503233702337}
   - {fileID: 7871761611481722439}
-  - {fileID: 5410382277649537975}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7861545882638090727
@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   EmptyLevel: {fileID: 11400000, guid: 92b3dc2a8e8000b4d9c1851725e51b5c, type: 2}
+  GrayScaleMat: {fileID: 0}
 --- !u!114 &2215676028805114155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,6 +245,8 @@ MonoBehaviour:
   pipeSpawner: {fileID: 0}
   levelContainer: {fileID: 0}
   countDown: {fileID: 0}
+  versionText: {fileID: 0}
+  bgImage: {fileID: 0}
 --- !u!1 &4777809130348713870
 GameObject:
   m_ObjectHideFlags: 0
@@ -556,9 +559,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cf1f99994f7ffc4bae59466261b6cab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneLoader
-  mainMenu: {fileID: 0}
-  settingsMenu: {fileID: 0}
-  levelMapMenu: {fileID: 0}
   transition: {fileID: 6408384446966898834}
 --- !u!1 &7255040176621002309
 GameObject:

@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Packages/com.unity.multiplayer.center.quickstart/Runtime/NetcodeForGameObjectsExample/DistributedAuthority/UI/GameUI.uss?fileID=7433441132597879392&amp;guid=2212927e894414777b7331c87e0f15bf&amp;type=3#GameUI" />
+    <ui:VisualElement name="login" class="login-ui">
+        <ui:Label text="Connect to a session by providing a session and player name" name="login-text" enable-rich-text="true" />
+        <ui:TextField label="Session Name" hide-placeholder-on-focus="false" emoji-fallback-support="false" name="session-name" />
+        <ui:TextField label="Player Name" hide-placeholder-on-focus="false" emoji-fallback-support="false" name="player-name" />
+        <ui:Button text="Connect" name="login-button" />
+    </ui:VisualElement>
+    <ui:VisualElement name="ingame">
+        <ui:Label text="To move the cube, use the W, A, S, and D keys. To spawn a sphere, press Space. To demonstrate how user ownership of the sphere changes, connect and disconnect other users from the session.\u000AUnity updates spheres owned by the local client instantly. The position of spheres owned by other clients has a slight delay because their position is synced through the backend. " />
+        <ui:Button text="Disconnect" name="logout-button" focusable="false" />
+    </ui:VisualElement>
+</ui:UXML>
