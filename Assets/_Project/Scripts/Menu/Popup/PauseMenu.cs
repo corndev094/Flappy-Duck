@@ -51,7 +51,7 @@ public class PauseMenu : ABasePopup {
     private void Close()
     {
         Close(null).Forget();
-        GameFacade.Instance.Resume();
+        GameManager.Instance.Pause(false);
     }
 
     private void ReturnHome()

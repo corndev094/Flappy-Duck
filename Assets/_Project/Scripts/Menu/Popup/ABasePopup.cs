@@ -37,6 +37,8 @@ public abstract class ABasePopup : MonoBehaviour
     #region Public Methods
     public virtual async UniTask Open(Action onOpenFinish = null)
     {
+        if (gameObject.activeSelf) return;
+
         gameObject.SetActive(true);
         canvasGroup.interactable = false;
         onOpen?.Invoke();
@@ -49,6 +51,7 @@ public abstract class ABasePopup : MonoBehaviour
 
     public virtual async UniTask Close(Action onCloseFinish = null)
     {
+        if (!gameObject.activeSelf) return;
         completionSource?.TrySetResult(null);
 
         canvasGroup.interactable = false;

@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Multiplayer;
 using Nguyen.Event;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,27 +32,10 @@ public class HUD : MonoBehaviour {
 
     void OnEnable()
     {
-        hpImage.fillAmount = 1;
-        staminaImage.fillAmount = 1;
-        if (hpBackgroundImage != null)
-        {
-            hpBackgroundImage.fillAmount = 1;
-        }
-        staminaTarget = 1;
-        hpTarget = 1;
+        Initialize();
         staminaEvent.OnEventRaised += OnStaminaChanged;
         hpEvent.OnEventRaised += OnHpChanged;
         pauseButton.onClick.AddListener(Pause);
-        hpOriginalColor = hpImage.color;
-        if (GameFacade.Instance.CurrentSelectedDuck != null 
-        && GameFacade.Instance.CurrentSelectedDuck.UseMP)
-        {
-            staminaContainer.SetActive(true);
-        }
-        else
-        {
-            staminaContainer.SetActive(false);
-        }
     }
 
     void OnDisable()
@@ -59,6 +43,27 @@ public class HUD : MonoBehaviour {
         staminaEvent.OnEventRaised -= OnStaminaChanged;
         hpEvent.OnEventRaised -= OnHpChanged;
         pauseButton.onClick.RemoveListener(Pause);
+    }
+
+    public void Initialize()
+    {
+        if (hpBackgroundImage != null)
+        {
+            hpBackgroundImage.fillAmount = 1;
+        }
+        hpImage.fillAmount = 1;
+        staminaImage.fillAmount = 1;
+        staminaTarget = 1;
+        hpTarget = 1;
+        hpOriginalColor = hpImage.color;
+        if (GameFacade.Instance.CurrentSelectedDuck != null && GameFacade.Instance.CurrentSelectedDuck.UseMP)
+        {
+            staminaContainer.SetActive(true);
+        }
+        else
+        {
+            staminaContainer.SetActive(false);
+        }
     }
 
     private void OnStaminaChanged(float value)
@@ -159,8 +164,8 @@ public class HUD : MonoBehaviour {
 
     private async void Pause()
     {
-        if (GameManager.Instance.IsGameOver) return;
-        UIManager.Instance.OpenMenu(Menu.Pause).Forget();
-        GameFacade.Instance.Pause();
+        if (GameManager.Instance.IsGameOver.Value) return;
+        UIManager.Instance.OpenPopup(Popup.Pause).Forget();
+        GameManager.Instance.Pause(true);
     }
 }

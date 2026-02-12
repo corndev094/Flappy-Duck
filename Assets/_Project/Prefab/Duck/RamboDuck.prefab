@@ -204,6 +204,7 @@ GameObject:
   - component: {fileID: 4277097724450055379}
   - component: {fileID: 619871616059040840}
   - component: {fileID: 4097242449858442040}
+  - component: {fileID: -3833266422327811004}
   - component: {fileID: 1691768670945362343}
   m_Layer: 0
   m_Name: RamboDuck
@@ -275,7 +276,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1253530691
-  m_SortingLayer: 2
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 34b5bbc2b52245f4291703bc16e38da0, type: 3}
@@ -403,6 +404,31 @@ MonoBehaviour:
   m_DefaultActionMap: Bird
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &-3833266422327811004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2823841726163977842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2097838220
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &1691768670945362343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -415,6 +441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c13f112208a341046a50d360707bcb5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RamboDuck
+  ShowTopMostFoldoutHeaderGroup: 1
   data: {fileID: 11400000, guid: 3bfb1da408220f148b0cbfaf9678a38f, type: 2}
   playerInput: {fileID: 4097242449858442040}
   hurtVfx: {fileID: 8845595476800512700}

@@ -1,7 +1,8 @@
 using Cysharp.Threading.Tasks;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PipeSpawner : MonoBehaviour
+public class PipeSpawner : NetworkBehaviour
 {
     [SerializeField] private GameObject pipePrefab;
     [SerializeField] private float spawnInterval = 2f;
@@ -14,6 +15,7 @@ public class PipeSpawner : MonoBehaviour
 
     private void Start()
     {
+        if (!IsServer) return; // Only run on the server
         StartSpawn().Forget();
     }
 
@@ -25,18 +27,20 @@ public class PipeSpawner : MonoBehaviour
             await UniTask.Delay((int)(spawnInterval * 1000), cancellationToken: this.GetCancellationTokenOnDestroy());
             if (this == null || !enabled) return;
 
-            SpawnPipe();
+            SpawnPipeServerRpc();
             currentXPos += pipeSpacing;
         }
     }
 
-    private void SpawnPipe()
+    [ServerRpc]
+    private void SpawnPipeServerRpc()
     {
         float randomY = Random.Range(minY, maxY);
         float randomOffset = Random.Range(0, pipeOffsetY);
         Vector3 spawnPosition = new(currentXPos, randomY, transform.position.z);
         
         GameObject pipeInstance = Instantiate(pipePrefab, spawnPosition, Quaternion.identity);
+        pipeInstance.GetComponent<NetworkObject>().Spawn();
         
         IPipe pipe = pipeInstance.GetComponent<IPipe>();
         if (pipe != null)

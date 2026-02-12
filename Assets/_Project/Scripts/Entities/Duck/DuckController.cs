@@ -1,21 +1,24 @@
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class DuckController : Singleton<DuckController> {
+public class DuckController : NetworkBehaviour {
     [Header("Duck References")]
     [SerializeField] private ABaseDuck normalDuck, ramboDuck;
 
     private Dictionary<SkinID, ABaseDuck> ducks;
     public Dictionary<SkinID, ABaseDuck> Ducks => ducks;
+    public ABaseDuck CurrentDuck;
 
-    protected override void Awake()
+    void Awake()
     {
         ducks = new()
         {
             {SkinID.Normal, normalDuck},
             {SkinID.Rambo, ramboDuck}
         };
+        CurrentDuck = normalDuck;
     }
 
     public ABaseDuck ActiveDuck(SkinID skin)
@@ -32,6 +35,7 @@ public class DuckController : Singleton<DuckController> {
                 d.gameObject.SetActive(false);
             }
             duck.gameObject.SetActive(true);
+            CurrentDuck = duck;
             return duck;
         }
         else

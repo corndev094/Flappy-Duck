@@ -1,9 +1,10 @@
 using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour 
+public class Bullet : NetworkBehaviour 
 {
     [SerializeField] private float damage = 1f;
     [SerializeField] private float shootSpeed = 5f;
@@ -50,8 +51,9 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void OnDestroy()
+    public override void OnDestroy()
     {
+        base.OnDestroy();
         destroyCts?.Dispose();
     }
 }

@@ -4,10 +4,11 @@ using Cysharp.Threading.Tasks;
 using System.Threading;
 using System;
 using Nguyen.Event;
+using Unity.Netcode;
 
 [RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(Rigidbody2D))]
-public abstract class ABaseDuck : MonoBehaviour {
+public abstract class ABaseDuck : NetworkBehaviour {
     [Header("References")]
     [SerializeField] protected DuckBaseData data;
     [Space, SerializeField] protected PlayerInput playerInput;
@@ -29,13 +30,15 @@ public abstract class ABaseDuck : MonoBehaviour {
 
     [SerializeField] private bool infiniteStamina;
     protected bool isInvincible;
-    protected bool canJump = true;
-    protected bool isFlying;
-    protected float currentHp;
     protected float currentMoveSpeed;
-    protected float currentStamina;
     protected float jumpTimeCount;
     protected bool canAttack = true;
+
+    //* Network Variable
+    protected NetworkVariable<bool> canJump = new (true);
+    protected NetworkVariable<bool> isFlying;
+    protected NetworkVariable<float> currentHp;
+    protected NetworkVariable<float> currentStamina;
 
     public event Action<Collider2D> OnBirdCollided;
     public event Action OnBirdReachedFinish;
@@ -51,43 +54,43 @@ public abstract class ABaseDuck : MonoBehaviour {
 
     protected const string ATTACK_ACTION = "Attack";
 
-    public bool IsFlying { get => isFlying; }
-    public float CurrentStamina {
+    #region Property
+    public NetworkVariable<bool> IsFlying { get => isFlying; }
+    public NetworkVariable<float> CurrentStamina{
         get
         {
             return currentStamina;
         }
         set
         {
-            value = Mathf.Clamp(value, 0, data.Stamina);
-            currentStamina = value;
-            InvokeStaminaEvent();
+            currentStamina.Value = Mathf.Clamp(value.Value, 0, data.Stamina);
         }
     }
-    public float CurrentHP { 
+    public NetworkVariable<float> CurrentHP{ 
         get
         {
             return currentHp;
         }
         set
         {
-            value = Mathf.Clamp(value, 0, data.HP);
-            currentHp = value;
-            InvokeHpEvent();
+            value.Value = Mathf.Clamp(value.Value, 0, data.HP);
         } 
     }
     public bool IsInvincible => isInvincible;
     public bool CanAttack { get => canAttack; set => canAttack = value; }
+    #endregion
 
+    #region UnityEvent
     void Awake() {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         playerInput ??= GetComponent<PlayerInput>();
-        StopFlying();
     }
 
     private void Start() {
         hurtMatCopy = new(hurtMat);
+        StopFlying();
+        SubcribeEvents();
     }
 
     protected virtual void Update()
@@ -95,98 +98,141 @@ public abstract class ABaseDuck : MonoBehaviour {
         TryToShoot();
     }
 
-    void OnDestroy()
+    public override void OnDestroy()
     {
+        base.OnDestroy();
         refillStaminaCts?.Cancel();
         refillStaminaCts?.Dispose();
         hurtCts?.Cancel();
         hurtCts?.Dispose();
+        UnSubscribeEvents();
     }
+    #endregion
+
+    private void SubcribeEvents()
+    {
+        currentHp.OnValueChanged += InvokeHpEvent;
+        currentStamina.OnValueChanged += InvokeStaminaEvent;
+    }
+
+    private void UnSubscribeEvents()
+    {
+        currentHp.OnValueChanged -= InvokeHpEvent;
+        currentStamina.OnValueChanged -= InvokeStaminaEvent;
+    }
+
+    #region Input Control
+    public void OnJump(InputValue value)
+    {
+        if (!IsOwner) return;
+        if (value.isPressed && canJump.Value && (!infiniteStamina ? CurrentStamina.Value >= data.JumpStamina : true) && JumpCondition())
+        {
+            if (IsServer)
+            {
+                Jump();
+            }
+            else
+            {
+                JumpServerRpc();
+            }
+        }
+    }
+    #endregion
 
     public void Setup()
     {
-        CurrentStamina = data.Stamina;
-        CurrentHP = data.HP;
+        CurrentStamina = new(data.Stamina);
+        CurrentHP = new(data.HP);
     }
 
     public async UniTask StartFly() {
-        if (isFlying) return;
-        isFlying = true;
+        if (isFlying.Value) return;
+        isFlying.Value = true;
         rb.bodyType = RigidbodyType2D.Dynamic;
         rb.linearVelocity = Vector2.zero;
-        canJump = true;
-        while (isFlying && rb.bodyType != RigidbodyType2D.Kinematic && rb.bodyType != RigidbodyType2D.Static){
+        canJump.Value = true;
+        while (isFlying.Value && rb.bodyType != RigidbodyType2D.Kinematic && rb.bodyType != RigidbodyType2D.Static){
             currentMoveSpeed = data.DefaultMoveSpeed;
             rb.linearVelocity = new Vector2(currentMoveSpeed, rb.linearVelocity.y);
             await UniTask.Yield();
         }
     }
 
-    public void OnJump(InputValue value)
-    {
-        if (!isFlying) return;
-        if (value.isPressed && canJump && (!infiniteStamina ? CurrentStamina >= data.JumpStamina : true) && JumpCondition())
-        {
-            Jump();
-            JumpDelay().Forget();
-            refillStaminaCts?.Cancel();
-            refillStaminaCts = new();
-            HandleStaminaUsage(refillStaminaCts.Token).Forget();
-        }
-    }
-
     protected virtual bool JumpCondition(){return true;}
-
-    private void TryToShoot()
-    {
-        if (canAttack && playerInput.actions[ATTACK_ACTION].IsInProgress())
-        {
-            Attack();
-            ShootDelay().Forget();
-        }
-    }
-
-    protected virtual void Attack()
-    {
-        if (bulletPrefab == null) return;
-        var bullet = Instantiate(bulletPrefab, shootPosition.position, shootPosition.rotation);
-        anim.SetTrigger(shootAnimationHash);
-        bullet.OnShootedEnemy += enemy =>
-        {
-            CurrentStamina += enemy.RefillStaminaForPlayer;
-        };
-    }
-
-    private async UniTask ShootDelay()
-    {
-        canAttack = false;
-        await UniTask.Delay(TimeSpan.FromSeconds(data.ShootDelay));
-        canAttack = true;
-    }
 
     private void Jump() {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, data.JumpForce);
         if (data.FlappingSfx.Count > 0) SoundManager.Instance.PlaySFX(data.FlappingSfx[UnityEngine.Random.Range(0, data.FlappingSfx.Count)], 0.4f);
         anim.SetTrigger(flyAnimationHash);
+        DelayJump().Forget();
+        refillStaminaCts?.Cancel();
+        refillStaminaCts = new();
+        HandleStaminaUsage(refillStaminaCts.Token).Forget();
     }
 
-    private async UniTask JumpDelay()
+    [ServerRpc]
+    private void JumpServerRpc()
     {
-        canJump = false;
+        Jump();
+    }
+
+    private void TryToShoot()
+    {
+        if (canAttack && playerInput.actions[ATTACK_ACTION].IsInProgress())
+        {
+            Attack();
+            DelayShoot().Forget();
+        }
+    }
+
+    protected virtual void Attack()
+    {
+        if (bulletPrefab == null) return;
+        if (IsServer) SpawnBullet();
+        else AttackServerRpc();
+    }
+
+    private void SpawnBullet()
+    {
+        var bullet = Instantiate(bulletPrefab, shootPosition.position, shootPosition.rotation);
+        bullet.GetComponent<NetworkObject>().Spawn();
+        anim.SetTrigger(shootAnimationHash);
+        bullet.OnShootedEnemy += enemy =>
+        {
+            CurrentStamina.Value += enemy.RefillStaminaForPlayer;
+        };
+    }
+
+    [ServerRpc]
+    private void AttackServerRpc()
+    {
+        SpawnBullet();
+    }
+
+    private async UniTask DelayShoot()
+    {
+        canAttack = false;
+        await UniTask.Delay(TimeSpan.FromSeconds(data.ShootDelay));
+        canAttack = true;
+    }
+
+    private async UniTask DelayJump()
+    {
+        canJump.Value = false;
         jumpTimeCount = 0;
         while (jumpTimeCount <= data.JumpDelay)
         {
             jumpTimeCount += Time.deltaTime;
             await UniTask.Yield();
         }
-        canJump = true;
+        canJump.Value = true;
     }
 
     private async UniTask HandleStaminaUsage(CancellationToken cancelToken)
     {
         if (!infiniteStamina)
-            CurrentStamina -= data.JumpStamina;
+            CurrentStamina.Value -= data.JumpStamina;
 
         // 1. Kiểm tra hủy ngay lập tức khi bắt đầu task
         if (cancelToken.IsCancellationRequested)
@@ -198,17 +244,17 @@ public abstract class ABaseDuck : MonoBehaviour {
         {
             await UniTask.Delay(TimeSpan.FromSeconds(data.RefillStaminaDelay), cancellationToken: cancelToken);
 
-            while (CurrentStamina < data.Stamina)
+            while (CurrentStamina.Value < data.Stamina)
             {
                 // 2. Kiểm tra hủy trước mỗi lần lặp
                 if (cancelToken.IsCancellationRequested)
                 {
                     return;
                 }
-                CurrentStamina += Time.deltaTime * data.RefillStaminaSpeed;
+                CurrentStamina.Value += Time.deltaTime * data.RefillStaminaSpeed;
                 await UniTask.Yield(PlayerLoopTiming.Update, cancelToken);
             }
-            CurrentStamina = data.Stamina;
+            CurrentStamina.Value = data.Stamina;
         }
         catch (System.OperationCanceledException)
         {
@@ -224,20 +270,6 @@ public abstract class ABaseDuck : MonoBehaviour {
 
     private async UniTask PlayHurtVfx(CancellationToken token)
     {
-        // hurtVfx.gameObject.SetActive(true);
-        // var hurtDuration = 0.2f;
-        // for (var i = 0; i < 2; i++)
-        // {
-        //     hurtVfx.alpha = 0;
-        //     hurtVfx.DOFade(1, hurtDuration/2).SetEase(Ease.OutFlash).OnComplete(() =>
-        //     {
-        //         hurtVfx.DOFade(0, hurtDuration/2).SetEase(Ease.InFlash);
-        //     });
-        //     await UniTask.Delay(TimeSpan.FromSeconds(hurtDuration), cancellationToken: token);
-        // }
-        // await UniTask.Yield();
-        // hurtVfx.gameObject.SetActive(false);
-
         var sprite = GetComponent<SpriteRenderer>();
         hurtMatCopy.SetFloat("FlashAmount", 1);
         var currentMat = sprite.material;
@@ -259,27 +291,28 @@ public abstract class ABaseDuck : MonoBehaviour {
 
     public void StopFlying()
     {
-        isFlying = false;
+        isFlying.Value = false;
         rb.bodyType = RigidbodyType2D.Kinematic;  
         rb.linearVelocity = Vector2.zero;
     }
 
-    private void InvokeStaminaEvent()
+    private void InvokeStaminaEvent(float oldVlaue, float newValue)
     {
-        staminaEvent.RaiseEvent(Mathf.Clamp01(CurrentStamina / data.Stamina));
+        staminaEvent.RaiseEvent(Mathf.Clamp01(CurrentStamina.Value / data.Stamina));
     }
 
-    private void InvokeHpEvent()
+    private void InvokeHpEvent(float oldHp, float newHp)
     {
-        hpEvent.RaiseEvent(Mathf.Clamp01(CurrentHP / data.HP));
+        hpEvent.RaiseEvent(CurrentHP.Value);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+        if (!IsServer) return;
         if (collision.TryGetComponent<ABaseEnemy>(out var enemy))
         {
             OnBirdCollided?.Invoke(collision);
-            TakeDamage(enemy.Damage);
+            TakeDamageServerRpc(enemy.Damage);
         }
         if (collision.gameObject.CompareTag("Finish"))
         {
@@ -288,12 +321,13 @@ public abstract class ABaseDuck : MonoBehaviour {
         }
     }
 
-    private void TakeDamage(float damage)
+    [ServerRpc]
+    private void TakeDamageServerRpc(float damage)
     {
         if (isInvincible) return;
 
-        CurrentHP -= damage;
-        if (CurrentHP <= 0) Die();
+        CurrentHP.Value-= damage;
+        if (CurrentHP.Value <= 0) DieServerRpc();
         else
         {
             PrimeTween.Tween.ShakeLocalRotation(Camera.main.transform, data.TakeDamageCamShakeSettings);
@@ -305,11 +339,13 @@ public abstract class ABaseDuck : MonoBehaviour {
         }
     }
 
-    private void Die()
+    [ServerRpc]
+    private void DieServerRpc()
     {
         StopFlying();
         gameObject.SetActive(false);
         OnBirdDie?.Invoke();
+        GameManager.Instance.NotifyPlayerDied(OwnerClientId);
     }
 
     private async UniTask StartInvincible(float duration)

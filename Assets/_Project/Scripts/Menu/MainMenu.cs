@@ -1,6 +1,5 @@
-using TMPro;
+using Multiplayer;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenu : ABaseMenu {
@@ -11,7 +10,7 @@ public class MainMenu : ABaseMenu {
     [SerializeField] private Button openMapBtn;
     [SerializeField] private Button ducksBtn;
     [SerializeField] private Button settingsBtn;
-    [SerializeField] private Button creditBtn;
+    [SerializeField] private Button playOnlineBtn;
     [SerializeField] private Button exitBtn;
 
     private void OnEnable() {
@@ -19,6 +18,7 @@ public class MainMenu : ABaseMenu {
         settingsBtn.onClick.AddListener(OpenSettings);
         ducksBtn.onClick.AddListener(OpenDuckSelection);
         exitBtn.onClick.AddListener(Exit);
+        playOnlineBtn.onClick.AddListener(PlayOnline);
     }
 
     private void OnDisable() {
@@ -26,8 +26,8 @@ public class MainMenu : ABaseMenu {
         settingsBtn.onClick.RemoveListener(OpenSettings);
         ducksBtn.onClick.RemoveListener(OpenDuckSelection);
         exitBtn.onClick.RemoveListener(Exit);
+        playOnlineBtn.onClick.RemoveListener(PlayOnline);
     }
-
 
     private async void OpenSettings()
     {
@@ -42,6 +42,12 @@ public class MainMenu : ABaseMenu {
     private async void OpenDuckSelection()
     {
         await UIManager.Instance.SwitchToMenu(Menu.DuckSelection);
+    }
+
+    private async void PlayOnline()
+    {
+        await UIManager.Instance.SwitchToMenu(Menu.QuickMatch);
+        GameManager.Instance.SetGameMode(GameMode.Online);
     }
 
     private void Exit()

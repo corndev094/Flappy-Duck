@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3003325756948187968}
-  - component: {fileID: 7861545882638090727}
   - component: {fileID: 2215676028805114155}
   m_Layer: 0
   m_Name: CentralManager
@@ -36,20 +35,6 @@ Transform:
   - {fileID: 7871761611481722439}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7861545882638090727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1042577536565267445}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 130cfc76dfcbf454a8f0ec91ea2273c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  EmptyLevel: {fileID: 11400000, guid: 92b3dc2a8e8000b4d9c1851725e51b5c, type: 2}
-  GrayScaleMat: {fileID: 0}
 --- !u!114 &2215676028805114155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,6 +179,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e390bd8b0a792834488d3f139218395b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DataManager
+  <DuckList>k__BackingField: {fileID: 11400000, guid: efc718775584f2f41abcb2f8d37c9f9e, type: 2}
+  <LevelList>k__BackingField: {fileID: 11400000, guid: dbba6e967f7e64a4984bd6688375d005, type: 2}
+  <EmptyLevel>k__BackingField: {fileID: 11400000, guid: 92b3dc2a8e8000b4d9c1851725e51b5c, type: 2}
+  <OnlineLevel>k__BackingField: {fileID: 11400000, guid: c491fae2978bc6e419dfdc044d8414d7, type: 2}
   autoSave: 0
   autoSaveAfter: 15
 --- !u!1 &3890203311406097604
@@ -205,6 +194,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7671861308196627224}
+  - component: {fileID: 6111626472351865507}
   - component: {fileID: 4182383696494531281}
   m_Layer: 0
   m_Name: GameFacade
@@ -228,6 +218,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7871761611481722439}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6111626472351865507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3890203311406097604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 520431608
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &4182383696494531281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,13 +255,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4441942ceb6f7ea428035a61818c7734, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  duckList: {fileID: 11400000, guid: efc718775584f2f41abcb2f8d37c9f9e, type: 2}
+  ShowTopMostFoldoutHeaderGroup: 1
+  duckControllerPefab: {fileID: 2131746223423695077, guid: efa6043cacd51d64a91e936f8c563ffa, type: 3}
   sceneLoader: {fileID: 2244126873705130253}
-  pipeSpawner: {fileID: 0}
+  pipeSpawner: {fileID: 5978764552728449979, guid: 413016e43a6570f46bb2605477f87278, type: 3}
   levelContainer: {fileID: 0}
   countDown: {fileID: 0}
-  versionText: {fileID: 0}
-  bgImage: {fileID: 0}
 --- !u!1 &4777809130348713870
 GameObject:
   m_ObjectHideFlags: 0
@@ -482,7 +496,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5344514168514560124}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 1
@@ -686,8 +700,8 @@ Camera:
   m_GameObject: {fileID: 7595897118914434850}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.3962264, g: 0.3962264, b: 0.3962264, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -911,7 +925,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 1920}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &407970630412215677
 CanvasRenderer:

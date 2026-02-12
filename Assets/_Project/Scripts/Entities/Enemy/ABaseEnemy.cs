@@ -1,6 +1,7 @@
 using UnityEngine;
+    using Unity.Netcode;
 
-public abstract class ABaseEnemy : MonoBehaviour
+public abstract class ABaseEnemy : NetworkBehaviour
 {
     [SerializeField] protected BaseEnemyData data;
     [SerializeField] protected float refillStaminaForPlayer = 1;

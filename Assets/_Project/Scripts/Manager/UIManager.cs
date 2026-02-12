@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using Multiplayer;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -14,25 +15,42 @@ public class UIManager : Singleton<UIManager> {
     [SerializeField] private LevelResultMenu levelResultMenu;
     [SerializeField] private DuckSelectionMenu duckSelectionMenu;
     [SerializeField] private PauseMenu pauseMenu;
+
+    [Header("Multiplayer")]
+    [SerializeField] private MultiplayerUI quickMatchMenu;
+    [SerializeField] private MatchmakingFilterUI filterMatchMenu;
+
+    [Header("HUD")]
     [SerializeField] private HUD hud;
+
+    [Header("Other Elements")]
     [SerializeField] private TMP_Text versionText;
     [SerializeField] private Image bgImage;
+
     private Dictionary<Menu, ABaseMenu> menus;
     private Dictionary<Popup, ABasePopup> popups;
+    private Canvas mainCanvas;
 
     public HUD HUD => hud;
     public ABaseMenu CurrentMenu { get; set; }
-    private Canvas mainCanvas;
+    public ABasePopup TopPopup => popupStack.Count > 0 ? popupStack.Peek() : null;
     public Canvas MainCanvas => mainCanvas;
+    public Image BgImage => bgImage;
+    public TMP_Text VersionText => versionText;
+
+    private Stack<ABasePopup> popupStack;
 
     protected override void Awake()
     {
+        popupStack = new();
         menus = new()
         {
             {Menu.Main, mainMenu},
             {Menu.Settings, settingsMenu},
             {Menu.LevelMap, levelMapMenu},
             {Menu.DuckSelection, duckSelectionMenu},
+            {Menu.QuickMatch, quickMatchMenu},
+            {Menu.FilterMatch, filterMatchMenu},
         };
         popups = new()
         {
@@ -122,15 +140,46 @@ public class UIManager : Singleton<UIManager> {
 
 
     #region Popup
+
+    public async UniTask<ABasePopup> OpenPopup(Popup popupType)
+    {
+        if (popups.TryGetValue(popupType, out var popup))
+        {
+            if (popup == null)
+            {
+                EDebug.LogError($"Does not contains menu of type {popupType}");
+                return null;
+            }
+            await TopPopup.Open();
+            return popup;
+        }
+        else
+        {
+            EDebug.LogError($"Does not contains Popup of type {popupType}");
+        }
+        return null;
+    }
+
+    public async UniTask CloseTopPopup()
+    {
+        if (TopPopup != null) await TopPopup.Close();
+        if (popupStack.Count > 0) popupStack.Pop();
+    }
+
     public bool TryGetPopup(Popup popupType, out ABasePopup popup)
     {
         return popups.TryGetValue(popupType, out popup);
     }
-    
+
+    public bool IsPopupOpen(Popup popupType)
+    {
+        return popups[popupType].gameObject.activeSelf;
+    }
+
     #endregion
 }
 
-public enum Menu {Main, Settings, LevelMap, LevelResult, DuckSelection, Pause};
+public enum Menu {Main, Settings, LevelMap, LevelResult, DuckSelection, QuickMatch, FilterMatch};
 public enum Popup {Pause,
     LevelResult
 }

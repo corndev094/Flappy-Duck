@@ -1,15 +1,28 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Unity.Collections;
 using UnityEngine;
 
 public class DataManager : Singleton<DataManager> {
+    [Header("ScriptableObjects Data")]
+    [field: SerializeField] public DuckList DuckList { get; private set; }
+    [field: SerializeField] public LevelListSO LevelList { get; private set;}
+    [field: SerializeField] public LevelSO EmptyLevel { get; private set;}
+    [field: SerializeField] public LevelSO OnlineLevel { get; private set;}
+
+    [Header("Auto Save")]
     [SerializeField] private bool autoSave;
     [SerializeField] private float autoSaveAfter = 15f;
 
     private CancellationTokenSource autoSaveCts;
+
+    public LevelSO FindLevelDataById(int id)
+    {
+        return LevelList.List.First(l => l.ID == id);
+    }
 
     #region AutoSave
     void Start()
