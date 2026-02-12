@@ -21,11 +21,12 @@
   <Project Path="Unity.2D.Psdimporter.Editor.csproj" />
   <Project Path="UnityEngine.UI.csproj" />
   <Project Path="SingularityGroup.HotReload.Editor.csproj" />
-  <Project Path="Unity.Multiplayer.Tools.NetStatsMonitor.Editor.csproj" />
-  <Project Path="Unity.Collections.csproj" />
+  <Project Path="Unity.RenderPipelines.Universal.2D.Runtime.csproj" />
+  <Project Path="BuildReportTool.csproj" />
   <Project Path="Unity.2D.IK.Runtime.csproj" />
   <Project Path="Unity.RenderPipelines.Core.Editor.csproj" />
-  <Project Path="Unity.RenderPipelines.Universal.2D.Runtime.csproj" />
+  <Project Path="Unity.Collections.csproj" />
+  <Project Path="Unity.Multiplayer.Tools.NetStatsMonitor.Editor.csproj" />
   <Project Path="NaughtyAttributes.Core.csproj" />
   <Project Path="Unity.VisualScripting.Core.Editor.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Editor.csproj" />
@@ -36,7 +37,6 @@
   <Project Path="Unity.Services.Core.Environments.Editor.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.Multiplayer.Tools.NetworkProfiler.Editor.csproj" />
-  <Project Path="BuildReportTool.csproj" />
   <Project Path="Unity.VisualScripting.Flow.Editor.csproj" />
   <Project Path="UniTask.csproj" />
   <Project Path="Unity.Netcode.Runtime.csproj" />
