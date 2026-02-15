@@ -4,7 +4,7 @@ public class OfflineGameMode : IGameMode
 {
     public void Initialize()
     {
-        GameManager.Instance.IsGameOver.Value = false;
+
     }
 
     public void OnPlayerDied(ulong playerId)

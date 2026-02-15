@@ -28,7 +28,6 @@ namespace Multiplayer
 
         // Player tracking
         public NetworkList<PlayerNetworkData> PlayerList;
-        public NetworkVariable<int> PlayerInMatch = new(0);
 
         // Events
         public event Action<GameState> OnGameStateChanged;
@@ -54,23 +53,12 @@ namespace Multiplayer
             PlayerList = new NetworkList<PlayerNetworkData>();
         }
 
-        private void Start() {
-            GameFacade.Instance.OnPlayerInMatch += OnPlayerInMatch;
-            GameFacade.Instance.OnPlayerLeaveMatch += OnPlayerLeaveMatch;
-        }
-
         public override void OnDestroy()
         {
             base.OnDestroy();
             if (Instance == this)
             {
                 Instance = null;
-            }
-                if (GameFacade.Instance != null)
-            {
-                GameFacade.Instance.OnPlayerInMatch -= OnPlayerInMatch;
-                GameFacade.Instance.OnPlayerLeaveMatch -= OnPlayerLeaveMatch;
-                PlayerInMatch.OnValueChanged += DebugPlayerInMatch;
             }
         }
 
@@ -81,13 +69,6 @@ namespace Multiplayer
         {
             if (!IsServer) GameFacade.Instance.ReturnToMenu().Forget();
         }
-
-        private void OnPlayerInMatch()
-        {
-            PlayerInMatch.Value++;
-            OnLevelLoaded();
-        }
-        private void OnPlayerLeaveMatch() => PlayerInMatch.Value--;
 
         private void DebugPlayerInMatch(int oldVal, int newVal) => Debug.Log($"Player in match: {newVal}");
 
@@ -184,11 +165,6 @@ namespace Multiplayer
             return null;
         }
 
-        public bool IsAllPlayersInMatch()
-        {
-            return PlayerInMatch.Value >= PlayerList.Count;
-        }
-
         private int GetPlayerIndex(ulong clientId)
         {
             for (int i = 0; i < PlayerList.Count; i++)
@@ -227,8 +203,8 @@ namespace Multiplayer
                 PlayerList[i] = data;
             }
 
-            // Load Level
-            
+            // Load Level - Gửi RPC đến tất cả clients
+            LoadMultiplayerLevelClientRpc();
         }
 
         private async void OnLevelLoaded()
@@ -348,6 +324,41 @@ namespace Multiplayer
         #endregion
 
         #region Client RPCs
+
+        [ClientRpc]
+        private void LoadMultiplayerLevelClientRpc()
+        {
+            // Gọi GameFacade để load level trên mỗi client
+            GameFacade.Instance.LoadMultiplayerLevel().Forget();
+        }
+
+        public void SetupLevel(int id)
+        {
+            if (!IsServer) return;
+            var data = DataManager.Instance.FindLevelDataById(id);
+            GameObject levelInstance = Instantiate(data.LevelPrefab, GameFacade.Instance.LevelContainer);
+            levelInstance.GetComponent<NetworkObject>().Spawn();
+            levelInstance.transform.localPosition = Vector3.zero;
+            
+            // Thông báo cho GameFacade trên server
+            GameFacade.Instance.SetupLevelFromServer(levelInstance, data);
+        }
+
+        [ServerRpc]
+        public void CleanupLevelServerRpc()
+        {
+            var levelPrefab = GameFacade.Instance.CurrentLevelPrefab;
+            if (levelPrefab != null)
+            {
+                if (levelPrefab.TryGetComponent<NetworkObject>(out var netObj))
+                    netObj.Despawn(true);
+                else
+                    Destroy(levelPrefab);
+            }
+            
+            // Thông báo cho GameFacade cleanup local
+            GameFacade.Instance.CleanupLevelLocal();
+        }
 
         [Rpc(SendTo.NotServer)]
         private void NotifyGameStartedClientRpc() => OnGameStarted?.Invoke();

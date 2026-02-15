@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4665657356642582263}
+  - component: {fileID: -2314984584696973971}
   m_Layer: 0
   m_Name: Level_Online
   m_TagString: Untagged
@@ -35,9 +36,33 @@ Transform:
   - {fileID: 4248581083530196436}
   - {fileID: 8065764781706387873}
   - {fileID: 4308498344626007925}
-  - {fileID: 7398722292427194703}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-2314984584696973971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 118198508725763079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3555500174
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &136482394691601611
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,7 +234,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 2074739805
-  m_SortingLayer: -1
+  m_SortingLayer: 0
   m_SortingOrder: -999
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
@@ -307,9 +332,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9161fb9312836b44b5f263e59b66df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemy
+  ShowTopMostFoldoutHeaderGroup: 1
   data: {fileID: 11400000, guid: 5d46ac0b95b57cc4fa71edfde736c9d7, type: 2}
   refillStaminaForPlayer: 0
   isInvincible: 1
+  currentHp: 0
 --- !u!1 &669269950155208572
 GameObject:
   m_ObjectHideFlags: 0
@@ -5456,9 +5483,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9161fb9312836b44b5f263e59b66df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemy
+  ShowTopMostFoldoutHeaderGroup: 1
   data: {fileID: 11400000, guid: 75c5ca37ef075824e91348048555c541, type: 2}
   refillStaminaForPlayer: 0
   isInvincible: 1
+  currentHp: 0
 --- !u!1 &3518032524823284861
 GameObject:
   m_ObjectHideFlags: 0
@@ -5540,7 +5569,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 2074739805
-  m_SortingLayer: -1
+  m_SortingLayer: 0
   m_SortingOrder: -999
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
@@ -5638,9 +5667,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9161fb9312836b44b5f263e59b66df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemy
+  ShowTopMostFoldoutHeaderGroup: 1
   data: {fileID: 11400000, guid: 5d46ac0b95b57cc4fa71edfde736c9d7, type: 2}
   refillStaminaForPlayer: 0
   isInvincible: 1
+  currentHp: 0
 --- !u!1 &3674165668826733969
 GameObject:
   m_ObjectHideFlags: 0
@@ -5722,7 +5753,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 2074739805
-  m_SortingLayer: -1
+  m_SortingLayer: 0
   m_SortingOrder: -999
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
@@ -5820,9 +5851,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9161fb9312836b44b5f263e59b66df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemy
+  ShowTopMostFoldoutHeaderGroup: 1
   data: {fileID: 11400000, guid: 5d46ac0b95b57cc4fa71edfde736c9d7, type: 2}
   refillStaminaForPlayer: 0
   isInvincible: 1
+  currentHp: 0
 --- !u!1 &3746574556248155789
 GameObject:
   m_ObjectHideFlags: 0
@@ -5904,7 +5937,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 2074739805
-  m_SortingLayer: -1
+  m_SortingLayer: 0
   m_SortingOrder: -999
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
@@ -6002,9 +6035,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9161fb9312836b44b5f263e59b66df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemy
+  ShowTopMostFoldoutHeaderGroup: 1
   data: {fileID: 11400000, guid: 5d46ac0b95b57cc4fa71edfde736c9d7, type: 2}
   refillStaminaForPlayer: 0
   isInvincible: 1
+  currentHp: 0
 --- !u!1 &4038413525956593341
 GameObject:
   m_ObjectHideFlags: 0
@@ -6031,7 +6066,7 @@ Transform:
   m_GameObject: {fileID: 4038413525956593341}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 198.7376, y: -12.6, z: 20}
+  m_LocalPosition: {x: 226.4536, y: -12.6, z: 20}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6083,15 +6118,15 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 2074739805
-  m_SortingLayer: -1
+  m_SortingLayer: 0
   m_SortingOrder: -1
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 436569f7b7ec9d94f9501a1f1a2fca08, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8f5098b14140cb647807068f68f28671, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 212.3, y: 3.43}
+  m_Size: {x: 233.74118, y: 3.43}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -6177,7 +6212,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 2074739805
-  m_SortingLayer: -1
+  m_SortingLayer: 0
   m_SortingOrder: -999
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
@@ -6275,9 +6310,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9161fb9312836b44b5f263e59b66df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemy
+  ShowTopMostFoldoutHeaderGroup: 1
   data: {fileID: 11400000, guid: 5d46ac0b95b57cc4fa71edfde736c9d7, type: 2}
   refillStaminaForPlayer: 0
   isInvincible: 1
+  currentHp: 0
 --- !u!1 &4886895214813705911
 GameObject:
   m_ObjectHideFlags: 0
@@ -11490,9 +11527,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9161fb9312836b44b5f263e59b66df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemy
+  ShowTopMostFoldoutHeaderGroup: 1
   data: {fileID: 11400000, guid: 75c5ca37ef075824e91348048555c541, type: 2}
   refillStaminaForPlayer: 0
   isInvincible: 1
+  currentHp: 0
 --- !u!1 &6668038779385266898
 GameObject:
   m_ObjectHideFlags: 0
@@ -11942,7 +11981,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 2074739805
-  m_SortingLayer: -1
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 84530b82b1a80004690545864e513918, type: 3}
@@ -12055,69 +12094,3 @@ MonoBehaviour:
   onTriggerExit:
     m_PersistentCalls:
       m_Calls: []
---- !u!1001 &5981204780237323110
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 4665657356642582263}
-    m_Modifications:
-    - target: {fileID: 1008738606943811311, guid: b2b611ec31c91814995fc37501e67e0e, type: 3}
-      propertyPath: m_Name
-      value: NormalDuck
-      objectReference: {fileID: 0}
-    - target: {fileID: 1008738606943811311, guid: b2b611ec31c91814995fc37501e67e0e, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3867475763167689257, guid: b2b611ec31c91814995fc37501e67e0e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 7.58
-      objectReference: {fileID: 0}
-    - target: {fileID: 3867475763167689257, guid: b2b611ec31c91814995fc37501e67e0e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.09
-      objectReference: {fileID: 0}
-    - target: {fileID: 3867475763167689257, guid: b2b611ec31c91814995fc37501e67e0e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3867475763167689257, guid: b2b611ec31c91814995fc37501e67e0e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3867475763167689257, guid: b2b611ec31c91814995fc37501e67e0e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3867475763167689257, guid: b2b611ec31c91814995fc37501e67e0e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3867475763167689257, guid: b2b611ec31c91814995fc37501e67e0e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3867475763167689257, guid: b2b611ec31c91814995fc37501e67e0e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3867475763167689257, guid: b2b611ec31c91814995fc37501e67e0e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3867475763167689257, guid: b2b611ec31c91814995fc37501e67e0e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b2b611ec31c91814995fc37501e67e0e, type: 3}
---- !u!4 &7398722292427194703 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3867475763167689257, guid: b2b611ec31c91814995fc37501e67e0e, type: 3}
-  m_PrefabInstance: {fileID: 5981204780237323110}
-  m_PrefabAsset: {fileID: 0}

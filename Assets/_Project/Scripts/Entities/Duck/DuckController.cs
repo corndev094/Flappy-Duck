@@ -1,19 +1,21 @@
 using System.Collections.Generic;
+using NaughtyAttributes;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class DuckController : NetworkBehaviour {
-    [Header("Duck References")]
-    [SerializeField] private ABaseDuck normalDuck, ramboDuck;
+public class DuckController : MonoBehaviour {
+    [Header("Duck Prefab")]
+    [SerializeField] private ABaseDuck normalDuck;
+    [SerializeField] private ABaseDuck ramboDuck;
 
-    private Dictionary<SkinID, ABaseDuck> ducks;
-    public Dictionary<SkinID, ABaseDuck> Ducks => ducks;
-    public ABaseDuck CurrentDuck;
+    private Dictionary<SkinID, ABaseDuck> duckPrefabList;
+    [Space]
+    [ReadOnly] public ABaseDuck CurrentDuck;
 
     void Awake()
     {
-        ducks = new()
+        duckPrefabList = new()
         {
             {SkinID.Normal, normalDuck},
             {SkinID.Rambo, ramboDuck}
@@ -21,33 +23,51 @@ public class DuckController : NetworkBehaviour {
         CurrentDuck = normalDuck;
     }
 
-    public ABaseDuck ActiveDuck(SkinID skin)
+    void OnValidate()
     {
-        if (ducks.TryGetValue(skin, out var duck))
+        if (Application.isEditor && CurrentDuck != null)
+        {
+            CurrentDuck = null;
+        }
+    }
+
+    [ServerRpc]
+    public void GetDuckServerRpc(SkinID skin, ServerRpcParams serverParams = default)
+    {
+        if (duckPrefabList.TryGetValue(skin, out var duck))
         {
             if (duck == null)
             {
-                EDebug.LogError($"Duck with type {skin} is null");
-                return null;
+                EDebug.LogError($"Duck prefab with type {skin} is null");
+                return;
             }
-            foreach (var d in ducks.Values)
-            {
-                d.gameObject.SetActive(false);
-            }
-            duck.gameObject.SetActive(true);
-            CurrentDuck = duck;
-            return duck;
+            var instance = Instantiate(duck, transform.position, Quaternion.identity);
+            instance.GetComponent<NetworkObject>().SpawnWithOwnership(serverParams.Receive.SenderClientId);
+            instance.gameObject.SetActive(true);
+            CurrentDuck = instance;
+            return;
         }
         else
         {
             EDebug.LogError($"Does not contains type: {skin}");
-            return null;
+            return;
+        }
+    }
+    [ServerRpc]
+    public void ReleaseDuckServerRpc()
+    {
+        if (CurrentDuck != null)
+        {
+            if (CurrentDuck.TryGetComponent<NetworkObject>(out var netObj))
+                netObj.Despawn(true);
+            else
+                Destroy(CurrentDuck);
         }
     }
 
     public void DisableAll()
     {
-        foreach (var duck in ducks.Values)
+        foreach (var duck in duckPrefabList.Values)
         {
             duck.gameObject.SetActive(false);
         }

@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[ExecuteAlways]
 public class CameraController : Singleton<CameraController> {
     [SerializeField] private bool enable = true;
     [SerializeField] private bool ignoreY = true;
@@ -8,14 +7,14 @@ public class CameraController : Singleton<CameraController> {
     [SerializeField] private Transform target;
     [SerializeField] private float damping = 2f;
     [SerializeField] private Vector2 cameraOffset;
-    private Camera camera;
+    private Camera cam;
     private Vector3 velocity = Vector3.zero;
     private const float THRESHOLD = 0.1f;
     public Camera Camera {
         get
         {
-            if (camera == null) camera = Camera.main;
-            return camera;
+            if (cam == null) cam = Camera.main;
+            return cam;
         } 
     }
     

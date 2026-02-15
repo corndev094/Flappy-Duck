@@ -18,8 +18,8 @@ public class GameManager : NetworkSingleton<GameManager> {
 
     public ABaseDuck CurrentBird { get; set; }
     public LevelSO CurrentPlayingLevel { get; set;}
-    public NetworkVariable<bool> IsGameOver { get; set; } = new(false);
-    public NetworkVariable<bool> IsGameWin { get; set; } = new(false);
+    public bool IsGameOver { get; set; } = false;
+    public bool IsGameWin { get; set; } = false;
 
     public bool IsOnlineMode => CurrentGameMode == GameMode.Online;
 
@@ -71,8 +71,8 @@ public class GameManager : NetworkSingleton<GameManager> {
 
     public void HandleWinCondition()
     {
-        IsGameOver.Value = true;
-        IsGameWin.Value = true;
+        IsGameOver = true;
+        IsGameWin = true;
         
         if (CurrentPlayingLevel != null)
         {
@@ -86,8 +86,8 @@ public class GameManager : NetworkSingleton<GameManager> {
 
     public void HandleLoseCondition()
     {
-        IsGameOver.Value = true;
-        IsGameWin.Value = false;
+        IsGameOver = true;
+        IsGameWin = false;
         GameFacade.Instance.LoseLevel().Forget();
         OnLose?.Invoke();
     }

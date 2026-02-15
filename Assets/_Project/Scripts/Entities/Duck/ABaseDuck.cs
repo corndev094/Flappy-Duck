@@ -5,10 +5,15 @@ using System.Threading;
 using System;
 using Nguyen.Event;
 using Unity.Netcode;
+using System.Collections;
+using System.Threading.Tasks;
+using NaughtyAttributes;
 
 [RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(Rigidbody2D))]
 public abstract class ABaseDuck : NetworkBehaviour {
+    
+    #region Fields
     [Header("References")]
     [SerializeField] protected DuckBaseData data;
     [Space, SerializeField] protected PlayerInput playerInput;
@@ -27,70 +32,71 @@ public abstract class ABaseDuck : NetworkBehaviour {
     [SerializeField] private FloatEventChannelSO staminaEvent;
     [SerializeField] private FloatEventChannelSO hpEvent;
 
-
     [SerializeField] private bool infiniteStamina;
-    protected bool isInvincible;
     protected float currentMoveSpeed;
     protected float jumpTimeCount;
-    protected bool canAttack = true;
+    [ReadOnly] protected bool isInvincible;
+    [ReadOnly] protected bool canAttack = true;
+    [ReadOnly] protected bool isFlying;
+    [ReadOnly] protected bool canJump = true;
 
-    //* Network Variable
-    protected NetworkVariable<bool> canJump = new (true);
-    protected NetworkVariable<bool> isFlying;
-    protected NetworkVariable<float> currentHp;
-    protected NetworkVariable<float> currentStamina;
+    // Network Variables
+    [SerializeField] protected NetworkVariable<float> currentHp = new();
+    [SerializeField] protected NetworkVariable<float> currentStamina = new();
+    [SerializeField] private NetworkVariable<Color> spriteColor = new();
 
     public event Action<Collider2D> OnBirdCollided;
     public event Action OnBirdReachedFinish;
     public event Action OnBirdDie;
+    
     private CancellationTokenSource refillStaminaCts;
     private CancellationTokenSource hurtCts;
+    
     protected int flyAnimationHash = Animator.StringToHash(DuckAnimationString.FLY);
     protected int shootAnimationHash = Animator.StringToHash(DuckAnimationString.SHOOT);
 
     protected Rigidbody2D rb;
     protected Animator anim;
     protected Material hurtMatCopy;
+    private SpriteRenderer spriteRenderer;
 
     protected const string ATTACK_ACTION = "Attack";
+    #endregion
 
-    #region Property
-    public NetworkVariable<bool> IsFlying { get => isFlying; }
+    #region Properties
+    public bool IsFlying { get => isFlying; }
+    public bool CanJump { get => canJump; }
+    
     public NetworkVariable<float> CurrentStamina{
-        get
-        {
-            return currentStamina;
-        }
-        set
-        {
-            currentStamina.Value = Mathf.Clamp(value.Value, 0, data.Stamina);
-        }
+        get { return currentStamina; }
+        set { currentStamina.Value = Mathf.Clamp(value.Value, 0, data.Stamina); }
     }
+    
     public NetworkVariable<float> CurrentHP{ 
-        get
-        {
-            return currentHp;
-        }
-        set
-        {
-            value.Value = Mathf.Clamp(value.Value, 0, data.HP);
-        } 
+        get { return currentHp; }
+        set { value.Value = Mathf.Clamp(value.Value, 0, data.HP); } 
     }
+    
     public bool IsInvincible => isInvincible;
     public bool CanAttack { get => canAttack; set => canAttack = value; }
     #endregion
 
-    #region UnityEvent
-    void Awake() {
+    #region Unity Lifecycle
+    void Awake()
+    {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        playerInput ??= GetComponent<PlayerInput>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (playerInput == null) playerInput = GetComponent<PlayerInput>();
     }
 
-    private void Start() {
+    public override void OnNetworkSpawn()
+    {
+        if (!IsOwner) return;
         hurtMatCopy = new(hurtMat);
+        SetColorServerRpc();
         StopFlying();
-        SubcribeEvents();
+        SubscribeEvents();
     }
 
     protected virtual void Update()
@@ -109,7 +115,14 @@ public abstract class ABaseDuck : NetworkBehaviour {
     }
     #endregion
 
-    private void SubcribeEvents()
+    #region Initialization
+    public void Setup()
+    {
+        CurrentStamina = new(data.Stamina);
+        CurrentHP = new(data.HP);
+    }
+
+    private void SubscribeEvents()
     {
         currentHp.OnValueChanged += InvokeHpEvent;
         currentStamina.OnValueChanged += InvokeStaminaEvent;
@@ -120,45 +133,41 @@ public abstract class ABaseDuck : NetworkBehaviour {
         currentHp.OnValueChanged -= InvokeHpEvent;
         currentStamina.OnValueChanged -= InvokeStaminaEvent;
     }
+    #endregion
 
-    #region Input Control
+    #region Input Handling
     public void OnJump(InputValue value)
     {
         if (!IsOwner) return;
-        if (value.isPressed && canJump.Value && (!infiniteStamina ? CurrentStamina.Value >= data.JumpStamina : true) && JumpCondition())
+        if (value.isPressed && canJump && (!infiniteStamina ? CurrentStamina.Value >= data.JumpStamina : true) && JumpCondition())
         {
-            if (IsServer)
-            {
-                Jump();
-            }
-            else
-            {
-                JumpServerRpc();
-            }
+            Jump();
         }
     }
     #endregion
 
-    public void Setup()
-    {
-        CurrentStamina = new(data.Stamina);
-        CurrentHP = new(data.HP);
-    }
+    #region Movement
 
     public async UniTask StartFly() {
-        if (isFlying.Value) return;
-        isFlying.Value = true;
+        if (!IsOwner) return;
+        if (isFlying) return;
+        isFlying = true;
         rb.bodyType = RigidbodyType2D.Dynamic;
         rb.linearVelocity = Vector2.zero;
-        canJump.Value = true;
-        while (isFlying.Value && rb.bodyType != RigidbodyType2D.Kinematic && rb.bodyType != RigidbodyType2D.Static){
+        canJump = true;
+        while (isFlying && rb.bodyType != RigidbodyType2D.Kinematic && rb.bodyType != RigidbodyType2D.Static){
             currentMoveSpeed = data.DefaultMoveSpeed;
             rb.linearVelocity = new Vector2(currentMoveSpeed, rb.linearVelocity.y);
             await UniTask.Yield();
         }
     }
 
-    protected virtual bool JumpCondition(){return true;}
+    public void StopFlying()
+    {
+        isFlying = false;
+        rb.bodyType = RigidbodyType2D.Kinematic;  
+        rb.linearVelocity = Vector2.zero;
+    }
 
     private void Jump() {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
@@ -171,12 +180,22 @@ public abstract class ABaseDuck : NetworkBehaviour {
         HandleStaminaUsage(refillStaminaCts.Token).Forget();
     }
 
-    [ServerRpc]
-    private void JumpServerRpc()
-    {
-        Jump();
-    }
+    protected virtual bool JumpCondition(){ return true; }
 
+    private async UniTaskVoid DelayJump()
+    {
+        canJump = false;
+        jumpTimeCount = 0;
+        while (jumpTimeCount <= data.JumpDelay)
+        {
+            jumpTimeCount += Time.deltaTime;
+            await UniTask.Yield();
+        }
+        canJump = true;
+    }
+    #endregion
+
+    #region Combat
     private void TryToShoot()
     {
         if (canAttack && playerInput.actions[ATTACK_ACTION].IsInProgress())
@@ -195,8 +214,12 @@ public abstract class ABaseDuck : NetworkBehaviour {
 
     private void SpawnBullet()
     {
-        var bullet = Instantiate(bulletPrefab, shootPosition.position, shootPosition.rotation);
-        bullet.GetComponent<NetworkObject>().Spawn();
+        Bullet bullet = null;
+        if (IsServer)
+        {
+            bullet = Instantiate(bulletPrefab, shootPosition.position, shootPosition.rotation);
+            bullet.GetComponent<NetworkObject>().Spawn();
+        }
         anim.SetTrigger(shootAnimationHash);
         bullet.OnShootedEnemy += enemy =>
         {
@@ -216,25 +239,14 @@ public abstract class ABaseDuck : NetworkBehaviour {
         await UniTask.Delay(TimeSpan.FromSeconds(data.ShootDelay));
         canAttack = true;
     }
+    #endregion
 
-    private async UniTask DelayJump()
-    {
-        canJump.Value = false;
-        jumpTimeCount = 0;
-        while (jumpTimeCount <= data.JumpDelay)
-        {
-            jumpTimeCount += Time.deltaTime;
-            await UniTask.Yield();
-        }
-        canJump.Value = true;
-    }
-
+    #region Stamina Management
     private async UniTask HandleStaminaUsage(CancellationToken cancelToken)
     {
         if (!infiniteStamina)
             CurrentStamina.Value -= data.JumpStamina;
 
-        // 1. Kiểm tra hủy ngay lập tức khi bắt đầu task
         if (cancelToken.IsCancellationRequested)
         {
             return;
@@ -246,7 +258,6 @@ public abstract class ABaseDuck : NetworkBehaviour {
 
             while (CurrentStamina.Value < data.Stamina)
             {
-                // 2. Kiểm tra hủy trước mỗi lần lặp
                 if (cancelToken.IsCancellationRequested)
                 {
                     return;
@@ -258,14 +269,61 @@ public abstract class ABaseDuck : NetworkBehaviour {
         }
         catch (System.OperationCanceledException)
         {
-            // Đây là ngoại lệ mong đợi khi task bị hủy.
-            // Không cần log lỗi hay re-throw.
+            // Expected exception when task is cancelled
         }
-        // 3. Bắt các ngoại lệ khác không mong muốn
         catch (Exception ex)
         {
             EDebug.LogError($"An unexpected error occurred in HandleStaminaUsage: {ex}");
         }
+    }
+    #endregion
+
+    #region Health & Damage
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!IsServer) return;
+        if (collision.TryGetComponent<ABaseEnemy>(out var enemy))
+        {
+            OnBirdCollided?.Invoke(collision);
+            TakeDamage(enemy.Damage);
+        }
+        if (collision.gameObject.CompareTag("Finish"))
+        {
+            OnBirdReachedFinish?.Invoke();       
+            StopFlying();
+        }
+    }
+
+    private void TakeDamage(float damage)
+    {
+        if (isInvincible) return;
+
+        CurrentHP.Value -= damage;
+        if (CurrentHP.Value <= 0) Die();
+        else
+        {
+            PrimeTween.Tween.ShakeLocalRotation(Camera.main.transform, data.TakeDamageCamShakeSettings);
+            hurtCts?.Cancel();
+            hurtCts?.Dispose();
+            hurtCts = new();
+            StartInvincible(invincibleDuration).Forget();
+            PlayHurtVfx(hurtCts.Token).Forget();
+        }
+    }
+
+    private void Die()
+    {
+        StopFlying();
+        gameObject.SetActive(false);
+        OnBirdDie?.Invoke();
+        GameManager.Instance.NotifyPlayerDied(OwnerClientId);
+    }
+
+    private async UniTask StartInvincible(float duration)
+    {
+        isInvincible = true;
+        await UniTask.Delay(TimeSpan.FromSeconds(duration));
+        isInvincible = false;
     }
 
     private async UniTask PlayHurtVfx(CancellationToken token)
@@ -288,14 +346,9 @@ public abstract class ABaseDuck : NetworkBehaviour {
             sprite.material = currentMat;
         }
     }
+    #endregion
 
-    public void StopFlying()
-    {
-        isFlying.Value = false;
-        rb.bodyType = RigidbodyType2D.Kinematic;  
-        rb.linearVelocity = Vector2.zero;
-    }
-
+    #region Event Invokers
     private void InvokeStaminaEvent(float oldVlaue, float newValue)
     {
         staminaEvent.RaiseEvent(Mathf.Clamp01(CurrentStamina.Value / data.Stamina));
@@ -303,55 +356,13 @@ public abstract class ABaseDuck : NetworkBehaviour {
 
     private void InvokeHpEvent(float oldHp, float newHp)
     {
-        hpEvent.RaiseEvent(CurrentHP.Value);
-    }
-
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (!IsServer) return;
-        if (collision.TryGetComponent<ABaseEnemy>(out var enemy))
-        {
-            OnBirdCollided?.Invoke(collision);
-            TakeDamageServerRpc(enemy.Damage);
-        }
-        if (collision.gameObject.CompareTag("Finish"))
-        {
-            OnBirdReachedFinish?.Invoke();       
-            StopFlying();
-        }
+        hpEvent.RaiseEvent(Mathf.Clamp01(CurrentHP.Value / data.HP));
     }
 
     [ServerRpc]
-    private void TakeDamageServerRpc(float damage)
+    private void SetColorServerRpc()
     {
-        if (isInvincible) return;
-
-        CurrentHP.Value-= damage;
-        if (CurrentHP.Value <= 0) DieServerRpc();
-        else
-        {
-            PrimeTween.Tween.ShakeLocalRotation(Camera.main.transform, data.TakeDamageCamShakeSettings);
-            hurtCts?.Cancel();
-            hurtCts?.Dispose();
-            hurtCts = new();
-            StartInvincible(invincibleDuration).Forget();
-            PlayHurtVfx(hurtCts.Token).Forget();
-        }
+        spriteColor.Value = new Color(UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1));
     }
-
-    [ServerRpc]
-    private void DieServerRpc()
-    {
-        StopFlying();
-        gameObject.SetActive(false);
-        OnBirdDie?.Invoke();
-        GameManager.Instance.NotifyPlayerDied(OwnerClientId);
-    }
-
-    private async UniTask StartInvincible(float duration)
-    {
-        isInvincible = true;
-        await UniTask.Delay(TimeSpan.FromSeconds(duration));
-        isInvincible = false;
-    }
+    #endregion
 }

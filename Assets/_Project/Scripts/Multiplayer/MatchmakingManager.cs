@@ -363,7 +363,6 @@ namespace Multiplayer
 
                 OnJoinedLobby?.Invoke(CurrentLobby);
                 OnMatchmakingCompleted?.Invoke(MatchingResult.Success);
-                GameFacade.Instance.LoadMultiplayerLevel();
                 return MatchingResult.Success;
             }
             catch (Exception e)
@@ -388,7 +387,6 @@ namespace Multiplayer
 
                     OnJoinedLobby?.Invoke(CurrentLobby);
                     OnMatchmakingCompleted?.Invoke(MatchingResult.Success);
-                    GameFacade.Instance.LoadMultiplayerLevel();
                     return MatchingResult.Success;
                 }
                 catch (Exception hostEx)

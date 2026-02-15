@@ -256,7 +256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   ShowTopMostFoldoutHeaderGroup: 1
-  duckControllerPefab: {fileID: 2131746223423695077, guid: efa6043cacd51d64a91e936f8c563ffa, type: 3}
+  duckController: {fileID: 0}
   sceneLoader: {fileID: 2244126873705130253}
   pipeSpawner: {fileID: 5978764552728449979, guid: 413016e43a6570f46bb2605477f87278, type: 3}
   levelContainer: {fileID: 0}

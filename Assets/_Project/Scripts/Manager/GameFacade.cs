@@ -9,7 +9,7 @@ using UnityEngine;
 /// Contains abstract functions
 /// </summary>
 public class GameFacade : NetworkSingleton<GameFacade> {
-    [SerializeField] private DuckController duckControllerPefab;
+    [SerializeField] private DuckController duckController;
     [SerializeField] private SceneLoader sceneLoader;
     [SerializeField] private PipeSpawner pipeSpawner;
     [SerializeField] private Transform levelContainer;
@@ -21,6 +21,7 @@ public class GameFacade : NetworkSingleton<GameFacade> {
     public DuckBaseData CurrentSelectedDuck { get; set; } 
     
     public GameObject CurrentLevelPrefab { get; private set; }
+    public Transform LevelContainer => levelContainer;
     
     public ABaseDuck ActiveDuck { get; private set; }
     
@@ -28,7 +29,6 @@ public class GameFacade : NetworkSingleton<GameFacade> {
 
     public Action OnPlayerInMatch;
     public Action OnPlayerLeaveMatch;
-    private DuckController duckController;
 
     void Start()
     {
@@ -36,15 +36,15 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         CurrentSelectedDuck = dataManager.DuckList.List[dataManager.GetLastSelectedDuck()];
     }
 
-    public async void LoadMultiplayerLevel()
+    public async UniTask LoadMultiplayerLevel()
     {
         if (!GameManager.Instance.IsOnlineMode) return;
         // Init data setup
-        OnPlayerInMatch.Invoke();
+        OnPlayerInMatch?.Invoke();
         Debug.Log("Setup for online level ...");
         var levelData = DataManager.Instance.OnlineLevel;
-        GameManager.Instance.IsGameOver.Value = false;
-        GameManager.Instance.IsGameWin.Value = false;
+        GameManager.Instance.IsGameOver = false;
+        GameManager.Instance.IsGameWin = false;
         GameManager.Instance.OnEnterLevel?.Invoke(levelData);
         SoundManager.Instance.StopBgMusic();
 
@@ -54,10 +54,10 @@ public class GameFacade : NetworkSingleton<GameFacade> {
 
         EDebug.Log("Setup bird");
         IsPlayingLevel = true;
-        SetupBird();
+        await SetupDuck();
 
         EDebug.Log("Setup level");
-        SetupLevelServerRpc(levelData.ID);
+        GameFlowManager.Instance.SetupLevel(levelData.ID);
         SetupUIOnLevelStart();
         EDebug.Log("Setup complete");
 
@@ -65,7 +65,6 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         await SceneLoader.Instance.FadeOut();
         await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
         SoundManager.Instance.PlayBgMusic(levelData.BackgroundMusic);
-        await WaitForPlayers();
         if (UIManager.Instance.IsPopupOpen(Popup.Pause))
             return;
 
@@ -76,8 +75,8 @@ public class GameFacade : NetworkSingleton<GameFacade> {
     public async UniTask PlayLevel(LevelSO data)
     {
         if (GameManager.Instance.IsOnlineMode) return;
-        GameManager.Instance.IsGameOver.Value = false;
-        GameManager.Instance.IsGameWin.Value = false;
+        GameManager.Instance.IsGameOver = false;
+        GameManager.Instance.IsGameWin = false;
         GameManager.Instance.OnEnterLevel?.Invoke(data);
         SoundManager.Instance.StopBgMusic();
         await UIManager.Instance.CloseCurrentMenu();
@@ -85,7 +84,7 @@ public class GameFacade : NetworkSingleton<GameFacade> {
 
         EDebug.Log("Setup bird");
         IsPlayingLevel = true;
-        SetupBird();
+        await SetupDuck();
 
         EDebug.Log("Setup level");
         SetupLevel(data.ID);
@@ -106,11 +105,11 @@ public class GameFacade : NetworkSingleton<GameFacade> {
 
     public async UniTask ReturnToMenu()
     {
-        OnPlayerLeaveMatch.Invoke();
+        OnPlayerLeaveMatch?.Invoke();
         await UIManager.Instance.CloseCurrentMenu();
         await SceneLoader.Instance.FadeIn();
         EDebug.Log("Cleaning level ...");
-        CleanupLevel();
+        GameFlowManager.Instance.CleanupLevelServerRpc();
         ResetUIOnReturnToMenu();
         await UniTask.Delay(TimeSpan.FromSeconds(1));
         SceneLoader.Instance.FadeOut().Forget();
@@ -136,16 +135,16 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         }
     }
 
-    private void SetupBird()
+    private async UniTask SetupDuck()
     {
-        duckController = Instantiate(duckControllerPefab, Vector3.zero, Quaternion.identity, null);
-        duckController.GetComponent<NetworkObject>().Spawn();
-        ActiveDuck = duckController.ActiveDuck(CurrentSelectedDuck.SkinId);
+        if (!IsOwner) return;
+        duckController.GetDuckServerRpc(CurrentSelectedDuck.SkinId);
+        await UniTask.Delay(TimeSpan.FromSeconds(1));
+        ActiveDuck = duckController.CurrentDuck;
         ActiveDuck.Setup();
         ActiveDuck.transform.position = new Vector3(0, -2, 0);
-        ActiveDuck.gameObject.SetActive(true);
         ActiveDuck.CanAttack = false;
-        SetupCameraClientRpc(ActiveDuck.NetworkObjectId);
+        SetupCamera();
     }
 
     private void SetupLevel(int id)
@@ -157,33 +156,25 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         CurrentLevelPrefab = levelPrefab;
     }
 
-    [ServerRpc]
-    private void SetupLevelServerRpc(int id)
+    public void SetupLevelFromServer(GameObject levelInstance, LevelSO data)
     {
-        var data = DataManager.Instance.FindLevelDataById(id);
-        var levelPrefab = Instantiate(data.LevelPrefab, levelContainer);
-        levelPrefab.GetComponent<NetworkObject>().Spawn();
-        levelPrefab.transform.localPosition = Vector3.zero;
+        CurrentLevelPrefab = levelInstance;
         CurrentPlayingLevel = data;
-        CurrentLevelPrefab = levelPrefab;
     }
 
-    [ClientRpc]
-    private void SetupCameraClientRpc(ulong targetNetId)
+    private void SetupCamera()
     {
-        if (!NetworkManager.Singleton.SpawnManager.SpawnedObjects
-            .TryGetValue(targetNetId, out var target)) return;
-
-        CameraController.Instance.Target = target.transform;
+        CameraController.Instance.enabled = true;
+        CameraController.Instance.Target = ActiveDuck.transform;
     }
 
-    private async UniTask WaitForPlayers()
-    {
-        while (GameManager.Instance.IsOnlineMode && !GameFlowManager.Instance.IsAllPlayersInMatch())
-        {
-            await UniTask.Yield();
-        }
-    }
+    // private async UniTask WaitForPlayers()
+    // {
+    //     while (GameManager.Instance.IsOnlineMode)
+    //     {
+    //         await UniTask.Yield();
+    //     }
+    // }
 
     private void SetupUIOnLevelStart()
     {
@@ -200,26 +191,13 @@ public class GameFacade : NetworkSingleton<GameFacade> {
     }
 
 
-    private void CleanupLevel()
+    public void CleanupLevelLocal()
     {
-        if (CurrentLevelPrefab != null)
-        {
-            if (CurrentLevelPrefab.TryGetComponent<NetworkObject>(out var netObj) && IsServer)
-                netObj.Despawn(true);
-            else
-                Destroy(CurrentLevelPrefab);
-        }
-        if (duckController != null)
-        {
-            if (duckController.TryGetComponent<NetworkObject>(out var netObj) && IsServer)
-                netObj.Despawn(true);
-            else
-                Destroy(duckController);
-        }
-
+        duckController.DisableAll();
         CameraController.Instance.Target = null;
         CameraController.Instance.transform.position = Vector3.zero;
         CurrentPlayingLevel = DataManager.Instance.EmptyLevel;
         IsPlayingLevel = false;
+        CurrentLevelPrefab = null;
     }
 }

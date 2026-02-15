@@ -164,7 +164,7 @@ public class HUD : MonoBehaviour {
 
     private async void Pause()
     {
-        if (GameManager.Instance.IsGameOver.Value) return;
+        if (GameManager.Instance.IsGameOver) return;
         UIManager.Instance.OpenPopup(Popup.Pause).Forget();
         GameManager.Instance.Pause(true);
     }
