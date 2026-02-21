@@ -4,7 +4,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class DuckController : MonoBehaviour {
+public class DuckController : NetworkBehaviour {
     [Header("Duck Prefab")]
     [SerializeField] private ABaseDuck normalDuck;
     [SerializeField] private ABaseDuck ramboDuck;
@@ -31,7 +31,8 @@ public class DuckController : MonoBehaviour {
         }
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
+    // [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void GetDuckServerRpc(SkinID skin, ServerRpcParams serverParams = default)
     {
         if (duckPrefabList.TryGetValue(skin, out var duck))
@@ -44,6 +45,7 @@ public class DuckController : MonoBehaviour {
             var instance = Instantiate(duck, transform.position, Quaternion.identity);
             instance.GetComponent<NetworkObject>().SpawnWithOwnership(serverParams.Receive.SenderClientId);
             instance.gameObject.SetActive(true);
+            instance.Setup();
             CurrentDuck = instance;
             return;
         }
@@ -53,7 +55,8 @@ public class DuckController : MonoBehaviour {
             return;
         }
     }
-    [ServerRpc]
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void ReleaseDuckServerRpc()
     {
         if (CurrentDuck != null)

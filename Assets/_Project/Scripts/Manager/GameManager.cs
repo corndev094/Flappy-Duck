@@ -1,8 +1,6 @@
 using UnityEngine;
 using System;
 using Cysharp.Threading.Tasks;
-using TMPro;
-using Unity.Netcode;
 
 /// <summary>
 /// Control Win Lose
@@ -15,8 +13,6 @@ public class GameManager : NetworkSingleton<GameManager> {
     public Action OnWin;
     public Action OnLose;
     public Material GrayScaleMat;
-
-    public ABaseDuck CurrentBird { get; set; }
     public LevelSO CurrentPlayingLevel { get; set;}
     public bool IsGameOver { get; set; } = false;
     public bool IsGameWin { get; set; } = false;
@@ -61,12 +57,6 @@ public class GameManager : NetworkSingleton<GameManager> {
     public void Pause(bool pause)
     {
         currentGameMode.OnPaused(pause);
-    }
-
-    [ClientRpc]
-    public void ShowGameOverClientRpc()
-    {
-        UIManager.Instance.OpenPopup(Popup.LevelResult).Forget();
     }
 
     public void HandleWinCondition()

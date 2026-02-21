@@ -12,6 +12,14 @@ namespace Multiplayer.Editor
         private bool showNetwork = true;
         private bool showMatchmaking = true;
         private bool showGameFlow = true;
+        private bool showPlayerList = true;
+
+        // Player list change tracking
+        private bool isSubscribed;
+        private string lastChangeType = "None";
+        private string lastChangeTime = "--";
+        private int lastChangeIndex = -1;
+        private int changeCount;
 
         [MenuItem("Window/Multiplayer Debugger")]
         public static void ShowWindow()
@@ -19,8 +27,69 @@ namespace Multiplayer.Editor
             GetWindow<MultiplayerDebugWindow>("Multiplayer Debug");
         }
 
+        private void OnEnable()
+        {
+            EditorApplication.playModeStateChanged += OnPlayModeChanged;
+            TrySubscribe();
+        }
+
+        private void OnDisable()
+        {
+            EditorApplication.playModeStateChanged -= OnPlayModeChanged;
+            TryUnsubscribe();
+        }
+
+        private void OnPlayModeChanged(PlayModeStateChange state)
+        {
+            if (state == PlayModeStateChange.EnteredPlayMode)
+            {
+                isSubscribed = false;
+                changeCount = 0;
+                lastChangeType = "None";
+                lastChangeTime = "--";
+                lastChangeIndex = -1;
+            }
+            else if (state == PlayModeStateChange.ExitingPlayMode)
+            {
+                TryUnsubscribe();
+            }
+        }
+
+        private void TrySubscribe()
+        {
+            if (isSubscribed) return;
+            if (!Application.isPlaying) return;
+            if (GameFlowManager.Instance == null) return;
+
+            GameFlowManager.Instance.OnPlayerListChanged += OnPlayerListChanged;
+            isSubscribed = true;
+        }
+
+        private void TryUnsubscribe()
+        {
+            if (!isSubscribed) return;
+            if (GameFlowManager.Instance != null)
+            {
+                GameFlowManager.Instance.OnPlayerListChanged -= OnPlayerListChanged;
+            }
+            isSubscribed = false;
+        }
+
+        private void OnPlayerListChanged(NetworkListEvent<PlayerNetworkData> changeEvent)
+        {
+            lastChangeType = changeEvent.Type.ToString();
+            lastChangeIndex = changeEvent.Index;
+            lastChangeTime = System.DateTime.Now.ToString("HH:mm:ss.fff");
+            changeCount++;
+            Repaint();
+        }
+
         private void OnInspectorUpdate()
         {
+            if (Application.isPlaying && !isSubscribed)
+            {
+                TrySubscribe();
+            }
             // Force UI to repaint every frame for real-time updates
             Repaint();
         }
@@ -40,6 +109,7 @@ namespace Multiplayer.Editor
             DrawNetworkStatus();
             DrawMatchmakingStatus();
             DrawGameFlowStatus();
+            DrawPlayerListStatus();
 
             EditorGUILayout.EndScrollView();
         }
@@ -239,6 +309,101 @@ namespace Multiplayer.Editor
                 }
                 EditorGUI.indentLevel--;
             }
+        }
+
+        private void DrawPlayerListStatus()
+        {
+            showPlayerList = EditorGUILayout.Foldout(showPlayerList, "Player List (NetworkPlayerData)", true, EditorStyles.foldoutHeader);
+            if (!showPlayerList) return;
+
+            EditorGUI.indentLevel++;
+
+            if (GameFlowManager.Instance == null)
+            {
+                EditorGUILayout.HelpBox("GameFlowManager.Instance is NULL", MessageType.Warning);
+                EditorGUI.indentLevel--;
+                return;
+            }
+
+            var gm = GameFlowManager.Instance;
+
+            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+
+            // Change tracking info
+            EditorGUILayout.LabelField("Change Tracking", EditorStyles.boldLabel);
+            DrawStatusLabel("Subscribed", isSubscribed);
+            DrawLabel("Total Changes", changeCount.ToString());
+            DrawLabel("Last Change Type", lastChangeType);
+            DrawLabel("Last Change Index", lastChangeIndex >= 0 ? lastChangeIndex.ToString() : "--");
+            DrawLabel("Last Change Time", lastChangeTime);
+
+            EditorGUILayout.Space();
+
+            // Player list
+            if (gm.PlayerList == null)
+            {
+                EditorGUILayout.HelpBox("PlayerList is NULL (not yet initialized)", MessageType.Info);
+            }
+            else if (gm.PlayerList.Count == 0)
+            {
+                EditorGUILayout.HelpBox("PlayerList is empty - No players connected", MessageType.Info);
+            }
+            else
+            {
+                EditorGUILayout.LabelField($"Players ({gm.PlayerList.Count})", EditorStyles.boldLabel);
+
+                for (int i = 0; i < gm.PlayerList.Count; i++)
+                {
+                    var p = gm.PlayerList[i];
+
+                    // Highlight the last changed index
+                    var bgColor = GUI.backgroundColor;
+                    if (i == lastChangeIndex)
+                    {
+                        GUI.backgroundColor = new Color(1f, 1f, 0.5f, 1f);
+                    }
+
+                    EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                    GUI.backgroundColor = bgColor;
+
+                    // Header with status indicator
+                    EditorGUILayout.BeginHorizontal();
+                    var statusColor = p.IsAlive ? Color.green : Color.red;
+                    var originalColor = GUI.contentColor;
+                    GUI.contentColor = statusColor;
+                    EditorGUILayout.LabelField(
+                        $"[{i}] {p.PlayerName}",
+                        EditorStyles.boldLabel
+                    );
+                    GUI.contentColor = originalColor;
+                    EditorGUILayout.EndHorizontal();
+
+                    EditorGUI.indentLevel++;
+                    DrawLabel("Client ID", p.ClientId.ToString());
+                    DrawLabel("Player Name", p.PlayerName.ToString());
+                    DrawLabel("Score", p.Score.ToString());
+                    DrawStatusLabel("Is Alive", p.IsAlive);
+                    EditorGUI.indentLevel--;
+
+                    EditorGUILayout.EndVertical();
+                }
+            }
+
+            EditorGUILayout.Space();
+
+            // Reset button
+            if (GUILayout.Button("Reset Change Counter"))
+            {
+                changeCount = 0;
+                lastChangeType = "None";
+                lastChangeTime = "--";
+                lastChangeIndex = -1;
+            }
+
+            EditorGUILayout.EndVertical();
+            EditorGUI.indentLevel--;
+
+            EditorGUILayout.Space();
         }
 
         private void DrawStatusLabel(string label, bool status)

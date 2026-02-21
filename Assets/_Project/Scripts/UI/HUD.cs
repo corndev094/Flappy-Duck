@@ -1,5 +1,4 @@
 using Cysharp.Threading.Tasks;
-using Multiplayer;
 using Nguyen.Event;
 using UnityEngine;
 using UnityEngine.UI;
@@ -56,7 +55,7 @@ public class HUD : MonoBehaviour {
         staminaTarget = 1;
         hpTarget = 1;
         hpOriginalColor = hpImage.color;
-        if (GameFacade.Instance.CurrentSelectedDuck != null && GameFacade.Instance.CurrentSelectedDuck.UseMP)
+        if (GameFacade.Instance.ActiveDuck != null && GameFacade.Instance.ActiveDuck.Data.UseMP)
         {
             staminaContainer.SetActive(true);
         }

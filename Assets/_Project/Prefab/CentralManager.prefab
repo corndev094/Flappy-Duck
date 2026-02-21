@@ -261,6 +261,10 @@ MonoBehaviour:
   pipeSpawner: {fileID: 5978764552728449979, guid: 413016e43a6570f46bb2605477f87278, type: 3}
   levelContainer: {fileID: 0}
   countDown: {fileID: 0}
+  <CurrentPlayingLevel>k__BackingField: {fileID: 0}
+  <CurrentSelectedDuck>k__BackingField: {fileID: 0}
+  <CurrentLevelPrefab>k__BackingField: {fileID: 0}
+  <ActiveDuck>k__BackingField: {fileID: 0}
 --- !u!1 &4777809130348713870
 GameObject:
   m_ObjectHideFlags: 0

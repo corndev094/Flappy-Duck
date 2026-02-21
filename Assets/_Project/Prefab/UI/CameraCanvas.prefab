@@ -467,9 +467,9 @@ MonoBehaviour:
   mainMenu: {fileID: 9068020292408483566}
   settingsMenu: {fileID: 2829964646907802213}
   levelMapMenu: {fileID: 8990125339622441658}
-  levelResultMenu: {fileID: 8526760262573327034}
   duckSelectionMenu: {fileID: 5005366651059094075}
-  pauseMenu: {fileID: 2048786792960294961}
+  levelResultPopup: {fileID: 8526760262573327034}
+  pausePopup: {fileID: 2048786792960294961}
   quickMatchMenu: {fileID: 1803192909148818853}
   filterMatchMenu: {fileID: 2593871591679405372}
   hud: {fileID: 3575601610725367481}

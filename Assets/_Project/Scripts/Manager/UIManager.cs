@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using Multiplayer;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -12,9 +10,10 @@ public class UIManager : Singleton<UIManager> {
     [SerializeField] private MainMenu mainMenu;
     [SerializeField] private SettingsMenu settingsMenu;
     [SerializeField] private LevelMapMenu levelMapMenu;
-    [SerializeField] private LevelResultMenu levelResultMenu;
     [SerializeField] private DuckSelectionMenu duckSelectionMenu;
-    [SerializeField] private PauseMenu pauseMenu;
+    [Header("Popups")]
+    [SerializeField] private LevelResultPopup levelResultPopup;
+    [SerializeField] private PausePopup pausePopup;
 
     [Header("Multiplayer")]
     [SerializeField] private MultiplayerUI quickMatchMenu;
@@ -54,8 +53,8 @@ public class UIManager : Singleton<UIManager> {
         };
         popups = new()
         {
-            {Popup.Pause, pauseMenu},
-            {Popup.LevelResult, levelResultMenu},
+            {Popup.Pause, pausePopup},
+            {Popup.LevelResult, levelResultPopup},
         };
     }
 
@@ -134,7 +133,7 @@ public class UIManager : Singleton<UIManager> {
 
     public bool IsMenuOpen(Menu menuType)
     {
-        return menus[menuType].gameObject.activeSelf;
+        return menus[menuType].gameObject.activeInHierarchy;
     }
     #endregion
 
@@ -150,7 +149,9 @@ public class UIManager : Singleton<UIManager> {
                 EDebug.LogError($"Does not contains menu of type {popupType}");
                 return null;
             }
-            await TopPopup.Open();
+            await CloseTopPopup();
+            popupStack.Push(popup);
+            await popup.Open();
             return popup;
         }
         else
@@ -173,13 +174,11 @@ public class UIManager : Singleton<UIManager> {
 
     public bool IsPopupOpen(Popup popupType)
     {
-        return popups[popupType].gameObject.activeSelf;
+        return popups[popupType].gameObject.activeInHierarchy;
     }
 
     #endregion
 }
 
-public enum Menu {Main, Settings, LevelMap, LevelResult, DuckSelection, QuickMatch, FilterMatch};
-public enum Popup {Pause,
-    LevelResult
-}
+public enum Menu { Main, Settings, LevelMap, DuckSelection, QuickMatch, FilterMatch };
+public enum Popup { Pause, LevelResult }

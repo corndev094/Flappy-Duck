@@ -212,7 +212,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2326720993317237091
 Transform:
   m_ObjectHideFlags: 0
@@ -416,7 +416,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2956567886
+  GlobalObjectIdHash: 2097838220
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -444,7 +444,6 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   data: {fileID: 11400000, guid: 3bfb1da408220f148b0cbfaf9678a38f, type: 2}
   playerInput: {fileID: 4097242449858442040}
-  hurtVfx: {fileID: 8845595476800512700}
   hurtMat: {fileID: 2100000, guid: 531c76f0a2e30474cb6522c63c24b0f3, type: 2}
   shootPosition: {fileID: 8444103093365036157}
   bulletPrefab: {fileID: 491079668120448986, guid: df29faddd5a7442419a265d57d808662, type: 3}
@@ -453,6 +452,12 @@ MonoBehaviour:
   staminaEvent: {fileID: 11400000, guid: c5a5558d048316c4cada8ed21806bed0, type: 2}
   hpEvent: {fileID: 11400000, guid: 2df09b8571d3b1549896cd0469adcf32, type: 2}
   infiniteStamina: 0
+  currentHp:
+    m_InternalValue: 0
+  currentStamina:
+    m_InternalValue: 0
+  spriteColor:
+    m_InternalValue: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &5436154697371454656
 GameObject:
   m_ObjectHideFlags: 0

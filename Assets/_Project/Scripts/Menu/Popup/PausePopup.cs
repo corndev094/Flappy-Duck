@@ -4,7 +4,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PauseMenu : ABasePopup {
+public class PausePopup : ABasePopup {
     [SerializeField] private Transform panel;
 
     [Header("Buttons")] 
