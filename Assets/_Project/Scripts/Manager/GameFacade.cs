@@ -139,14 +139,16 @@ public class GameFacade : NetworkSingleton<GameFacade> {
     private async UniTask SetupDuck()
     {
         duckController.GetDuckServerRpc(CurrentSelectedDuck.SkinId);
+        await UniTask.Delay(1000);
         ActiveDuck = await WaitForDuckSpawn();
-        Debug.Log(ActiveDuck.OwnerClientId);
+        duckController.CurrentDuck = ActiveDuck;
+        Debug.Log($"[LocalClientId={NetworkManager.Singleton.LocalClientId}] IsServer={IsServer}");
+        Debug.Log($"[LocalClientId={NetworkManager.Singleton.LocalClientId}] ActiveDuck.OwnerClientId={ActiveDuck?.OwnerClientId} IsOwner={ActiveDuck?.IsOwner}");
         if (ActiveDuck == null)
         {
             EDebug.LogError("Failed to spawn duck!");
             return;
         }
-        ActiveDuck.transform.position = new Vector3(0, -2, 0);
         ActiveDuck.CanAttack = false;
         SetupCamera();
     }
@@ -156,7 +158,7 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         // Đợi tối đa 5 giây
         float timeout = 5f;
         float elapsed = 0f;
-        
+        Debug.Log(NetworkManager.Singleton.LocalClientId);
         while (elapsed < timeout)
         {
             // Tìm trong spawned objects
@@ -164,8 +166,10 @@ public class GameFacade : NetworkSingleton<GameFacade> {
             {
                 if (netObj.TryGetComponent<ABaseDuck>(out var duck))
                 {
-                    if (netObj.IsOwner) // Là duck của client này
+                    Debug.Log(duck.OwnerClientId);
+                    if (duck.OwnerClientId == NetworkManager.Singleton.LocalClientId) // Là duck của client này
                     {
+                        Debug.Log($"Found duck {duck.OwnerClientId} for client {NetworkManager.Singleton.LocalClientId}");
                         return duck;
                     }
                 }

@@ -20,7 +20,6 @@ public class DuckController : NetworkBehaviour {
             {SkinID.Normal, normalDuck},
             {SkinID.Rambo, ramboDuck}
         };
-        CurrentDuck = normalDuck;
     }
 
     void OnValidate()
@@ -32,7 +31,6 @@ public class DuckController : NetworkBehaviour {
     }
 
     [ServerRpc(RequireOwnership = false)]
-    // [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void GetDuckServerRpc(SkinID skin, ServerRpcParams serverParams = default)
     {
         if (duckPrefabList.TryGetValue(skin, out var duck))
@@ -44,9 +42,8 @@ public class DuckController : NetworkBehaviour {
             }
             var instance = Instantiate(duck, transform.position, Quaternion.identity);
             instance.GetComponent<NetworkObject>().SpawnWithOwnership(serverParams.Receive.SenderClientId);
+            Debug.Log($"{serverParams.Receive.SenderClientId} owns duck {instance.OwnerClientId}");
             instance.gameObject.SetActive(true);
-            instance.Setup();
-            CurrentDuck = instance;
             return;
         }
         else

@@ -40,7 +40,7 @@ public abstract class ABaseDuck : NetworkBehaviour {
     // Network Variables
     [SerializeField] protected NetworkVariable<float> currentHp = new(default, NetworkVariableReadPermission.Everyone ,NetworkVariableWritePermission.Server);
     [SerializeField] protected NetworkVariable<float> currentStamina = new(default, NetworkVariableReadPermission.Everyone ,NetworkVariableWritePermission.Server);
-    [SerializeField] private NetworkVariable<Color> spriteColor = new(default, NetworkVariableReadPermission.Everyone ,NetworkVariableWritePermission.Server);
+    [SerializeField] private NetworkVariable<Color> spriteColor = new(default, NetworkVariableReadPermission.Everyone ,NetworkVariableWritePermission.Owner);
 
     public event Action<Collider2D> OnBirdCollided;
     public event Action OnBirdReachedFinish;
@@ -85,10 +85,13 @@ public abstract class ABaseDuck : NetworkBehaviour {
     {
         hurtMatCopy = new(hurtMat);
         SubscribeEvents();
+        Debug.Log($"IsOwner={IsOwner}");
+        Debug.Log($"OnNetworkSpawn: Owner={OwnerClientId}, Local={NetworkManager.Singleton.LocalClientId}");
         if (!IsOwner) return;
+        // spriteColor.Value = new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f));
         rb.bodyType = RigidbodyType2D.Kinematic;
-        spriteColor.Value = new Color(UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1));
         spriteRenderer.color = spriteColor.Value;
+        Setup();
         StopFlying();
     }
 
@@ -111,7 +114,6 @@ public abstract class ABaseDuck : NetworkBehaviour {
     #region Initialization
     public void Setup()
     {
-        if (!IsServer) return;
         currentHp.Value = data.HP;
         currentStamina.Value = data.Stamina;
     }
