@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// Simple UI for matchmaking - Main menu with Quick/Custom match
 /// NO LOBBY UI - Auto-starts game after match found
 /// </summary>
-public class MultiplayerUI : ABaseMenu
+public class QuickMatchMenu : ABaseMenu
 {
     [SerializeField] private Button mainMenuButton;
     [SerializeField] private GameObject mainPanel;
@@ -133,6 +133,11 @@ public class MultiplayerUI : ABaseMenu
     #endregion
 
     #region UI Updates
+
+    public void ResetUI()
+    {
+        ShowMainMenu();
+    }
 
     private void ShowMainMenu()
     {

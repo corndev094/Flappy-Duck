@@ -1,5 +1,4 @@
 ﻿<Solution>
-  <Project Path="Unity.Services.Authentication.PlayerAccounts.csproj" />
   <Project Path="Unity.Multiplayer.Center.GetStarted.Tests.csproj" />
   <Project Path="NaughtyAttributes.Test.csproj" />
   <Project Path="Dreamteck.Splines.Editor.csproj" />
@@ -10,11 +9,9 @@
   <Project Path="UniTask.csproj" />
   <Project Path="QFSW.QC.Extras.csproj" />
   <Project Path="Unity.Multiplayer.Center.Quickstart.Editor.Tests.csproj" />
-  <Project Path="Unity.Services.Authentication.csproj" />
   <Project Path="BetterHierarchy.csproj" />
   <Project Path="QFSW.QC.csproj" />
   <Project Path="SimpleScrollSnap.csproj" />
-  <Project Path="Unity.Services.Authentication.Editor.csproj" />
   <Project Path="UniTask.Linq.csproj" />
   <Project Path="QFSW.QC.Grammar.csproj" />
   <Project Path="NaughtyAttributes.Editor.csproj" />
@@ -23,7 +20,6 @@
   <Project Path="QFSW.QC.Parsers.csproj" />
   <Project Path="UniTask.Addressables.csproj" />
   <Project Path="Assembly-CSharp-firstpass.csproj" />
-  <Project Path="Unity.Services.Authentication.PlayerAccounts.Editor.csproj" />
   <Project Path="LeTai.TrueShadow.csproj" />
   <Project Path="Unity.Multiplayer.Center.NetcodeForGameObjectsExample.csproj" />
   <Project Path="Dreamteck.Utilities.csproj" />
@@ -37,14 +33,12 @@
   <Project Path="CopyrightNoticeEditor.csproj" />
   <Project Path="TimeScaleToolbar.Editor.csproj" />
   <Project Path="QFSW.QC.QGUI.csproj" />
-  <Project Path="Unity.Services.Authentication.PlayerAccounts.Tests.csproj" />
   <Project Path="QFSW.QC.UI.csproj" />
   <Project Path="QFSW.QC.Suggestors.csproj" />
   <Project Path="SimpleInspectorAttributes.csproj" />
   <Project Path="Assembly-CSharp-Editor-firstpass.csproj" />
   <Project Path="SimpleScrollSnapEditor.csproj" />
   <Project Path="QFSW.QC.Demo.csproj" />
-  <Project Path="Unity.Services.Authentication.Editor.Shared.csproj" />
   <Project Path="Dreamteck.Utilities.Editor.csproj" />
   <Project Path="MissingReferencesSearch.csproj" />
   <Project Path="Utilities.csproj" />
@@ -53,5 +47,4 @@
   <Project Path="QFSW.QC.ScanRules.csproj" />
   <Project Path="UniTask.DOTween.csproj" />
   <Project Path="UtilitiesEditor.csproj" />
-  <Project Path="Unity.Services.Authentication.PlayerAccounts.EditorTests.csproj" />
 </Solution>

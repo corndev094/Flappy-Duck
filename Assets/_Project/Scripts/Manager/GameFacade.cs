@@ -1,7 +1,9 @@
 using System;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Contains abstract functions
@@ -104,7 +106,12 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         await SceneLoader.Instance.FadeIn();
         EDebug.Log("Cleaning level ...");
         GameFlowManager.Instance.CleanupLevelServerRpc();
-        ResetUIOnReturnToMenu();
+        UIManager.Instance.TryGetMenu(Menu.QuickMatch, out var menu);
+        if (menu != null && menu is QuickMatchMenu quickMatchMenu)
+        {
+            quickMatchMenu.ResetUI();
+        }
+        SetupUIOnReturnToMainMenu();
         await UniTask.Delay(TimeSpan.FromSeconds(1));
         SceneLoader.Instance.FadeOut().Forget();
         if (GameManager.Instance.IsOnlineMode)
@@ -139,11 +146,8 @@ public class GameFacade : NetworkSingleton<GameFacade> {
     private async UniTask SetupDuck()
     {
         duckController.GetDuckServerRpc(CurrentSelectedDuck.SkinId);
-        await UniTask.Delay(1000);
         ActiveDuck = await WaitForDuckSpawn();
         duckController.CurrentDuck = ActiveDuck;
-        Debug.Log($"[LocalClientId={NetworkManager.Singleton.LocalClientId}] IsServer={IsServer}");
-        Debug.Log($"[LocalClientId={NetworkManager.Singleton.LocalClientId}] ActiveDuck.OwnerClientId={ActiveDuck?.OwnerClientId} IsOwner={ActiveDuck?.IsOwner}");
         if (ActiveDuck == null)
         {
             EDebug.LogError("Failed to spawn duck!");
@@ -158,7 +162,6 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         // Đợi tối đa 5 giây
         float timeout = 5f;
         float elapsed = 0f;
-        Debug.Log(NetworkManager.Singleton.LocalClientId);
         while (elapsed < timeout)
         {
             // Tìm trong spawned objects
@@ -166,10 +169,8 @@ public class GameFacade : NetworkSingleton<GameFacade> {
             {
                 if (netObj.TryGetComponent<ABaseDuck>(out var duck))
                 {
-                    Debug.Log(duck.OwnerClientId);
-                    if (duck.OwnerClientId == NetworkManager.Singleton.LocalClientId) // Là duck của client này
+                    if (netObj.IsOwner) // Là duck của client này
                     {
-                        Debug.Log($"Found duck {duck.OwnerClientId} for client {NetworkManager.Singleton.LocalClientId}");
                         return duck;
                     }
                 }
@@ -223,7 +224,7 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         UIManager.Instance.BgImage.gameObject.SetActive(false);
     }
 
-    private void ResetUIOnReturnToMenu()
+    private void SetupUIOnReturnToMainMenu()
     {
         UIManager.Instance.HUD.gameObject.SetActive(false);
         UIManager.Instance.VersionText.gameObject.SetActive(true);

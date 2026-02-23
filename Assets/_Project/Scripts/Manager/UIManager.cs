@@ -16,7 +16,7 @@ public class UIManager : Singleton<UIManager> {
     [SerializeField] private PausePopup pausePopup;
 
     [Header("Multiplayer")]
-    [SerializeField] private MultiplayerUI quickMatchMenu;
+    [SerializeField] private QuickMatchMenu quickMatchMenu;
     [SerializeField] private MatchmakingFilterUI filterMatchMenu;
 
     [Header("HUD")]

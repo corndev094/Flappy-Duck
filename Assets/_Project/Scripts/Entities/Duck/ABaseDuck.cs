@@ -83,15 +83,12 @@ public abstract class ABaseDuck : NetworkBehaviour {
 
     public override void OnNetworkSpawn()
     {
-        hurtMatCopy = new(hurtMat);
         SubscribeEvents();
-        Debug.Log($"IsOwner={IsOwner}");
-        Debug.Log($"OnNetworkSpawn: Owner={OwnerClientId}, Local={NetworkManager.Singleton.LocalClientId}");
+        if (hurtMat != null) hurtMatCopy = new(hurtMat);
         if (!IsOwner) return;
-        // spriteColor.Value = new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f));
+        spriteColor.Value = new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f));
         rb.bodyType = RigidbodyType2D.Kinematic;
         spriteRenderer.color = spriteColor.Value;
-        Setup();
         StopFlying();
     }
 
@@ -112,7 +109,7 @@ public abstract class ABaseDuck : NetworkBehaviour {
     #endregion
 
     #region Initialization
-    public void Setup()
+    public void InitializeStats()
     {
         currentHp.Value = data.HP;
         currentStamina.Value = data.Stamina;
@@ -145,7 +142,6 @@ public abstract class ABaseDuck : NetworkBehaviour {
     #region Movement
 
     public async UniTask StartFly() {
-        Debug.Log($"{OwnerClientId}: {IsOwner}");
         if (!IsOwner) return;
         isFlying = true;
         canJump = true;
@@ -293,9 +289,12 @@ public abstract class ABaseDuck : NetworkBehaviour {
         if (collision.TryGetComponent<ABaseEnemy>(out var enemy))
         {
             OnBirdCollided?.Invoke(collision);
-            TakeDamage(enemy.Damage);
+            if (!isInvincible || (isInvincible && enemy.CompareTag("Border")))
+            {
+                TakeDamage(enemy.Damage);
+            }
         }
-        if (collision.gameObject.CompareTag("Finish"))
+        else if (collision.gameObject.CompareTag("Finish"))
         {
             OnBirdReachedFinish?.Invoke();       
             StopFlying();
@@ -304,8 +303,6 @@ public abstract class ABaseDuck : NetworkBehaviour {
 
     private void TakeDamage(float damage)
     {
-        if (isInvincible) return;
-
         currentHp.Value -= damage;
         if (currentHp.Value <= 0) Die();
         else
@@ -367,13 +364,11 @@ public abstract class ABaseDuck : NetworkBehaviour {
     private void InvokeStaminaEvent(float oldVlaue, float newValue)
     {
         if (!IsOwner) return;
-        Debug.Log(gameObject.name + " stamina: " + newValue + " / " + data.Stamina);
         staminaEvent.RaiseEvent(Mathf.Clamp01(CurrentStamina.Value / data.Stamina));
     }
 
     private void InvokeHpEvent(float oldValue, float newValue)
     {
-        Debug.Log($"[InvokeHpEvent] {gameObject.name} | IsOwner={IsOwner} | IsServer={IsServer} | OwnerClientId={OwnerClientId} | old={oldValue} new={newValue}");
         if (!IsOwner) return;
         hpEvent.RaiseEvent(Mathf.Clamp01(CurrentHP.Value / data.HP));
     }
