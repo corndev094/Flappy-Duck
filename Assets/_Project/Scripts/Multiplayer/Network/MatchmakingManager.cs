@@ -28,11 +28,11 @@ public class MatchmakingManager : NetworkBehaviour
     [SerializeField] private int minPlayer = 2;
 
     [Header("Auto-Start Settings")]
-    [SerializeField] private float matchFoundDelay = 2f; // Delay before starting game
+    [SerializeField] private float matchFoundDelay = 0; // Delay before starting game
     [SerializeField] private float gracePeriod = 1; // Wait time after min players for more to join
-    [SerializeField] private float hostWaitTimeout = 30f; // Max wait time for players
+    [SerializeField] private float hostWaitTimeout = 15f; // Max wait time for players
     [SerializeField] private int minimumPlayersToStart = 2;
-    [SerializeField] private float connectionTimeout = 20f; // Client connection timeout (increased from 10s)
+    [SerializeField] private float connectionTimeout = 20f; // Client connection timeout
     [SerializeField] private float hostStartDelay = 2f; // Delay before host starts listening (give relay time)
 
     // Lobby Data Keys
@@ -205,6 +205,7 @@ public class MatchmakingManager : NetworkBehaviour
                 {
                     isWaitingForPlayers = false;
                     isInGracePeriod = false;
+                    ResetMatchingUIClientRpc();
                     StartGameAfterDelay().Forget();
                     return;
                 }
@@ -219,6 +220,16 @@ public class MatchmakingManager : NetworkBehaviour
             isWaitingForPlayers = false;
             isInGracePeriod = false;
             LeaveLobby().Forget();
+        }
+    }
+
+    [ClientRpc]
+    private void ResetMatchingUIClientRpc()
+    {
+        UIManager.Instance.TryGetMenu(Menu.QuickMatch, out var menu);
+        if (menu != null && menu is QuickMatchMenu quickMatchMenu)
+        {
+            quickMatchMenu.ResetUI();
         }
     }
 
@@ -779,6 +790,7 @@ public class MatchmakingManager : NetworkBehaviour
             {
                 NetworkManager.Singleton.Shutdown();
             }
+            Debug.Log("[Matchmaking] Left lobby and cleaned up network state");
         }
     }
 

@@ -2824,6 +2824,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScreenModeStepper
       objectReference: {fileID: 0}
+    - target: {fileID: 8139997876859394874, guid: 763bbdef3996b014496847f33507cfbb, type: 3}
+      propertyPath: m_ChildForceExpandWidth
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8909870346399114711, guid: 763bbdef3996b014496847f33507cfbb, type: 3}
+      propertyPath: m_FlexibleWidth
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9167458039302852917, guid: 763bbdef3996b014496847f33507cfbb, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

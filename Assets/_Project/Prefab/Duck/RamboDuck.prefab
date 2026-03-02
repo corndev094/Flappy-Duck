@@ -212,7 +212,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2326720993317237091
 Transform:
   m_ObjectHideFlags: 0
@@ -451,6 +451,8 @@ MonoBehaviour:
   hurtFlashDuration: 0.3
   staminaEvent: {fileID: 11400000, guid: c5a5558d048316c4cada8ed21806bed0, type: 2}
   hpEvent: {fileID: 11400000, guid: 2df09b8571d3b1549896cd0469adcf32, type: 2}
+  hurtSfx: {fileID: 0}
+  collectSfx: {fileID: 0}
   infiniteStamina: 0
   currentHp:
     m_InternalValue: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level_3
   m_EditorClassIdentifier: Assembly-CSharp::LevelSO
   ID: 3
-  Thumbnail: {fileID: -2952298879156594797, guid: a91c14b5ea54139419ec7a94b685f5b2, type: 3}
+  Thumbnail: {fileID: 21300000, guid: c787e2dbafa5df945a77b873c3d8bc5a, type: 3}
   BossLevel: 1
   LevelPrefab: {fileID: 118198508725763079, guid: cf89fea83d1559d46aa74fcb0b848028, type: 3}
   BackgroundMusic: {fileID: 8300000, guid: 0dcba922a7c6b09409c9894b52e23507, type: 3}

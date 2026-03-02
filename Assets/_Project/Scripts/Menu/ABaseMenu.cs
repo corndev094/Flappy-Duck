@@ -53,19 +53,13 @@ public abstract class ABaseMenu : MonoBehaviour {
 
     protected virtual async UniTask PlayOpenTransition()
     {
-        if (DOTweenAnim != null)
-        {
-            DOTweenAnim.DORestart();
-            await UniTask.WaitForSeconds(DOTweenAnim.duration);
-        }
+        DOTweenAnim.DORestart();
+        await UniTask.WaitForSeconds(DOTweenAnim.duration);
     }
 
     protected virtual async UniTask PlayCloseTransition()
     {
-        if (DOTweenAnim != null)
-        {
-            DOTweenAnim.DOPlayBackwards();
-            await UniTask.WaitForSeconds(DOTweenAnim.duration);
-        }
+        DOTweenAnim.DOPlayBackwards();
+        await UniTask.WaitForSeconds(DOTweenAnim.duration);
     }
 }

@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,7 +47,7 @@ public class LevelResultPopup : ABasePopup {
         nextButton.onClick.AddListener(Next);
     }
 
-    public void Setup(bool isWin)
+    public void Setup(bool isWin, int coin = 0)
     {
         if (isWin)
         {
@@ -58,6 +59,7 @@ public class LevelResultPopup : ABasePopup {
             winWindow.SetActive(false);
             loseWindow.SetActive(true);
         }
+
         if (GameManager.Instance.IsOnlineMode)
         {
             replayButton.gameObject.SetActive(false);
@@ -68,12 +70,17 @@ public class LevelResultPopup : ABasePopup {
             replayButton.gameObject.SetActive(true);
             nextButton.gameObject.SetActive(true);
         }
+
+        winCoinCountText.text = coin.ToString();
+        loseCoinCountText.text = coin.ToString();
     }
 
     private async void Return()
     {
         await UIManager.Instance.CloseTopPopup();
         await GameFacade.Instance.ReturnToMenu();
+        Debug.Log(MatchmakingManager.Instance);
+        await MatchmakingManager.Instance.LeaveLobby();
     }
 
     private async void Replay()

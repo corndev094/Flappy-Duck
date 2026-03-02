@@ -54,7 +54,7 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         await SetupDuck();
 
         EDebug.Log("Setup level");
-        SetupLevel(levelData.ID);
+        SetupMultiplayerLevel();
         SetupUIOnLevelStart();
         EDebug.Log("Setup completed");
 
@@ -104,8 +104,9 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         OnPlayerLeaveMatch?.Invoke();
         await UIManager.Instance.CloseCurrentMenu();
         await SceneLoader.Instance.FadeIn();
+
         EDebug.Log("Cleaning level ...");
-        GameFlowManager.Instance.CleanupLevelServerRpc();
+        GameFlowManager.Instance.CleanupLevel();
         UIManager.Instance.TryGetMenu(Menu.QuickMatch, out var menu);
         if (menu != null && menu is QuickMatchMenu quickMatchMenu)
         {
@@ -193,11 +194,10 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         CurrentLevelPrefab = level;
     }
 
-    public void SetupLevelFromServer(int id)
+    public void SetupMultiplayerLevel()
     {
-        var data = DataManager.Instance.FindLevelDataById(id);
+        var data = DataManager.Instance.OnlineLevel;
         var levelInstance = Instantiate(data.LevelPrefab, GameFacade.Instance.LevelContainer);
-        levelInstance.GetComponent<NetworkObject>().Spawn();
         levelInstance.transform.localPosition = Vector3.zero;
         CurrentLevelPrefab = levelInstance;
         CurrentPlayingLevel = data;

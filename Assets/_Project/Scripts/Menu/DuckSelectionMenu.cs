@@ -56,7 +56,6 @@ public class DuckSelectionMenu : ABaseMenu {
             if (duckList.List[i].SkinId == currentSelectedDuck.SkinId)
             {
                 scrollSnap.Content.GetChild(i).GetComponent<DuckSelection>().SetSelected(true);
-                Debug.Log("true: " + i);
                 continue;
             }
             scrollSnap.Content.GetChild(i).GetComponent<DuckSelection>().SetSelected(false);

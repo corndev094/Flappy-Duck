@@ -32,10 +32,6 @@ public class OnlineGameMode : IGameMode
     public async UniTask StartGame()
     {
         var result = await MatchmakingManager.Instance.StartQuickMatchmaking();
-        if (result == MatchingResult.Success)
-        {
-            Debug.Log("Wait for match ...");
-        }
     }
 
     public void OnPaused(bool pause)

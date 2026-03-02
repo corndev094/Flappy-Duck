@@ -196,7 +196,7 @@ MonoBehaviour:
   openMapBtn: {fileID: 2518951602570548889}
   ducksBtn: {fileID: 4724337712117570771}
   settingsBtn: {fileID: 3732976631302065436}
-  creditBtn: {fileID: 0}
+  playOnlineBtn: {fileID: 7964464446988773531}
   exitBtn: {fileID: 7602401279698605268}
 --- !u!1 &2107223381953457984
 GameObject:
@@ -253,8 +253,8 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 7
-  m_Spacing: 0
+  m_ChildAlignment: 4
+  m_Spacing: 20
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -916,7 +916,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1908198467619999932, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 180
+      value: 147.2798
       objectReference: {fileID: 0}
     - target: {fileID: 1908198467619999932, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
       propertyPath: m_LocalScale.x
@@ -1012,6 +1012,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1908198467619999932, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
   m_PrefabInstance: {fileID: 3912721724125968679}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7964464446988773531 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6398402974812803516, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
+  m_PrefabInstance: {fileID: 3912721724125968679}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!1001 &7711714991746653344
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1247,7 +1258,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1908198467619999932, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 180
+      value: 147.2798
       objectReference: {fileID: 0}
     - target: {fileID: 1908198467619999932, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1302,6 +1313,10 @@ PrefabInstance:
       value: 6.239502
       objectReference: {fileID: 0}
     - target: {fileID: 3343314660147987165, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
+      propertyPath: m_text
+      value: offline
+      objectReference: {fileID: 0}
+    - target: {fileID: 3343314660147987165, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
       propertyPath: m_fontSize
       value: 60
       objectReference: {fileID: 0}
@@ -1315,7 +1330,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 915802e8e40b7aa43b6ed3b8f9d4568a, type: 2}
     - target: {fileID: 3637834834295006640, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
       propertyPath: m_Name
-      value: PlayBtn
+      value: OfflineBtn
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

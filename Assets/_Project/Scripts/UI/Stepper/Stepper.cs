@@ -31,12 +31,7 @@ public abstract class Stepper<T> : MonoBehaviour
     protected int _currentSelectedItem;
     protected Tweener _tweener;
 
-    void OnEnable()
-    {
-        Debug.Log($"{viewPort.sizeDelta}");
-    }
-
-    protected virtual void Awake()
+    protected virtual void Start()
     {
         if (direction == Direction.Horizontal)
         {
@@ -85,18 +80,15 @@ public abstract class Stepper<T> : MonoBehaviour
             item.name = $"Item {i}: {items[i]}";
             item.GetComponentInChildren<TMP_Text>().SetText(items[i].ToString());
         }
+
+        previousButton.onClick.AddListener(MovePrevious);
+        nextButton.onClick.AddListener(MoveNext);
+        UpdateButtonInteractable();
     }
 
     public void SetupList(List<T> list)
     {
         items = list;
-    }
-
-    protected void Start()
-    {
-        previousButton.onClick.AddListener(MovePrevious);
-        nextButton.onClick.AddListener(MoveNext);
-        UpdateButtonInteractable();
     }
 
     protected void OnDestroy()

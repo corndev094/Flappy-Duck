@@ -18,8 +18,9 @@ GameObject:
   - component: {fileID: 614629172392068131}
   - component: {fileID: 6994829280668480668}
   - component: {fileID: -3099252973461861681}
+  - component: {fileID: -8422020322246503266}
   m_Layer: 0
-  m_Name: NormalDuck
+  m_Name: MultiplayerDuck
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -228,7 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2793213539
+  GlobalObjectIdHash: 1547409487
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -350,6 +351,37 @@ MonoBehaviour:
   UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 0
   AutoSetKinematicOnDespawn: 0
+--- !u!114 &-8422020322246503266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008738606943811311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a06bbf88bbbf64ece88773801f527fc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MultiplayerDuck
+  ShowTopMostFoldoutHeaderGroup: 1
+  data: {fileID: 0}
+  playerInput: {fileID: 0}
+  hurtMat: {fileID: 0}
+  shootPosition: {fileID: 0}
+  bulletPrefab: {fileID: 0}
+  invincibleDuration: 0.3
+  hurtFlashDuration: 0.3
+  staminaEvent: {fileID: 0}
+  hpEvent: {fileID: 0}
+  hurtSfx: {fileID: 0}
+  collectSfx: {fileID: 0}
+  infiniteStamina: 0
+  currentHp:
+    m_InternalValue: 0
+  currentStamina:
+    m_InternalValue: 0
+  spriteColor:
+    m_InternalValue: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &1722864095139436457
 GameObject:
   m_ObjectHideFlags: 0

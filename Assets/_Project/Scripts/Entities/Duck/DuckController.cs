@@ -42,7 +42,7 @@ public class DuckController : NetworkBehaviour {
             }
             var instance = Instantiate(duck, transform.position, Quaternion.identity);
             NetworkObject netObj = instance.GetComponent<NetworkObject>();
-            netObj.SpawnWithOwnership(serverParams.Receive.SenderClientId);
+            netObj.SpawnAsPlayerObject(serverParams.Receive.SenderClientId);
             instance.InitializeStats();
             return;
         }

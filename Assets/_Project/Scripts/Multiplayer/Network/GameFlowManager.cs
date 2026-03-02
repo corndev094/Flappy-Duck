@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
@@ -119,11 +120,15 @@ public class GameFlowManager : NetworkBehaviour
         {
             ClientId = clientId,
             PlayerName = $"Player {clientId}",
-            Score = 0,
+            Coin = 0,
             IsAlive = true
         };
 
         PlayerList.Add(playerData);
+        foreach(var id in NetworkManager.Singleton.ConnectedClients.Keys)
+        {
+            NetworkManager.Singleton.ConnectedClients.TryGetValue(id, out var c);
+        }
     }
 
     private void RemovePlayer(ulong clientId)
@@ -183,7 +188,7 @@ public class GameFlowManager : NetworkBehaviour
         for (int i = 0; i < PlayerList.Count; i++)
         {
             var data = PlayerList[i];
-            data.Score = 0;
+            data.Coin = 0;
             data.IsAlive = true;
             PlayerList[i] = data;
         }
@@ -216,7 +221,7 @@ public class GameFlowManager : NetworkBehaviour
     public void AddScore(ulong clientId, int score)
     {
         if (!IsServer) return;
-        UpdateNetworkPlayerData(clientId, (ref PlayerNetworkData data) => data.Score += score);
+        UpdateNetworkPlayerData(clientId, (ref PlayerNetworkData data) => data.Coin += score);
     }
 
     private void UpdateNetworkPlayerData(ulong clientId, PlayerDataModifier updateAction)
@@ -244,7 +249,7 @@ public class GameFlowManager : NetworkBehaviour
                 lastAlivePlayer = PlayerList[i].ClientId;
             }
         }
-        Debug.Log("Alive Players: " + alivePlayers);
+        Debug.Log("Alive Players Count: " + alivePlayers);
 
         if (alivePlayers <= 1 && PlayerList.Count > 1)
         {
@@ -259,12 +264,21 @@ public class GameFlowManager : NetworkBehaviour
             // }
             if (alivePlayers == 0)
             {
-                DeclareWinnerClientRpc(ulong.MaxValue); // No winner
+                // if (IsServer) GameFlowManager.Instance.CleanupPlayersServerRpc();
+                DeclareWinnerClientRpc(); // No winner
                 CurrentGameState.Value = GameState.GameOver;
                 Debug.Log("Game Over");
             }
             OnGameEnded?.Invoke();
+            // Update Data
+            UpdateCoinDataClientRpc();
         }
+    }
+
+    [ClientRpc]
+    public void UpdateCoinDataClientRpc()
+    {
+        DataManager.Instance.SaveCurrency(ConstantString.COIN, DataManager.Instance.GetCurrency(ConstantString.COIN) + GetPlayerData(OwnerClientId).Value.Coin);
     }
 
     /// <summary>
@@ -282,7 +296,7 @@ public class GameFlowManager : NetworkBehaviour
         {
             var data = PlayerList[i];
             data.IsAlive = true;
-            data.Score = 0;
+            data.Coin = 0;
             PlayerList[i] = data;
         }
 
@@ -313,32 +327,45 @@ public class GameFlowManager : NetworkBehaviour
         GameFacade.Instance.LoadMultiplayerLevel().Forget();
     }
 
-    [ServerRpc]
-    public void CleanupLevelServerRpc()
+    public void CleanupLevel()
     {
         var levelPrefab = GameFacade.Instance.CurrentLevelPrefab;
         if (levelPrefab != null)
         {
-            if (levelPrefab.TryGetComponent<NetworkObject>(out var netObj))
-                netObj.Despawn(true);
-            else
-                Destroy(levelPrefab);
+            Destroy(levelPrefab);
         }
 
         // Thông báo cho GameFacade cleanup local
         GameFacade.Instance.CleanupLevelLocal();
     }
 
+    [ServerRpc]
+    public void CleanupPlayersServerRpc()
+    {
+        foreach(var player in PlayerList)
+        {
+            if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(player.ClientId, out var netObj))
+            {
+                netObj.Despawn(true);
+            }
+            else
+            {
+                Destroy(GameFacade.Instance.ActiveDuck);
+            }
+        }
+    }
+
     [ClientRpc]
     private void NotifyGameStartedClientRpc() => OnGameStarted?.Invoke();
 
     [ClientRpc]
-    private void DeclareWinnerClientRpc(ulong winnerId)
+    private void DeclareWinnerClientRpc()
     {
+        var id = NetworkManager.Singleton.LocalClientId;
         bool isWin = true;
-        if (winnerId != ulong.MaxValue)
+        if (id != ulong.MaxValue)
         {
-            OnPlayerWon?.Invoke(winnerId);
+            OnPlayerWon?.Invoke(id);
             isWin = false;
         }
         OnGameEnded?.Invoke();
@@ -346,8 +373,9 @@ public class GameFlowManager : NetworkBehaviour
         UIManager.Instance.TryGetPopup(Popup.LevelResult, out popup);
         if (popup != null)
         {
+            var data = GetPlayerData(id);
             LevelResultPopup levelResult = (LevelResultPopup)popup;
-            levelResult.Setup(isWin);
+            levelResult.Setup(isWin, data.Value.Coin);
             UIManager.Instance.OpenPopup(Popup.LevelResult).Forget();
         }
     }
@@ -376,14 +404,14 @@ public struct PlayerNetworkData : INetworkSerializable, IEquatable<PlayerNetwork
 {
     public ulong ClientId;
     public Unity.Collections.FixedString64Bytes PlayerName;
-    public int Score;
+    public int Coin;
     public bool IsAlive;
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
         serializer.SerializeValue(ref ClientId);
         serializer.SerializeValue(ref PlayerName);
-        serializer.SerializeValue(ref Score);
+        serializer.SerializeValue(ref Coin);
         serializer.SerializeValue(ref IsAlive);
     }
 
@@ -391,13 +419,13 @@ public struct PlayerNetworkData : INetworkSerializable, IEquatable<PlayerNetwork
     {
         return ClientId == other.ClientId
             && PlayerName == other.PlayerName
-            && Score == other.Score
+            && Coin == other.Coin
             && IsAlive == other.IsAlive;
     }
 
     public override string ToString()
     {
-        return $"[Player {ClientId}] {PlayerName} | Score: {Score} | Alive: {IsAlive}";
+        return $"[Player {ClientId}] {PlayerName} | Score: {Coin} | Alive: {IsAlive}";
     }
 }
 

@@ -10,7 +10,7 @@ using System.Linq;
 
 [RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(Rigidbody2D))]
-public abstract class ABaseDuck : NetworkBehaviour {
+public class MultiplayerDuck : NetworkBehaviour {
     
     #region Fields
     [Header("References")]

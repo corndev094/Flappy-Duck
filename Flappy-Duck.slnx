@@ -3,9 +3,9 @@
   <Project Path="NaughtyAttributes.Test.csproj" />
   <Project Path="Dreamteck.Splines.Editor.csproj" />
   <Project Path="Dreamteck.Splines.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="BuildReportTool.csproj" />
   <Project Path="NaughtyAttributes.Core.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="UniTask.csproj" />
   <Project Path="QFSW.QC.Extras.csproj" />
   <Project Path="Unity.Multiplayer.Center.Quickstart.Editor.Tests.csproj" />

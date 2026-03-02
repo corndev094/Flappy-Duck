@@ -74,12 +74,14 @@ public class LevelMapMenu : ABaseMenu
 
     protected override async UniTask PlayOpenTransition()
     {
+        CanvasGroup.alpha = 0;
         RectTransform returnRect = returnBtn.GetComponent<RectTransform>();
         RectTransform playRect = playBtn.GetComponent<RectTransform>();
         returnRect.anchoredPosition = new Vector2(-150, -150);
         playRect.anchoredPosition = Vector2.down * 150;
         gameObject.SetActive(true);
         DOTween.Sequence()
+            .Join(CanvasGroup.DOFade(1, 0.5f))
             .Append(playRect.DOAnchorPos(Vector2.up * 50, 0.5f).SetEase(Ease.OutBack))
             .AppendInterval(0.01f)
             .Append(returnRect.DOAnchorPos(new Vector2(50, 75), 0.5f).SetEase(Ease.OutBack));
@@ -87,7 +89,7 @@ public class LevelMapMenu : ABaseMenu
 
     protected override async UniTask PlayCloseTransition()
     {
-        
+        await CanvasGroup.DOFade(0, 0.5f).AsyncWaitForCompletion();
     }
 
     #endregion

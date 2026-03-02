@@ -39,6 +39,7 @@ public class SettingsMenu : ABaseMenu {
 
     void Awake()
     {
+        Setup();
         if (globalVolume == null) globalVolume = FindFirstObjectByType<Volume>();
         if (globalVolume != null)
         {
@@ -81,25 +82,10 @@ public class SettingsMenu : ABaseMenu {
 
     public async override UniTask Open(Action onOpenFinish = null)
     {
-        OnMasterVolumeChanged(DataManager.Instance.GetMasterVolume());
-        OnMusicVolumeChanged(DataManager.Instance.GetMusicVolume());
-        OnSfxVolumeChanged(DataManager.Instance.GetSfxVolume());
-        OnScreenModeChanged(DataManager.Instance.GetScreenMode());
-        OnResolutionChanged(DataManager.Instance.GetResolution());
-        OnFpsChanged(DataManager.Instance.GetFps());
-        OnVSyncChanged(DataManager.Instance.GetVSync());
         await base.Open(onOpenFinish);
-        UpdateUI();
+        UpdateMenu();
     }
 
-    void Start()
-    {
-        masterVolumeSlider.value = DataManager.Instance.GetMasterVolume();
-        musicVolumeSlider.value = DataManager.Instance.GetMusicVolume();
-        sfxVolumeSlider.value = DataManager.Instance.GetSfxVolume();
-    }
-
-    [Button]
     private void Setup()
     {
         screenModeStepper.SetupList(screenModeList.items);
@@ -107,16 +93,37 @@ public class SettingsMenu : ABaseMenu {
         fpsStepper.SetupList(fpsList.items);
     }
 
-    private void UpdateUI()
+    public void UpdateUI()
     {
+        // Graphic
         screenModeStepper.SetSelectedItem(DataManager.Instance.GetScreenMode(), false);
         resolutionStepper.SetSelectedItem(DataManager.Instance.GetResolution(), false);
         fpsStepper.SetSelectedItem(DataManager.Instance.GetFps(), false);
+        vSyncStepper.SetSelectedItem(DataManager.Instance.GetVSync(), false);
         brightnessSlider.value = DataManager.Instance.GetBrightness();
         contrastSlider.value = DataManager.Instance.GetContrast();
+
+        // Audio
+        masterVolumeSlider.value = DataManager.Instance.GetMasterVolume();
+        musicVolumeSlider.value = DataManager.Instance.GetMusicVolume();
+        sfxVolumeSlider.value = DataManager.Instance.GetSfxVolume();
     }
 
-    private void OnScreenModeChanged(string mode)
+    public void UpdateMenu()
+    {
+        OnMasterVolumeChanged(DataManager.Instance.GetMasterVolume());
+        OnMusicVolumeChanged(DataManager.Instance.GetMusicVolume());
+        OnSfxVolumeChanged(DataManager.Instance.GetSfxVolume());
+        OnScreenModeChanged(DataManager.Instance.GetScreenMode());
+        OnResolutionChanged(DataManager.Instance.GetResolution());
+        OnFpsChanged(DataManager.Instance.GetFps());
+        OnVSyncChanged(DataManager.Instance.GetVSync());
+        OnBrightnessChanged(DataManager.Instance.GetBrightness());
+        OnContrastChanged(DataManager.Instance.GetContrast());
+        UpdateUI();
+    }
+
+    public void OnScreenModeChanged(string mode)
     {
         FullScreenMode m = Screen.fullScreenMode;
         switch (mode)
@@ -126,12 +133,6 @@ public class SettingsMenu : ABaseMenu {
                 break;
             case "Windowed":
                 m = FullScreenMode.Windowed;
-                break;
-            case "Borderless":
-                m = FullScreenMode.FullScreenWindow;
-                break;
-            case "Maximized":
-                m = FullScreenMode.MaximizedWindow;
                 break;
         }
         Screen.SetResolution(Screen.width, Screen.height, m);

@@ -285,7 +285,7 @@ namespace Multiplayer.Editor
                             
                             var originalColor = GUI.contentColor;
                             GUI.contentColor = color;
-                            EditorGUILayout.LabelField($"[{p.ClientId}] {p.PlayerName} - Score: {p.Score} - {status}");
+                            EditorGUILayout.LabelField($"[{p.ClientId}] {p.PlayerName} - Score: {p.Coin} - {status}");
                             GUI.contentColor = originalColor;
                         }
                         EditorGUI.indentLevel--;
@@ -381,7 +381,7 @@ namespace Multiplayer.Editor
                     EditorGUI.indentLevel++;
                     DrawLabel("Client ID", p.ClientId.ToString());
                     DrawLabel("Player Name", p.PlayerName.ToString());
-                    DrawLabel("Score", p.Score.ToString());
+                    DrawLabel("Score", p.Coin.ToString());
                     DrawStatusLabel("Is Alive", p.IsAlive);
                     EditorGUI.indentLevel--;
 

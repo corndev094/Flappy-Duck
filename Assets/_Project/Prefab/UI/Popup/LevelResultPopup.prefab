@@ -1193,6 +1193,7 @@ MonoBehaviour:
   loseCoinCountText: {fileID: 5571122530842448159}
   loseHomeButton: {fileID: 594281539361376418}
   replayButton: {fileID: 3165750607122887733}
+  openTween: {fileID: 2126761049546853005}
 --- !u!1 &6476913253099586818
 GameObject:
   m_ObjectHideFlags: 0

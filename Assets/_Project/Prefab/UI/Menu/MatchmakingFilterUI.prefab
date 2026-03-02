@@ -1223,7 +1223,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1909204634745812598
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1384,11 +1384,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Multiplayer.MatchmakingFilterUI
   transtionSound: {fileID: 8300000, guid: b64feb1368cbb554cac7ea719727eb9e, type: 3}
   panel: {fileID: 606094049389085304}
-  gameModeDropdown: {fileID: 6309729067393680849}
-  levelInput: {fileID: 3795731667389142029}
-  levelRangeSlider: {fileID: 520103389014520890}
-  levelRangeText: {fileID: 1917611597986203373}
-  regionInput: {fileID: 4581775938283407784}
   returnButton: {fileID: 600050867429555470}
   findMatchButton: {fileID: 7419396471097178463}
   cancelButton: {fileID: 2944949968321813461}
