@@ -309,8 +309,8 @@ public abstract class ABaseDuck : NetworkBehaviour {
         }
         else if (collision.gameObject.CompareTag("Finish"))
         {
-            Debug.Log("Finish");
             OnBirdReachedFinish?.Invoke();
+            GameManager.Instance.NotifyPlayerWin(OwnerClientId);
             StopFlying();
         }
     }

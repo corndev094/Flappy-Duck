@@ -33,7 +33,7 @@ public class OnlineGameMode : IGameMode
 
     public void OnPlayerWin(ulong playerId)
     {
-        if (GameFlowManager.Instance != null && !MatchmakingManager.Instance.IsHost)
+        if (GameFlowManager.Instance != null)
         {
             GameFlowManager.Instance.CheckGameOver();
         }
@@ -41,7 +41,7 @@ public class OnlineGameMode : IGameMode
 
     public void OnScoreChanged(ulong playerId, int score)
     {
-        if (GameFlowManager.Instance != null && !MatchmakingManager.Instance.IsHost)
+        if (GameFlowManager.Instance != null)
         {
             GameFlowManager.Instance.AddScore(playerId, score);
         }
