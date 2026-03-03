@@ -125,10 +125,6 @@ public class GameFlowManager : NetworkBehaviour
         };
 
         PlayerList.Add(playerData);
-        foreach(var id in NetworkManager.Singleton.ConnectedClients.Keys)
-        {
-            NetworkManager.Singleton.ConnectedClients.TryGetValue(id, out var c);
-        }
     }
 
     private void RemovePlayer(ulong clientId)
@@ -327,30 +323,28 @@ public class GameFlowManager : NetworkBehaviour
         GameFacade.Instance.LoadMultiplayerLevel().Forget();
     }
 
+    /// <summary>
+    /// Cleanup level — delegates to GameFacade which handles
+    /// duck despawn, level destroy, and state reset.
+    /// </summary>
     public void CleanupLevel()
     {
-        var levelPrefab = GameFacade.Instance.CurrentLevelPrefab;
-        if (levelPrefab != null)
-        {
-            Destroy(levelPrefab);
-        }
-
-        // Thông báo cho GameFacade cleanup local
         GameFacade.Instance.CleanupLevelLocal();
     }
 
+    /// <summary>
+    /// Despawn all player-owned NetworkObjects (ducks) on the server.
+    /// Uses SpawnManager to find objects by owner, not by ClientId key.
+    /// </summary>
     [ServerRpc]
     public void CleanupPlayersServerRpc()
     {
-        foreach(var player in PlayerList)
+        var spawnedObjects = new List<NetworkObject>(NetworkManager.Singleton.SpawnManager.SpawnedObjects.Values);
+        foreach (var netObj in spawnedObjects)
         {
-            if (NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(player.ClientId, out var netObj))
+            if (netObj != null && netObj.IsPlayerObject)
             {
                 netObj.Despawn(true);
-            }
-            else
-            {
-                Destroy(GameFacade.Instance.ActiveDuck);
             }
         }
     }

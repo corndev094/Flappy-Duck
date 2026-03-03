@@ -1,10 +1,9 @@
-
-
 using Cysharp.Threading.Tasks;
 
 public interface IGameMode
 {
     void Initialize();
+    void Cleanup();
     UniTask StartGame();
     void OnPlayerDied(ulong playerId);
     void OnPlayerWin(ulong playerId);

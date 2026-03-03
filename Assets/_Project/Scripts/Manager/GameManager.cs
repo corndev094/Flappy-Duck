@@ -24,6 +24,9 @@ public class GameManager : NetworkSingleton<GameManager> {
     }
     public void SetGameMode(GameMode mode)
     {
+        // Cleanup previous mode before switching
+        currentGameMode?.Cleanup();
+
         CurrentGameMode = mode;
         currentGameMode = mode switch
         {
@@ -63,7 +66,7 @@ public class GameManager : NetworkSingleton<GameManager> {
     {
         IsGameOver = true;
         IsGameWin = true;
-        
+
         if (CurrentPlayingLevel != null)
         {
             // Unlock next level

@@ -1,12 +1,11 @@
 using System;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 /// <summary>
-/// Contains abstract functions
+/// Central facade for game operations.
+/// Handles level loading, duck setup, and UI transitions for both offline and online modes.
 /// </summary>
 public class GameFacade : NetworkSingleton<GameFacade> {
     [SerializeField] private DuckController duckController;
@@ -32,10 +31,11 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         CurrentSelectedDuck = dataManager.DuckList.List[dataManager.GetLastSelectedDuck()];
     }
 
+    /// <summary>
+    /// Online level loading path — called via GameFlowManager ClientRpc on all clients.
+    /// </summary>
     public async UniTask LoadMultiplayerLevel()
     {
-        if (!GameManager.Instance.IsOnlineMode) return;
-        // Init data setup
         OnPlayerInMatch?.Invoke();
         Debug.Log("Setup for online level ...");
         var levelData = DataManager.Instance.OnlineLevel;
@@ -44,7 +44,6 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         GameManager.Instance.OnEnterLevel?.Invoke(levelData);
         SoundManager.Instance.StopBgMusic();
 
-        // Fade in to setup
         await UIManager.Instance.CloseTopPopup();
         await UIManager.Instance.CloseCurrentMenu();
         await sceneLoader.FadeIn();
@@ -54,7 +53,7 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         await SetupDuck();
 
         EDebug.Log("Setup level");
-        SetupMultiplayerLevel();
+        SetupLevel(levelData);
         SetupUIOnLevelStart();
         EDebug.Log("Setup completed");
 
@@ -69,9 +68,12 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         Debug.Log("Game started");
     }
 
+    /// <summary>
+    /// Offline level loading path — called by OfflineGameMode.StartGame().
+    /// Works via local host (SinglePlayerTransport), so all Netcode APIs function normally.
+    /// </summary>
     public async UniTask PlayLevel(LevelSO data)
     {
-        if (GameManager.Instance.IsOnlineMode) return;
         GameManager.Instance.IsGameOver = false;
         GameManager.Instance.IsGameWin = false;
         GameManager.Instance.OnEnterLevel?.Invoke(data);
@@ -85,7 +87,7 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         await SetupDuck();
 
         EDebug.Log("Setup level");
-        SetupLevel(data.ID);
+        SetupLevel(data);
         SetupUIOnLevelStart();
         EDebug.Log("Setup completed");
 
@@ -106,7 +108,8 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         await SceneLoader.Instance.FadeIn();
 
         EDebug.Log("Cleaning level ...");
-        GameFlowManager.Instance.CleanupLevel();
+        CleanupLevel();
+
         UIManager.Instance.TryGetMenu(Menu.QuickMatch, out var menu);
         if (menu != null && menu is QuickMatchMenu quickMatchMenu)
         {
@@ -128,6 +131,7 @@ public class GameFacade : NetworkSingleton<GameFacade> {
 
     public async UniTask WinLevel()
     {
+        Debug.Log("Show popup");
         if (UIManager.Instance.TryGetPopup(Popup.LevelResult, out var menu) && menu != null && menu is LevelResultPopup levelResultMenu)
         {
             levelResultMenu.Setup(true);
@@ -160,17 +164,15 @@ public class GameFacade : NetworkSingleton<GameFacade> {
 
     private async UniTask<ABaseDuck> WaitForDuckSpawn()
     {
-        // Đợi tối đa 5 giây
         float timeout = 5f;
         float elapsed = 0f;
         while (elapsed < timeout)
         {
-            // Tìm trong spawned objects
             foreach (var netObj in NetworkManager.Singleton.SpawnManager.SpawnedObjects.Values)
             {
                 if (netObj.TryGetComponent<ABaseDuck>(out var duck))
                 {
-                    if (netObj.IsOwner) // Là duck của client này
+                    if (netObj.IsOwner)
                     {
                         return duck;
                     }
@@ -185,22 +187,49 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         return null;
     }
 
-    private void SetupLevel(int id)
+    private void SetupLevel(LevelSO data)
     {
-        var data = DataManager.Instance.FindLevelDataById(id);
         var level = Instantiate(data.LevelPrefab, levelContainer);
         level.transform.localPosition = Vector3.zero;
         CurrentPlayingLevel = data;
         CurrentLevelPrefab = level;
     }
 
-    public void SetupMultiplayerLevel()
+    /// <summary>
+    /// Cleanup the current level, despawn the duck, and reset state.
+    /// Works for both online and offline modes since Netcode is always active.
+    /// </summary>
+    private void CleanupLevel()
     {
-        var data = DataManager.Instance.OnlineLevel;
-        var levelInstance = Instantiate(data.LevelPrefab, GameFacade.Instance.LevelContainer);
-        levelInstance.transform.localPosition = Vector3.zero;
-        CurrentLevelPrefab = levelInstance;
-        CurrentPlayingLevel = data;
+        // Despawn duck via Netcode (works on local host too)
+        if (ActiveDuck != null)
+        {
+            duckController.ReleaseDuckServerRpc();
+            ActiveDuck = null;
+            duckController.CurrentDuck = null;
+        }
+
+        // Destroy level prefab (locally instantiated, not network-spawned)
+        if (CurrentLevelPrefab != null)
+        {
+            Destroy(CurrentLevelPrefab);
+        }
+
+        // Reset state
+        CameraController.Instance.Target = null;
+        CameraController.Instance.transform.position = Vector3.zero;
+        CurrentPlayingLevel = DataManager.Instance.EmptyLevel;
+        IsPlayingLevel = false;
+        CurrentLevelPrefab = null;
+    }
+
+    /// <summary>
+    /// Legacy cleanup method — kept for external callers (GameFlowManager).
+    /// Delegates to the unified CleanupLevel().
+    /// </summary>
+    public void CleanupLevelLocal()
+    {
+        CleanupLevel();
     }
 
     private void SetupCamera()
@@ -208,14 +237,6 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         CameraController.Instance.enabled = true;
         CameraController.Instance.Target = ActiveDuck.transform;
     }
-
-    // private async UniTask WaitForPlayers()
-    // {
-    //     while (GameManager.Instance.IsOnlineMode)
-    //     {
-    //         await UniTask.Yield();
-    //     }
-    // }
 
     private void SetupUIOnLevelStart()
     {
@@ -229,16 +250,5 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         UIManager.Instance.HUD.gameObject.SetActive(false);
         UIManager.Instance.VersionText.gameObject.SetActive(true);
         UIManager.Instance.BgImage.gameObject.SetActive(true);
-    }
-
-
-    public void CleanupLevelLocal()
-    {
-        duckController.DisableAll();
-        CameraController.Instance.Target = null;
-        CameraController.Instance.transform.position = Vector3.zero;
-        CurrentPlayingLevel = DataManager.Instance.EmptyLevel;
-        IsPlayingLevel = false;
-        CurrentLevelPrefab = null;
     }
 }

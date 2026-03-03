@@ -137,7 +137,7 @@ public abstract class ABaseDuck : NetworkBehaviour {
     public void OnJump(InputValue value)
     {
         if (!IsOwner) return;
-        if (value.isPressed && canJump && (!infiniteStamina ? CurrentStamina.Value >= data.JumpStamina : true) && JumpCondition())
+        if (value.isPressed && isFlying && canJump && (!infiniteStamina ? CurrentStamina.Value >= data.JumpStamina : true) && JumpCondition())
         {
             Jump();
         }
@@ -309,7 +309,8 @@ public abstract class ABaseDuck : NetworkBehaviour {
         }
         else if (collision.gameObject.CompareTag("Finish"))
         {
-            OnBirdReachedFinish?.Invoke();       
+            Debug.Log("Finish");
+            OnBirdReachedFinish?.Invoke();
             StopFlying();
         }
     }
