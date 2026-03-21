@@ -84,7 +84,7 @@ public class DuckSelectionMenu : ABaseMenu {
         DataManager.Instance.SaveCurrency(ConstantString.COIN, value);
     }
 
-    private bool IsSkinBought(SkinID skinId)
+    private bool IsSkinBought(DuckSkinID skinId)
     {
         return DataManager.Instance.IsSkinUnlocked(skinId);
     }

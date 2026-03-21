@@ -84,14 +84,14 @@ public class DataManager : Singleton<DataManager> {
     #endregion
 
     #region Skin
-    public void SaveUnlockedSkin(SkinID skinId, bool unlocked)
+    public void SaveUnlockedSkin(DuckSkinID skinId, bool unlocked)
     {
         var id = (int)skinId;
         PlayerPrefs.SetInt(string.Format(ConstantString.SKIN, id.ToString()), unlocked ? 1 : 0);
         PlayerPrefs.Save();
     }
 
-    public bool IsSkinUnlocked(SkinID skinId)
+    public bool IsSkinUnlocked(DuckSkinID skinId)
     {
         int id = (int)skinId;
         var key = string.Format(ConstantString.SKIN, id);
@@ -239,7 +239,7 @@ public class DataManager : Singleton<DataManager> {
     public void CreateNewData()
     {
         DeleteAllData();
-        SaveUnlockedSkin(SkinID.Normal, true);
+        SaveUnlockedSkin(DuckSkinID.Normal, true);
         SaveCurrency(ConstantString.COIN, 1);
     }
 
@@ -257,7 +257,7 @@ public class DataManager : Singleton<DataManager> {
     #endregion
 }
 
-public enum SkinID
+public enum DuckSkinID
 {
     Normal = 0,
     Rambo = 1

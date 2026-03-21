@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "DuckBaseData", menuName = "GameData/DuckBaseData", order = 0)]
 public class DuckBaseData : ADescription {
     public Sprite Thumbnail;
-    public SkinID SkinId;
+    public DuckSkinID SkinId;
 
     [Min(0),] public int HP;
     [Min(0),] public int Stamina;

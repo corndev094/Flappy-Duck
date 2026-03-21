@@ -1,5 +1,5 @@
 using UnityEngine;
-    using Unity.Netcode;
+using Unity.Netcode;
 
 public abstract class ABaseEnemy : NetworkBehaviour
 {

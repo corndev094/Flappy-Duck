@@ -9,7 +9,7 @@ public class DuckController : NetworkBehaviour {
     [SerializeField] private ABaseDuck normalDuck;
     [SerializeField] private ABaseDuck ramboDuck;
 
-    private Dictionary<SkinID, ABaseDuck> duckPrefabList;
+    private Dictionary<DuckSkinID, ABaseDuck> duckPrefabList;
     [Space]
     [ReadOnly] public ABaseDuck CurrentDuck;
 
@@ -17,8 +17,8 @@ public class DuckController : NetworkBehaviour {
     {
         duckPrefabList = new()
         {
-            {SkinID.Normal, normalDuck},
-            {SkinID.Rambo, ramboDuck}
+            {DuckSkinID.Normal, normalDuck},
+            {DuckSkinID.Rambo, ramboDuck}
         };
     }
 
@@ -31,7 +31,7 @@ public class DuckController : NetworkBehaviour {
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void GetDuckServerRpc(SkinID skin, RpcParams serverParams = default)
+    public void GetDuckServerRpc(DuckSkinID skin, RpcParams serverParams = default)
     {
         if (duckPrefabList.TryGetValue(skin, out var duck))
         {

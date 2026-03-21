@@ -136,7 +136,7 @@ CanvasGroup:
   m_GameObject: {fileID: 1196609237273495019}
   m_Enabled: 1
   m_Alpha: 1
-  m_Interactable: 1
+  m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!114 &4327140103956589376

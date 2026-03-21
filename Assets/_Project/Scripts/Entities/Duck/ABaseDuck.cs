@@ -14,6 +14,7 @@ public abstract class ABaseDuck : NetworkBehaviour {
     
     #region Fields
     [Header("References")]
+    [SerializeField] private SpriteRenderer sprite;
     [SerializeField] protected DuckBaseData data;
     [Space, SerializeField] protected PlayerInput playerInput;
     [SerializeField] private Material hurtMat;
@@ -82,7 +83,6 @@ public abstract class ABaseDuck : NetworkBehaviour {
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
         if (playerInput == null) playerInput = GetComponent<PlayerInput>();
     }
 
@@ -91,9 +91,9 @@ public abstract class ABaseDuck : NetworkBehaviour {
         SubscribeEvents();
         if (hurtMat != null) hurtMatCopy = new(hurtMat);
         if (!IsOwner) return;
-        spriteColor.Value = new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f));
+        // spriteColor.Value = new Color(UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f), UnityEngine.Random.Range(0f, 1f));
+        // sprite.color = spriteColor.Value;
         rb.bodyType = RigidbodyType2D.Kinematic;
-        spriteRenderer.color = spriteColor.Value;
         StopFlying();
     }
 
@@ -175,7 +175,7 @@ public abstract class ABaseDuck : NetworkBehaviour {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0f);
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, data.JumpForce);
         if (data.FlappingSfx.Count > 0) SoundManager.Instance.PlaySFX(data.FlappingSfx[UnityEngine.Random.Range(0, data.FlappingSfx.Count)], 0.4f);
-        anim.SetTrigger(flyAnimationHash);
+        if (anim.enabled) anim.SetTrigger(flyAnimationHash);
         DelayJump().Forget();
         ConsumeStaminaServerRpc();
     }
@@ -221,7 +221,7 @@ public abstract class ABaseDuck : NetworkBehaviour {
             bullet = Instantiate(bulletPrefab, shootPosition.position, shootPosition.rotation);
             bullet.GetComponent<NetworkObject>().Spawn();
         }
-        anim.SetTrigger(shootAnimationHash);
+        if (anim.enabled) anim.SetTrigger(shootAnimationHash);
         bullet.OnShootedEnemy += enemy =>
         {
             currentStamina.Value = Mathf.Min(currentStamina.Value + enemy.RefillStaminaForPlayer, data.Stamina);
@@ -379,7 +379,6 @@ public abstract class ABaseDuck : NetworkBehaviour {
 
     private async UniTask PlayHurtVfx(CancellationToken token)
     {
-        var sprite = GetComponent<SpriteRenderer>();
         hurtMatCopy.SetFloat("FlashAmount", 1);
         var currentMat = sprite.material;
         try

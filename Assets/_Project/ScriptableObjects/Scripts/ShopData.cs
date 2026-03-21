@@ -9,6 +9,6 @@ public class ShopData : ScriptableObject {
 [System.Serializable]
 public struct SkinData
 {
-    public SkinID SkinId;
+    public DuckSkinID SkinId;
     [Min(0)] public int Price;
 }

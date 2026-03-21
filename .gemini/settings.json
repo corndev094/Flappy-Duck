@@ -1,8 +1,15 @@
 {
   "mcpServers": {
     "context7": {
-      "command": "context7-mcp",
-      "args": []
+      "command": "context7-mcp"
+    },
+    "word": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/GongRzhe/Office-Word-MCP-Server",
+        "office-word-mcp-server"
+      ]
     }
   }
 }

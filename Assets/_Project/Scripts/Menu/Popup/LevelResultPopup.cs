@@ -79,7 +79,6 @@ public class LevelResultPopup : ABasePopup {
     {
         await UIManager.Instance.CloseTopPopup();
         await GameFacade.Instance.ReturnToMenu();
-        Debug.Log(MatchmakingManager.Instance);
         await MatchmakingManager.Instance.LeaveLobby();
     }
 

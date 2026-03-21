@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Dreamteck.Splines;
+using QFSW.QC;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -231,19 +232,25 @@ public class LevelMapMenu : ABaseMenu
         int highestLevel = DataManager.Instance.GetHighestLevel();
         int lastDuckLevel = DataManager.Instance.GetLastDuckLevelPos();
 
-        UpdateDuckPosition(lastDuckLevel);
-        ScrollToDuck();
+        // Handle post-level-win state: if the current level was just unlocked,
+        // ensure the duck position is updated correctly
+        HandlePostLevelWinState(highestLevel, lastDuckLevel);
 
-        // if (highestLevel > lastDuckLevel)
-        // {
-        //     MoveDuckToLevel(lastDuckLevel, highestLevel).Forget();
-        // }
-        // else
-        // {
-        //     UpdateDuckPosition(highestLevel);
+        UpdateDuckPosition(lastDuckLevel);
+        // ScrollToDuck();
+
+        // Check if we need to move to the newly unlocked level
+        if (highestLevel > lastDuckLevel && highestLevel <= levelListData.List.Count)
+        {
+            Debug.Log($"{lastDuckLevel} -> {highestLevel}");
+            MoveDuckToLevel(lastDuckLevel, highestLevel).Forget();
+        }
+        else
+        {
+            UpdateDuckPosition(highestLevel);
             // Sau khi đặt vịt, kiểm tra xem có thể di chuyển tiếp không (ví dụ: tới coin)
             // CheckNextPointType();
-        // }
+        }
     }
 
     /// <summary>
@@ -273,6 +280,24 @@ public class LevelMapMenu : ABaseMenu
         }
     }
 
+    /// <summary>
+    /// Handle post-level-win state to ensure proper duck positioning
+    /// when returning from a won level
+    /// </summary>
+    private void HandlePostLevelWinState(int highestLevel, int lastDuckLevel)
+    {
+        // If the highest level was just unlocked (highestLevel > lastDuckLevel),
+        // update the last duck position to the newly unlocked level
+        if (highestLevel > lastDuckLevel && highestLevel <= levelListData.List.Count)
+        {
+            // Ensure the duck position is updated to the newly unlocked level
+            DataManager.Instance.SaveLastDuckLevelPos(highestLevel);
+            
+            // Update the spline data to reflect the new level state
+            UpdateData();
+        }
+    }
+
     #endregion
 
     #region Duck Movement
@@ -282,6 +307,7 @@ public class LevelMapMenu : ABaseMenu
     /// </summary>
     private async UniTask MoveDuckToLevel(int startLevelId, int endLevelId)
     {
+        Debug.Log($"{startLevelId} -> {endLevelId}");
         if (isDuckMoving) return;
         isDuckMoving = true;
 
@@ -324,14 +350,14 @@ public class LevelMapMenu : ABaseMenu
     }
     
     /// <summary>
-    /// Di chuyển duck theo spline dựa trên index. Chỉ di chuyển, không có logic đi kèm.
+    /// Move duck along the spline from start index to end index.
     /// </summary>
     private async UniTask MoveDuckToPointIndex(int startIndex, int endIndex, Func<Task> beforeMoveTask = null)
     {
         if (isDuckMoving) return;
         isDuckMoving = true;
 
-        await UniTask.WaitForSeconds(0.2f); // Thời gian chờ ngắn hơn cho các bước di chuyển nhỏ
+        await UniTask.WaitForSeconds(0.2f);
 
         if (startIndex >= pathSpline.pointCount || endIndex >= pathSpline.pointCount || startIndex < 0 || endIndex < 0)
         {
@@ -370,7 +396,11 @@ public class LevelMapMenu : ABaseMenu
         currentPointIndex = index;
 
         double percent = pathSpline.GetPointPercent(index);
-        duckIcon.position = pathSpline.EvaluatePosition(percent);
+        Vector3 targetPos = pathSpline.EvaluatePosition(percent);
+        do
+        {
+            duckIcon.position = targetPos;
+        } while (duckIcon.position != targetPos);
     }
 
     private void UpdateDuckFlip(bool facingRight)
@@ -379,7 +409,7 @@ public class LevelMapMenu : ABaseMenu
         {
             Vector3 scale = duckIcon.localScale;
             scale.x = facingRight ? Mathf.Abs(scale.x) : -Mathf.Abs(scale.x);
-            duckIcon.localScale = scale;
+            duckIcon.DOScale(scale, 0.2f);
         }
     }
 
@@ -407,9 +437,6 @@ public class LevelMapMenu : ABaseMenu
 
     #region Gameplay Logic
 
-    /// <summary>
-    /// Kiểm tra xem điểm tiếp theo sau vị trí hiện tại là gì và xử lý.
-    /// </summary>
     private void CheckNextPointType()
     {
         int nextPointIndex = currentPointIndex + 1;
@@ -433,23 +460,16 @@ public class LevelMapMenu : ABaseMenu
             }
         }
     }
-    
-    /// <summary>
-    /// Xử lý logic khi duck cần di chuyển đến một điểm Level.
-    /// </summary>
+
     private async UniTaskVoid HandleLevelPoint(int pointIndex)
     {
         if (isDuckMoving) return;
         
         await MoveDuckToPointIndex(currentPointIndex, pointIndex);
         
-        // Sau khi di chuyển xong, kiểm tra điểm tiếp theo
         CheckNextPointType();
     }
 
-    /// <summary>
-    /// Xử lý logic khi duck cần di chuyển đến một điểm Coin.
-    /// </summary>
     private async UniTaskVoid HandleCoinPoint(int pointIndex)
     {
         if (isDuckMoving) return;

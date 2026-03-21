@@ -8,6 +8,17 @@
         "CONTEXT7_API_KEY": "{env:ctx7sk-c7cb35c8-e89d-46ef-9043-375cbbb6398f}"
       },
       "enabled": true
+    },
+
+    "word": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "--from",
+        "office-word-mcp-server",
+        "word_mcp_server"
+      ],
+      "enabled": true
     }
   }
 }

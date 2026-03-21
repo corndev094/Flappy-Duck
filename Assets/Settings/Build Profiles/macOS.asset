@@ -720,7 +720,7 @@ MonoBehaviour:
     - line: '|     PS4: DOTWEEN'
     - line: '|     PS5: DOTWEEN'
     - line: '|     QNX: DOTWEEN'
-    - line: '|     Standalone: LETAI_TRUESHADOW;DREAMTECK_SPLINES'
+    - line: '|     Standalone: LETAI_TRUESHADOW;DREAMTECK_SPLINES;DOTWEEN'
     - line: '|     VisionOS: DOTWEEN'
     - line: '|     WebGL: DOTWEEN'
     - line: '|     Windows Store Apps: DOTWEEN'

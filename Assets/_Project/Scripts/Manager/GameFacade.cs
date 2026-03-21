@@ -110,10 +110,13 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         EDebug.Log("Cleaning level ...");
         CleanupLevel();
 
-        UIManager.Instance.TryGetMenu(Menu.QuickMatch, out var menu);
-        if (menu != null && menu is QuickMatchMenu quickMatchMenu)
+        if (GameManager.Instance.IsOnlineMode)
         {
-            quickMatchMenu.ResetUI();
+            UIManager.Instance.TryGetMenu(Menu.QuickMatch, out var menu);
+            if (menu != null && menu is QuickMatchMenu quickMatchMenu)
+            {
+                quickMatchMenu.ResetUI();
+            }
         }
         SetupUIOnReturnToMainMenu();
         await UniTask.Delay(TimeSpan.FromSeconds(1));
@@ -150,7 +153,8 @@ public class GameFacade : NetworkSingleton<GameFacade> {
 
     private async UniTask SetupDuck()
     {
-        duckController.GetDuckServerRpc(CurrentSelectedDuck.SkinId);
+        // Online mode must play Normal Duck
+        duckController.GetDuckServerRpc(GameManager.Instance.IsOnlineMode ? DuckSkinID.Normal : CurrentSelectedDuck.SkinId);
         ActiveDuck = await WaitForDuckSpawn();
         duckController.CurrentDuck = ActiveDuck;
         if (ActiveDuck == null)

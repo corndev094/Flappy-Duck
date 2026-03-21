@@ -1,0 +1,1179 @@
+BỘ GIÁO DỤC VÀ ĐÀO TẠO TRƯỜNG ĐẠI HỌC CÔNG NGHỆ ĐÔNG Á
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ĐỒ ÁN TỐT NGHIỆP
+
+TÊN ĐỀ TÀI: PHÁT TRIỂN TỰA GAME FLAPPY DUCK VỚI TÍNH NĂNG MULTIPLAYER SỬ DỤNG UNITY VÀ NETCODE
+
+Giảng viên hướng dẫn: ThS. Trần Văn Thanh
+Sinh viên thực hiện: NGÔ ANH NGUYÊN
+Ngày sinh: 09-09-2004
+Lớp: DCCNTT13.10.11
+Ngành: Công nghệ thông tin 
+Khoa: Công nghệ thông tin 
+Khóa: 13
+Mã sinh viên: 20222109
+
+
+
+
+
+
+Bắc Ninh, năm 2025
+
+
+BỘ GIÁO DỤC VÀ ĐÀO TẠO TRƯỜNG ĐẠI HỌC CÔNG NGHỆ ĐÔNG Á
+
+
+
+
+
+
+NGÔ ANH NGUYÊN
+
+
+
+
+TÊN ĐỀ TÀI: PHÁT TRIỂN TỰA GAME FLAPPY DUCK VỚI TÍNH NĂNG MULTIPLAYER SỬ DỤNG UNITY VÀ NETCODE
+
+
+
+
+Giảng viên hướng dẫn: ThS. Trần Văn Thanh
+
+
+
+
+
+
+
+
+
+
+
+Bắc Ninh, năm 2025
+
+LỜI CAM ĐOAN
+Tôi xin cam đoan rằng đồ án tốt nghiệp với đề tài “Phát triển tựa game Flappy Duck với tính năng Multiplayer sử dụng Unity và Netcode” là nghiên cứu độc lập của tôi. Đồng thời những số liệu được cung cấp từ báo cáo đều là kết quả nghiên cứu hoàn toàn trung thực, không sao chép từ bất kì một công trình nghiên cứu khác nào.
+Bắc Ninh, ngày …. Tháng … năm …..
+LỜI CẢM ƠN
+Lời đầu tiên, tôi xin bày tỏ lòng biết ơn chân thành và sâu sắc nhất đến tất cả những người đã quan tâm, giúp đỡ, động viên và tạo điều kiện thuận lợi cho tôi trong suốt quá trình học tập tại trường cũng như trong thời gian thực hiện đồ án tốt nghiệp này.
+Trước hết, tôi xin trân trọng gửi lời cảm ơn sâu sắc nhất đến thạc sĩ Trần Văn Thanh - người đã trực tiếp và tận tình hướng dẫn, chỉ bảo tôi trong suốt quá trình thực hiện đề tài “Phát triển tựa game Flappy Duck với tính năng Multiplayer sử dụng Unity và Netcode”. Những định hướng, góp ý chuyên môn, sự động viên kịp thời và sự kiên nhẫn của cô chính là nguồn động lực to lớn, giúp tôi vượt qua những khó khăn, vướng mắc và từng bước hoàn thiện đồ án này.
+Tôi cũng xin chân thành cảm ơn các thầy cô giảng viên trong Khoa công nghệ thông tin - Trường đại học Công Nghệ Đông Á. Quý thầy cô đã trang bị cho tôi những kiến thức chuyên ngành quý báu, làm nền tảng vững chắc cho việc nghiên cứu và thực hiện đề tài. Tôi cũng xin cảm ơn nhà trường đã tạo điều kiện tốt nhất về cơ sở vật chất và môi trường học tập trong suốt những năm học vừa qua.
+Cuối cùng, tôi xin gửi lời cảm ơn đến những người bạn bè đã luôn sát cánh, chia sẻ kiến thức, kinh nghiệm, cùng nhau trao đổi, thảo luận và đưa ra những lời khuyên hữu ích trong suốt quá trình thực hiện đồ án cũng như trong suốt quãng thời gian sinh viên.
+Mặc dù đã hết sức cố gắng để hoàn thiện đồ án, nhưng do kiến thức và kinh nghiệm thực tế của bản thân còn nhiều hạn chế, báo cáo chắc chắn không thể tránh khỏi những thiếu sót. Tôi rất mong nhận được những ý kiến đóng góp quý báu của quý Thầy Cô và các bạn để đề tài được hoàn thiện hơn nữa.
+Một lần nữa, tôi xin chân thành cảm ơn!
+
+MỤC LỤC
+
+
+TÊN ĐỀ TÀI: PHÁT TRIỂN TỰA GAME FLAPPY DUCK VỚI TÍNH NĂNG MULTIPLAYER SỬ DỤNG UNITY VÀ NETCODE	1
+Giảng viên hướng dẫn: ThS. Trần Văn Thanh	2
+LỜI CAM ĐOAN	1
+LỜI CẢM ƠN	2
+DANH MỤC TỪ VIẾT TẮT	5
+DANH MỤC BẢNG BIỂU	6
+DANH MỤC HÌNH ẢNH	7
+CHƯƠNG 1: TỔNG QUAN VỀ DỰ ÁN	9
+1.1 Lý do chọn đề tài	9
+1.2. Mục tiêu của đề tài	10
+1.2.1 Nghiên cứu và áp dụng kiến thức:	10
+1.2.2 Xây dựng nguyên mẫu game:	10
+1.3 Phạm vi của đề tài	11
+1.4 phương pháp	12
+1.5. Cấu trúc đồ án	13
+CHƯƠNG 2: CƠ SỞ LÝ THUYẾT	14
+2.1. Giới thiệu chung về game 2D RPG và Pixel Art	14
+2.1.1. Game 2D RPG (Role-Playing Game)	14
+2.1.2. Đồ họa Pixel Art	15
+2.2. Unity và ngôn ngữ C# trong lập trình game	16
+2.2.1. Giới thiệu về Unity Engine	16
+2.2.2. Ngôn ngữ lập trình C# trong Unity	17
+2.3. Bài toán và yêu cầu của đề tài	18
+2.3.1. Mục tiêu cụ thể	18
+2.3.2. Nội dung nghiên cứu	19
+2.3.3. Yêu cầu của đề tài	20
+CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ	22
+3.1. Phân tích chức năng	22
+3.1.1 Xác định actor và use case	22
+a. Actor	22
+b. Use Case	22
+3.1.2. Sơ đồ usecase	23
+3.1.3. Sơ đồ lớp	62
+3.1.4. Sơ đồ tuần tự	66
+3.1.5 Sơ đồ hoạt động	72
+3.2 Phân tích đối tượng	81
+3.2.1 Người chơi	81
+3.2.2 Kẻ thù	81
+3.2.3 Bản đồ	82
+3.2.4 Các đối tượng khác	83
+3.3. Cơ sở dữ liệu và quản lý dữ liệu	84
+3.3.2. Lưu trữ trạng thái đơn giản bằng PlayerPrefs	85
+3.3.3. Quản lý dữ liệu nhiệm vụ qua tệp excel	85
+3.4 Thiết kế giao diện game	86
+3.4.1 Thiết kế giao diện Gameplay cơ bản	86
+3.4.2 Thiết kế giao diện Gameplay hội thoại	87
+CHƯƠNG 4: TRIỂN KHAI CHƯƠNG TRÌNH	88
+4.1 Lập trình chương trình cốt lõi	88
+4.1.1. Hệ thống điều khiển nhân vật	88
+a) Công nghệ cốt lõi:	88
+b) Triển khai tính năng:	88
+4.1.2. Hệ thống nhiệm vụ	89
+4.1.3. Hệ thống NPC và đối thoại	90
+4.1.4. Hệ thống lưu và tải trạng thái	91
+a) Công nghệ:	91
+b) Dữ liệu được lưu (khi Serialize):	91
+4.1.5. Hệ thống level và chuyển cảnh	92
+a) Công nghệ:	92
+b) Chức năng:	92
+4.2 Mô tả cốt chuyện	93
+4.2.1. Bối cảnh thế giới	93
+4.2.2. Sự kiện khởi đầu	93
+4.2.3. Diễn biến chính	94
+4.2.4. Cao trào và kết thúc	95
+4.3 Mô tả luật chơi	95
+4.3.1. Điều khiển di chuyển cơ bản và nâng cao	95
+4.3.2. Tương tác với thế giới và nhân vật	96
+4.3.3. Cơ chế chiến đấu chi tiết	96
+4.4. Kiểm thử chức năng	97
+4.4.1 Unit test	97
+4.4.2 System test	100
+4.5 Giao diện trò chơi	103
+4.5.1 Giao diện Gameplay cơ bản	103
+4.5.2 Giao diện hội thoại với NPC	104
+4.5.3 Giao diện Gameplay với đường đi	105
+4.5.4 Giao diện Gameplay với nhân vật ẩn sau cây	106
+4.5.5 Giao diện Gameplay với tương tác thu thập	107
+4.5.6 Giao diện Gameplay với tấn công tầm xa	108
+CHƯƠNG 5: TỔNG KẾT	109
+5.1. Kết quả Đạt được	109
+5.2 Đóng góp của Đề tài	109
+5.3 Hạn chế của Đề tài	110
+5.4 Hướng Phát triển Tương lai	110
+TÀI LIỆU THAM KHẢO	112
+Tiếng Việt	112
+Tiếng Anh	112
+
+
+DANH MỤC TỪ VIẾT TẮT
+
+Từ viết tắt	Từ đầy đủ	Giải thích
+UI	User Interface	Giao diện người dùng.
+AI	Artificial Intelligence	Trí tuệ nhân tạo điều khiển NPC/kẻ thù.
+SFX	Sound Effects	Hiệu ứng âm thanh trong game.
+VFX	Visual Effects	Hiệu ứng hình ảnh như ánh sáng, cháy
+nổ.
+HP	Health Point	Chỉ số máu của nhân vật/kẻ thù.
+EXP	Experience Point	Điểm kinh nghiệm nhận được sau trận
+chiến hoặc nhiệm vụ.
+Use Case	Use Case Diagram	Sơ đồ ca sử dụng trong phân tích thiết
+kế hệ thống.
+SO	Scriptable Object	Kiểu dữ liệu đặc biệt trong Unity để lưu
+trữ cấu hình tĩnh.
+UML	Unified Modeling Language	Ngôn ngữ mô hình hóa thống nhất, dùng để phân tích và thiết kế hệ thống.
+IDE	Integrated Development Environment	Môi trường phát triển tích hợp
+2D	2 Dimensional	2 Chiều
+AI	Artificial Intelligence	Trí thông minh nhân tạo
+CSV	Comma-Separated
+Values	Định dạng file văn bản dạng bảng, ngăn
+cách bởi dấu phẩy
+PlayerPrefs	Player Preferences	API lưu dữ liệu đơn giản trong Unity.
+
+DANH MỤC BẢNG BIỂU
+
+Số hiệu	Tên bảng	Số trang
+3.1	Bảng mô tả Usecase Tương tác môi trường	16
+3.2	Bảng mô tả Usecase Tấn công kẻ thù	20
+3.3	Bảng mô tả Usecase Hệ thống nhiệm vụ	23
+3.4	Bảng mô tả Usecase Hệ thống hội thoại	28
+3.5	Bảng mô tả Usecase Hệ thống vũ khí	33
+3.6	Bảng mô tả Usecase Hệ thống di chuyển	36
+3.7	Bảng mô tả Usecase Hệ thống chuyển bản đồ	41
+3.8	Bảng mô tả Usecase Hệ thống hoàn thành nhiệm vụ	45
+3.9	Bảng mô tả Usecase Hệ thống phần thưởng	50
+3.10	Bảng mô tả sơ đồ lớp	57
+3.11	Phân tích đối tượng người chơi trong trò chơi	73
+3.12	Phân tích đối tượng Kẻ thù trong trò chơi	73
+3.13	Phân tích đối tượng bản đồ trong trò chơi	74
+3.14	Phân tích các đối tượng khác có trong trò chơi	75
+3.15	Bảng phân tích dữ liệu lưu trữ vũ khí	77
+
+DANH MỤC HÌNH ẢNH
+
+Số hiệu	Tên hình	Số trang
+3.1	Use case tổng quát	15
+3.2	Usecase Tương tác môi trường	16
+3.3	Usecase Tấn công kẻ thù	19
+3.4	Usecase Hệ thống nhiệm vụ	23
+3.5	Usecase Hệ thống hội thoại	28
+3.6	Usecase Hệ thống vũ khí	33
+3.7	Usecase Hệ thống di chuyển	36
+3.8	Usecase Hệ thống chuyển bản đồ	40
+3.9	Usecase Hệ thống hoàn thành nhiệm vụ	45
+3.10	Usecase Hệ thống phần thưởng	50
+3.11	Sơ đồ lớp	56
+3.12	Sơ đồ tuần tự Tương tác môi trường	59
+3.13	Sơ đồ tuần tự Tấn công kẻ thù	59
+3.14	Sơ đồ tuần tự Hệ thống nhiệm vụ	60
+3.15	Sơ đồ tuần tự Hệ thống hội thoại	60
+3.16	Sơ đồ tuần tự Hệ thống vũ khí	61
+3.17	Sơ đồ tuần tự Hệ thống di chuyển	61
+3.18	Sơ đồ tuần tự Hệ thống chuyển bản đồ	62
+3.19	Sơ đồ tuần tự Hệ thống hoàn thành nhiệm vụ	62
+3.20	Sơ đồ tuần tự Hệ thống phần thưởng	63
+3.21	Sơ đồ hoạt động Tương tác môi trường	64
+3.22	Sơ đồ hoạt động Tấn công kẻ thù	65
+3.23	Sơ đồ hoạt động Hệ thống nhiệm vụ	66
+3.24	Sơ đồ hoạt động Hệ thống hội thoại	67
+3.25	Sơ đồ hoạt động Hệ thống vũ khí	68
+
+
+3.26	Sơ đồ hoạt động Hệ thống di chuyển	69
+3.27	Sơ đồ hoạt động Hệ thống chuyển bản đồ	70
+3.28	Sơ đồ hoạt động Hệ thống hoàn thành nhiệm vụ	71
+3.29	Sơ đồ hoạt động Hệ thống phần thưởng	72
+3.30	Hoạt ảnh di chuyển của nhân vật	73
+3.31	Hoạt ảnh của kẻ thù	74
+
+3.32	Các loại địa hình và vật thể trang trí trong thế giới game pixel art	
+75
+3.33	ScriptableObjects lưu trữ thông tin vũ khí	76
+3.34	Dữ liệu nhiệm vụ định dạng csv	78
+3.35	Thiết kế giao diện Gameplay cơ bản	79
+3.36	Thiết kế giao diện Gameplay hội thoại	79
+4.1	Unit test Kiểm thử Chức năng Tương tác Môi trường	90
+4.2	Unit test Kiểm thử Chức năng Hành vi Tấn công của Kẻ thù	91
+4.3	Unit test Kiểm thử Chức năng Hành vi Hệ thống Nhiệm vụ	92
+4.4	System test kiểm thử Chức năng Tương tác Môi trường	93
+
+4.5	System test kiểm thử Chức năng Hành vi Tấn công của Kẻ thù	
+94
+
+4.6	System test kiểm thử Chức năng Hành vi Hệ thống Nhiệm
+vụ	
+94
+4.7	Giao diện Gameplay cơ bản	95
+4.8	Giao diện hội thoại với NPC	96
+4.9	Giao diện Gameplay với đường đi	97
+4.10	Giao diện Gameplay với nhân vật ẩn sau cây	98
+4.11	Giao diện Gameplay với tương tác thu thập	99
+4.12	Giao diện Gameplay với tấn công tầm xa	100
+
+DỰ ÁN FLAPPY DUCK - MULTIPLAYER UNITY
+CHƯƠNG 1: TỔNG QUAN VỀ DỰ ÁN
+1.1. Giới thiệu bài toán và lý do chọn đề tài
+Trong bối cảnh ngành công nghiệp trò chơi điện tử đang phát triển mạnh mẽ, nhu cầu về các trò chơi mang tính giải trí cao, dễ tiếp cận nhưng vẫn đảm bảo tính cạnh tranh và khả năng kết nối bạn bè ngày càng lớn. Dự án "Flappy Duck" được ra đời với mục tiêu kế thừa những điểm thú vị từ dòng game Arcade cổ điển, đồng thời tích hợp các công nghệ Multiplayer hiện đại. Việc tự mình xây dựng một hệ thống Game hoàn thiện từ Client đến Server là một cơ hội tuyệt vời để nghiên cứu sâu về kiến trúc thực tế của một dự án game.
+1.2. Mục tiêu của đề tài
+Phát triển thành công trò chơi "Flappy Duck" với đầy đủ các tính năng: điều khiển nhân vật bay né chướng ngại vật, hệ thống chiến đấu, hệ thống nhiều lớp nhân vật với kỹ năng riêng biệt. Đồng thời triển khai hệ thống Multiplayer ổn định sử dụng Unity Netcode for GameObjects, tích hợp Lobby và Relay của Unity Gaming Services để người chơi dễ dàng kết nối và thi đấu với nhau.
+1.3. Phạm vi của đề tài
+Đề tài tập trung vào việc thiết kế và lập trình mechanics game 2D, xây dựng hệ thống trạng thái phân cấp (HSM) cho nhân vật và AI, và cấu trúc hóa mạng (Network Architecture). Phạm vi dừng lại ở mức bản thử nghiệm hoàn thiện (MVP) có thể chơi online tối đa 4 người trong một phòng. Các yếu tố như cửa hàng vật phẩm ảo (IAP) hay BXH toàn cầu (Leaderboard) sẽ được xem xét nâng cấp ở giai đoạn sau.
+1.4. Đối tượng và phương pháp nghiên cứu
+Đối tượng nghiên cứu là Engine Unity, ngôn ngữ C#, các dịch vụ UGS (Unity Gaming Services) và kỹ thuật lập trình Multiplayer đồng bộ hóa trạng thái (State Synchronization). Phương pháp thực hiện là nghiên cứu tài liệu kỹ thuật, phân tích mã nguồn mẫu và áp dụng quy trình phát triển Agile để hoàn thiện sản phẩm.
+1.5. Cấu trúc đồ án
+- CHƯƠNG 1: TỔNG QUAN VỀ DỰ ÁN
+- CHƯƠNG 2: CƠ SỞ LÝ THUYẾT VÀ CÔNG NGHỆ
+- CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG
+- CHƯƠNG 4: TRIỂN KHAI CHƯƠNG TRÌNH
+- CHƯƠNG 5: ĐÁNH GIÁ VÀ KẾT LUẬN
+CHƯƠNG 2: CƠ SỞ LÝ THUYẾT VÀ CÔNG NGHỆ
+2.1. Unity Engine và C#
+Unity là một trong những game engine phổ biến nhất thế giới, hỗ trợ phát triển định hướng component-based. Ngôn ngữ C# mang lại hiệu năng cao và khả năng quản lý code tốt cho các hệ thống game phức tạp. Trong dự án này, Unity 2022 LTS được sử dụng để đảm bảo tính ổn định.
+2.2. Netcode for GameObjects (NGO)
+NGO là giải pháp official của Unity cho Multiplayer, hỗ trợ mô hình Server-Authoritative. Nó cho phép đồng bộ hóa dữ liệu (NetworkVariable) và gửi lệnh (RPC) một cách hiệu quả, giúp giảm thiểu gian lận và đảm bảo trải nghiệm người chơi đồng nhất.
+2.3. Unity Gaming Services (Lobby & Relay)
+Lobby giúp người chơi tìm thấy nhau qua danh sách phòng hoặc mã mời. Relay đóng vai trò trung gian truyền tải dữ liệu khi một trong hai người chơi nằm sau tường lửa hoặc NAT, giúp loại bỏ việc phải mở port thủ công trên router.
+2.4. Hierarchical State Machine (HSM)
+Khác với FSM thông thường, HSM cho phép phân cấp các trạng thái. Ví dụ trạng thái "Hành động" có thể chứa "Di chuyển" và "Tấn công". Điều này giúp code gọn gàng, tránh việc bùng nổ số lượng chuyển trạng thái khi logic game trở nên phức tạp.
+CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG
+3.1. Phân tích yêu cầu và Use Case
+Hệ thống cần đáp ứng các Use Case chính: Tạo/Tham gia phòng, Điều khiển nhân vật, Sử dụng kỹ năng, Hạ gục đối thủ, Kết thúc trận đấu. Các Use Case này được phân chia rõ ràng giữa Host và Client để tối ưu hóa hiệu năng.
+3.2. Cấu trúc các Duck (Nhân vật)
+Game có 5 loại Duck: Normal, Tiny, Ninja, Soldier, Ghost. Mỗi loại thừa kế từ BaseEntity và override các logic về Stat (HP, Speed) cũng như Skill đặc trưng. Việc sử dụng ScriptableObject giúp dễ dàng cân bằng game mà không cần sửa code.
+3.3. Sơ đồ trình tự Multiplayer (Sequence Diagram)
+Quy trình bắt đầu từ việc chọn Duck -> Matchmaking (Lobby) -> Cấp phát Relay server -> Load Scene và Sync trạng thái. Trong trận đấu, các va chạm và trừ HP được xử lý chủ yếu phía Host để đảm bảo tính công bằng.
+1.1.Giới thiệu bài toán và lý do chọn đề tài
+
+Trong bối cảnh ngành công nghiệp trò chơi điện tử đang phát triển mạnh mẽ, nhu cầu về các trò chơi mang tính giải trí cao, dễ tiếp cận nhưng vẫn đảm bảo tính cạnh tranh và khả năng kết nối bạn bè ngày càng lớn. Dự án "Flappy Duck" được ra đời với mục tiêu kế thừa những điểm thú vị từ dòng game Arcade cổ điển, đồng thời tích hợp các công nghệ Multiplayer hiện đại. Việc tự mình xây dựng một hệ thống Game hoàn thiện từ Client đến Server là một cơ hội tuyệt vời để nghiên cứu sâu về kiến trúc thực tế của một dự án game.
+
+1.2. Mục tiêu của đề tài
+Phát triển thành công trò chơi "Flappy Duck" với đầy đủ các tính năng: điều khiển nhân vật bay né chướng ngại vật, hệ thống chiến đấu, hệ thống nhiều lớp nhân vật với kỹ năng riêng biệt. Đồng thời triển khai hệ thống Multiplayer ổn định sử dụng Unity Netcode for GameObjects, tích hợp Lobby và Relay của Unity Gaming Services để người chơi dễ dàng kết nối và thi đấu với nhau.
+
+1.3. Phạm vi của đề tài
+Đề tài tập trung vào việc thiết kế và lập trình mechanics game 2D, xây dựng hệ thống trạng thái phân cấp (HSM) cho nhân vật và AI, và cấu trúc hóa mạng (Network Architecture). Phạm vi dừng lại ở mức bản thử nghiệm hoàn thiện (MVP) có thể chơi online tối đa 4 người trong một phòng. Các yếu tố như cửa hàng vật phẩm ảo (IAP) hay BXH toàn cầu (Leaderboard) sẽ được xem xét nâng cấp ở giai đoạn sau.
+
+1.4. Đối tượng và phương pháp nghiên cứu
+Đối tượng nghiên cứu là Engine Unity, ngôn ngữ C#, các dịch vụ UGS (Unity Gaming Services) và kỹ thuật lập trình Multiplayer đồng bộ hóa trạng thái (State Synchronization). Phương pháp thực hiện là nghiên cứu tài liệu kỹ thuật, phân tích mã nguồn mẫu và áp dụng quy trình phát triển Agile để hoàn thiện sản phẩm.
+
+1.5. Cấu trúc đồ án
+- CHƯƠNG 1: TỔNG QUAN VỀ DỰ ÁN
+- CHƯƠNG 2: CƠ SỞ LÝ THUYẾT VÀ CÔNG NGHỆ
+- CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG
+- CHƯƠNG 4: TRIỂN KHAI CHƯƠNG TRÌNH
+- CHƯƠNG 5: ĐÁNH GIÁ VÀ KẾT LUẬN
+
+CHƯƠNG 2: CƠ SỞ LÝ THUYẾT VÀ CÔNG NGHỆ
+2.1. Unity Engine và C#
+Unity là một trong những game engine phổ biến nhất thế giới, hỗ trợ phát triển định hướng component-based. Ngôn ngữ C# mang lại hiệu năng cao và khả năng quản lý code tốt cho các hệ thống game phức tạp. Trong dự án này, Unity 2022 LTS được sử dụng để đảm bảo tính ổn định.
+
+2.2. Netcode for GameObjects (NGO)
+NGO là giải pháp official của Unity cho Multiplayer, hỗ trợ mô hình Server-Authoritative. Nó cho phép đồng bộ hóa dữ liệu (NetworkVariable) và gửi lệnh (RPC) một cách hiệu quả, giúp giảm thiểu gian lận và đảm bảo trải nghiệm người chơi đồng nhất.
+
+2.3. Unity Gaming Services (Lobby & Relay)
+Lobby giúp người chơi tìm thấy nhau qua danh sách phòng hoặc mã mời. Relay đóng vai trò trung gian truyền tải dữ liệu khi một trong hai người chơi nằm sau tường lửa hoặc NAT, giúp loại bỏ việc phải mở port thủ công trên router.
+
+2.4. Hierarchical State Machine (HSM)
+Khác với FSM thông thường, HSM cho phép phân cấp các trạng thái. Ví dụ trạng thái "Hành động" có thể chứa "Di chuyển" và "Tấn công". Điều này giúp code gọn gàng, tránh việc bùng nổ số lượng chuyển trạng thái khi logic game trở nên phức tạp.
+
+
+CHƯƠNG 3: PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG
+3.1. Phân tích yêu cầu và Use Case
+Hệ thống cần đáp ứng các Use Case chính: Tạo/Tham gia phòng, Điều khiển nhân vật, Sử dụng kỹ năng, Hạ gục đối thủ, Kết thúc trận đấu. Các Use Case này được phân chia rõ ràng giữa Host và Client để tối ưu hóa hiệu năng.
+
+3.2. Cấu trúc các Duck (Nhân vật)
+Game có 5 loại Duck: Normal, Tiny, Ninja, Soldier, Ghost. Mỗi loại thừa kế từ BaseEntity và override các logic về Stat (HP, Speed) cũng như Skill đặc trưng. Việc sử dụng ScriptableObject giúp dễ dàng cân bằng game mà không cần sửa code.
+
+3.3. Sơ đồ trình tự Multiplayer (Sequence Diagram)
+Quy trình bắt đầu từ việc chọn Duck -> Matchmaking (Lobby) -> Cấp phát Relay server -> Load Scene và Sync trạng thái. Trong trận đấu, các va chạm và trừ HP được xử lý chủ yếu phía Host để đảm bảo tính công bằng.
+UC ID and Name:	UC-1:Tương tác môi trường
+Created By:	Nguyễn Quang Huy	Date Created:	21/01/2025
+Primary Actor:	Người chơi (Player)	Secondary
+Actors:	None
+Trigger:	Người chơi di chuyển hoặc thực hiện hành động (ví dụ: tấn công) lên
+các yếu tố trong môi trường game (như cỏ, cây, vật thể).
+Description:	Usecase này mô tả cách người chơi tương tác với các thành phần khác nhau của môi trường trong game. Các tương tác này có thể gây ra các hiệu ứng hình ảnh, âm thanh hoặc thay đổi trạng thái của các yếu tố môi trường đó. Bao gồm các hành động như đi qua cỏ làm cỏ rung, di chuyển gần cây làm cây mờ đi, hoặc kiểm tra/tấn công các vật thể
+có thể tương tác.
+Preconditions:	PRE – 1: Người chơi đang điều khiển nhân vật trong môi trường game.
+PRE – 2: Môi trường game chứa các yếu tố có thể tương tác (ví dụ:
+cỏ, cây, vật thể có thể phá hủy
+Postconditions:	POST – 1: Hiệu ứng tương ứng được kích hoạt trên yếu tố môi trường bị tác động (ví dụ: cỏ rung lên, cây bị mờ, vật thể vỡ ra).
+POST – 2: Trạng thái của yếu tố môi trường có thể bị thay đổi (ví dụ: vật thể bị phá hủy).
+POST – 3: Người chơi nhận được phản hồi trực quan/âm thanh về
+tương tác.
+Normal Flow:	1.0: Tương tác dựa trên di chuyển
+1.Người chơi di chuyển nhân vật trong môi trường game.
+2.Hệ thống liên tục thực hiện Kiểm tra vị trí người chơi (<<include>> bởi Cây bị làm mờ).
+3.Nếu vị trí người chơi đi vào vùng có cỏ: a. Hệ thống thực hiện Đi qua cỏ (<<include>> bởi Làm cỏ rung). b. Hệ thống kích hoạt use case Làm cỏ rung, hiển thị hiệu ứng cỏ rung.
+4.Nếu vị trí người chơi ở gần các cây được quy định: a. Hệ thống kích hoạt use case Cây bị làm mờ, hiển thị hiệu ứng cây bị mờ xung quanh người chơi.
+2.0: Tương tác chủ động lên vật thể
+1.Người chơi thực hiện một hành động (ví dụ: nhấn nút tấn công) nhắm vào một vật thể trong môi trường.
+2.Hệ thống kích hoạt use case kiểm tra loại vật thể.
+3.Hệ thống thực hiện Tấn công vật thể (<<include>> bởi kiểm tra loại vật thể).
+4.(Có thể xảy ra - <<extend>>) Hệ thống kích hoạt Tạo hiệu ứng khi va chạm trên vật thể.
+5.(Có thể xảy ra - <<extend>>) Nếu vật thể thuộc loại có thể phá
+hủy và đủ điều kiện (ví dụ: chịu đủ sát thương), hệ thống kích hoạt Phá hủy vật thể.
+Alternative Flows:	2.0.A1: Vật thể không thể phá hủy: Tại bước 2.0.5, nếu kết quả của kiểm tra loại vật thể cho thấy vật thể không thể phá hủy, use case Phá hủy vật thể sẽ không được kích hoạt, ngay cả khi người chơi tấn công. Hiệu ứng va chạm (2.0.4) vẫn có thể xảy ra.
+2.0.A2: Tương tác không phá hủy: Người chơi chỉ di chuyển chạm vào vật thể thay vì tấn công. Hệ thống có thể chỉ kích hoạt Tạo hiệu ứng khi va chạm (2.0.4) mà không thực hiện Tấn công vật thể (2.0.3)
+hay Phá hủy vật thể (2.0.5).
+Exceptions:	1.0E1: Lỗi tải hiệu ứng môi trường: Hệ thống không tải được hiệu ứng hình ảnh/âm thanh cho cỏ rung hoặc cây mờ do lỗi tài nguyên hoặc cấu hình. -> Hệ thống bỏ qua việc hiển thị hiệu ứng đó và tiếp tục luồng chính.
+2.0E1: Lỗi xác định loại vật thể: Tại bước 2.0.2, hệ thống không thể xác định được thông tin của vật thể mà người chơi tương tác. -> Hành động tương tác thất bại, không có hiệu ứng nào xảy ra. Hệ thống có thể ghi nhận lỗi.
+2.0.E2: Lỗi hiệu ứng va chạm/phá hủy: Tại bước 2.0.4 hoặc 2.0.5, hệ thống gặp lỗi khi tạo hiệu ứng hoặc thực hiện logic phá hủy. -> Vật thể không hiển thị hiệu ứng hoặc không bị phá hủy như mong
+đợi.
+Priority:	Null
+Business Rules:	BR1: Hiệu ứng Làm cỏ rung chỉ áp dụng cho các loại cỏ được định nghĩa trước và khi người chơi di chuyển trực tiếp qua chúng.
+BR2: Hiệu ứng Cây bị làm mờ chỉ áp dụng khi người chơi ở trong phạm vi xác định xung quanh các cây được đánh dấu.
+BR3: Chỉ những vật thể được phân loại là "có thể phá hủy" (destructible) mới có thể bị ảnh hưởng bởi use case Phá hủy vật thể. BR4: Mức độ/khả năng Phá hủy vật thể có thể phụ thuộc vào loại vật thể, loại tấn công/tương tác của người chơi.
+BR5: Hiệu ứng va chạm (Tạo hiệu ứng khi va chạm) cần được định
+nghĩa cho từng loại vật thể/loại tương tác.
+Other Information:	1.Cần định nghĩa chi tiết các hiệu ứng hình ảnh (visual effects - VFX) và âm thanh (sound effects - SFX) cho từng loại tương tác (cỏ rung, cây mờ, va chạm, phá hủy).
+2.Cần danh sách các loại vật thể có thể tương tác và thuộc tính của
+chúng (có thể phá hủy, hiệu ứng khi va chạm,...).
+UC ID and Name:	UC-2: Tấn công kẻ thù
+Created By:	Nguyễn Quang Huy	Date Created:	21/01/2025
+Primary Actor:	Người chơi (Player)	Secondary
+Actors:	None
+Trigger:	Người chơi lựa chọn một kẻ thù làm mục tiêu và thực hiện hành động
+tấn công (ví dụ: nhấn nút tấn công, sử dụng kỹ năng).
+Description:	Usecase này mô tả quy trình hoàn chỉnh khi người chơi thực hiện một hành động tấn công lên một kẻ thù trong trò chơi. Nó bao gồm các bước từ việc thực hiện đòn đánh, hệ thống tính toán sát thương, cập nhật trạng thái của kẻ thù, và kiểm tra xem kẻ thù có bị hạ gục hay
+không.
+Preconditions:	PRE – 1: Người chơi đang ở trong trạng thái có thể điều khiển nhân vật và thực hiện hành động.
+PRE – 2: Có ít nhất một Kẻ thù trong phạm vi có thể tương tác/tấn công của Người chơi.
+PRE – 3: Người chơi không bị các trạng thái ngăn cản hành động tấn
+công (ví dụ: bị choáng, bị khóa kỹ năng).
+Postconditions:	POST – 1: Lượng máu (HP) của Kẻ thù bị giảm đi một lượng tương ứng với sát thương nhận được.
+POST – 2: Hiệu ứng hình ảnh và âm thanh tương ứng với đòn tấn công và việc Kẻ thù nhận sát thương được hiển thị.
+POST – 3: (Nếu thành công và máu <= 0) Trạng thái của Kẻ thù chuyển thành bị hạ gục.
+POST – 4: (Có thể) Kẻ thù bị áp dụng thêm hiệu ứng trạng thái từ đòn
+tấn công (ví dụ: làm chậm, chảy máu).
+Normal Flow:	1.Người chơi chọn Kẻ thù làm mục tiêu và ra lệnh thực hiện hành động Tấn công.
+2.Hệ thống thực hiện Use Case Chọn vũ khí (<<include>> bởi Tấn công) - Xác định vũ khí/kỹ năng người chơi đang sử dụng để tấn công.
+3.Hệ thống thực hiện Use Case Tấn công (<<include>> bởi Gây sát thương lên kẻ thù) - Thực hiện hoạt ảnh và logic cơ bản của đòn đánh.
+4.Hệ thống thực hiện Use Case Gây sát thương lên kẻ thù (<<include>> bởi Tính sát thương) - Logic áp sát thương lên
+đối tượng.
+	5.Hệ thống thực hiện Use Case Tính sát thương (<<include>> bởi Kiểm tra kẻ thù còn máu không) - Dựa trên chỉ số người chơi, vũ khí/kỹ năng, và chỉ số phòng thủ/trạng thái của kẻ thù để tính toán lượng sát thương cuối cùng.
+6.Hệ thống trừ lượng máu của Kẻ thù dựa trên sát thương đã tính ở bước 5.
+7.Hệ thống thực hiện Use Case Kiểm tra kẻ thù còn máu không.
+8.Nếu máu hiện tại của Kẻ thù > 0, luồng tấn công kết thúc tại đây.
+9.Nếu máu hiện tại của Kẻ thù <= 0, hệ thống kích hoạt Use Case Hạ gục kẻ thù (<<extend>> từ Kiểm tra kẻ thù còn máu không).
+10.Hệ thống hiển thị các hiệu ứng hình ảnh/âm thanh tương ứng
+(đòn đánh, kẻ thù trúng đòn, hiệu ứng bị hạ gục nếu có).
+Alternative Flows:	1.0.A1: Đòn tấn công bị né/trượt/chặn: Tại bước 5 (Tính sát thương), hệ thống xác định Kẻ thù đã né/trượt hoặc chặn thành công đòn đánh. Lượng sát thương cuối cùng được tính là 0 hoặc giảm đi đáng kể. Luồng tiếp tục tới bước 6. Hiển thị phản hồi tương ứng (vd: chữ "Miss", "Blocked").
+1.0.A2: Đòn tấn công chí mạng (Critical Hit): Tại bước 5 (Tính sát thương), hệ thống xác định đòn đánh là chí mạng. Lượng sát thương cuối cùng được nhân lên theo một hệ số nhất định. Luồng tiếp tục bình thường với sát thương cao hơn. Hiển thị phản hồi đặc biệt cho đòn chí mạng.
+1.0.A3: Tấn công gây hiệu ứng trạng thái: Tại bước 5 hoặc sau đó,
+hệ thống xác định đòn tấn công có gây hiệu ứng trạng thái (ví dụ: làm chậm, gây độc). Hệ thống áp dụng hiệu ứng đó lên Kẻ thù
+Exceptions:	1.0.E1: Mục tiêu không hợp lệ/ngoài tầm: Người chơi thực hiện tấn công nhưng mục tiêu không còn hợp lệ (đã chết, biến mất) hoặc đã di chuyển ra ngoài tầm đánh/phạm vi kỹ năng. -> Hệ thống hủy hành động tấn công, có thể thông báo cho Người chơi.
+	1.0.E2: Người chơi không thể tấn công: Người chơi bị ngăn cản bởi một trạng thái (choáng, câm lặng kỹ năng...). -> Hệ thống hủy hành động tấn công.
+1.0.E3: Lỗi tính toán: Hệ thống gặp lỗi logic hoặc dữ liệu trong quá trình Tính sát thương (bước 5). -> Sát thương có thể không được áp dụng hoặc áp dụng không chính xác. Hệ thống cần ghi nhận lỗi (log
+error).
+Priority:	High
+Business Rules:	BR1: Phải có công thức tính sát thương chi tiết, xem xét các yếu tố như: sức tấn công của người chơi, phòng thủ của kẻ thù, cấp độ chênh lệch, thuộc tính, trang bị, kỹ năng, buff/debuff.
+BR2: Mỗi vũ khí/kỹ năng phải có tầm đánh (range) và khu vực ảnh hưởng (Area of Effect - AoE) được định nghĩa rõ ràng.
+BR3: Các quy tắc về né tránh, chặn đòn, tỷ lệ chí mạng phải được xác định.
+BR4: Kẻ thù chỉ bị Hạ gục khi lượng máu (HP) của chúng từ 0 trở xuống.
+BR5: Cần có phản hồi hình ảnh/âm thanh rõ ràng cho từng giai đoạn:
+thực hiện tấn công, trúng đòn, né tránh, chí mạng, hạ gục.
+Other Information:	1.Cần định nghĩa các hiệu ứng trạng thái (status effects) có thể được gây ra bởi các đòn tấn công và cơ chế hoạt động của chúng.
+2.Usecase này có thể liên quan đến usecase "Kẻ thù phản công" (Enemy Counter-attacks) - cần xem xét sự tương tác giữa hai usecase này.
+3.Cần xem xét tài nguyên tiêu hao khi tấn công (ví dụ: Mana,
+Stamina đối với kỹ năng).
+UC ID and
+Name:	UC-3: Hệ thống nhiệm vụ
+Created By:	Nguyễn Quang Huy	Date Created:	21/01/2025
+Primary Actor:	Người chơi (Player)	Secondary
+Actors:	NPC (Non-Player
+Character)
+Trigger:	Người chơi bắt đầu tương tác (nói chuyện) với một NPC trong game,
+hoặc người chơi mở giao diện quản lý/danh sách nhiệm vụ của mình.
+Description:	Usecase này mô tả các tương tác của Người chơi với hệ thống nhiệm vụ của game. Nó bao gồm việc giao tiếp với các NPC để tìm hiểu, chấp
+nhận nhiệm vụ mới hoặc báo cáo hoàn thành nhiệm vụ cũ, cũng như việc
+	theo dõi tiến trình các nhiệm vụ đang làm và nhận phần thưởng tương
+xứng khi hoàn thành.
+Preconditions:	PRE – 1: Người chơi đang đăng nhập và điều khiển nhân vật trong game. PRE – 2: (Để tương tác NV với NPC) Có một NPC trong phạm vi tương tác của Người chơi.
+PRE – 3: (Để nhận NV) Người chơi đáp ứng các điều kiện cần thiết để nhận nhiệm vụ từ NPC (ví dụ: cấp độ yêu cầu, đã hoàn thành nhiệm vụ tiên quyết).
+PRE – 4: (Để trả NV) Người chơi đã hoàn thành tất cả các mục tiêu/yêu
+cầu của nhiệm vụ muốn trả.
+Postconditions:	POST – 1: (Khi nhận NV thành công) Nhiệm vụ mới được thêm vào danh sách/nhật ký nhiệm vụ của Người chơi với trạng thái "đang thực hiện".
+POST – 2: (Khi trả NV thành công) Nhiệm vụ tương ứng trong danh sách được cập nhật trạng thái thành "đã hoàn thành".
+POST – 3: (Khi trả NV thành công) Người chơi nhận được phần thưởng (EXP, tiền, vật phẩm, điểm danh tiếng,...) đã được định nghĩa cho nhiệm vụ đó.
+POST – 4: Giao diện danh sách nhiệm vụ của người chơi phản ánh đúng
+trạng thái mới nhất.
+Normal Flow:	1.0: Nhận Nhiệm Vụ Mới từ NPC
+
+1.Người chơi tiếp cận và bắt đầu hội thoại với một NPC.
+2.Hệ thống thực hiện Use Case Nói chuyện với NPC (<<include>> bởi Kiểm tra NPC...).
+3.Hệ thống thực hiện Use Case Kiểm tra NPC có nhiệm vụ không (<<include>> bởi Hiện hộp thoại...) để xác định xem NPC có nhiệm vụ mới phù hợp cho Người chơi không.
+4.Nếu có nhiệm vụ phù hợp, Hệ thống thực hiện Use Case Hiện hộp
+thoại nhiệm vụ (<<include>> bởi Người chơi nhận / trả...), hiển thị thông tin về nhiệm vụ (tên, mô tả, mục tiêu, phần thưởng).
+	5.(Có thể xảy ra - <<extend>>) Hệ thống cung cấp các Tùy chọn trả lời hội thoại cho người chơi lựa chọn.
+6.Người chơi thực hiện hành động chấp nhận nhiệm vụ thông qua giao diện (thuộc Use Case Người chơi nhận / trả nhiệm vụ).
+7.Hệ thống thực hiện Use Case Cập nhật danh nhiệm vụ (<<include>> bởi Người chơi nhận / trả...), ghi nhận nhiệm vụ mới vào nhật ký của người chơi.
+8.Hộp thoại nhiệm vụ đóng lại, kết thúc tương tác nhận nhiệm vụ.
+
+2.0: Trả Nhiệm Vụ Đã Hoàn Thành cho NPC
+
+1.Người chơi (đã hoàn thành các yêu cầu của nhiệm vụ) tiếp cận và bắt đầu hội thoại với NPC được chỉ định để trả nhiệm vụ.
+2.Hệ thống thực hiện Nói chuyện với NPC.
+3.Hệ thống Kiểm tra NPC có nhiệm vụ không (trong trường hợp này là kiểm tra xem NPC có phải là người nhận nhiệm vụ này không và người chơi đã hoàn thành chưa).
+4.Hệ thống Hiện hộp thoại nhiệm vụ, cho phép người chơi báo cáo hoàn thành.
+5.(Có thể xảy ra - <<extend>>) Hệ thống cung cấp các Tùy chọn trả lời hội thoại.
+6.Người chơi chọn tùy chọn hoàn thành/trả nhiệm vụ (thuộc Use Case Người chơi nhận / trả nhiệm vụ).
+7.Hệ thống thực hiện Cập nhật danh nhiệm vụ, đánh dấu nhiệm vụ là "đã hoàn thành".
+8.(Có thể xảy ra - <<extend>>) Hệ thống kích hoạt Use Case Nhận thưởng nhiệm vụ. Phần thưởng được cộng/thêm vào cho Người chơi.
+9.Hộp thoại nhiệm vụ đóng lại, kết thúc tương tác trả nhiệm vụ.
+Alternative
+Flows:	1.0.A1: NPC không có nhiệm vụ / Người chơi không đủ điều kiện:
+Tại bước 1.0.4, nếu NPC không có nhiệm vụ mới hoặc người chơi không
+	đủ điều kiện, hệ thống sẽ không hiển thị hộp thoại nhận nhiệm vụ, chỉ diễn ra hội thoại thông thường (nếu có).
+1.0A2: Người chơi từ chối nhận nhiệm vụ: Tại bước 1.0.6, người chơi chọn từ chối nhận nhiệm vụ. Hệ thống không cập nhật danh sách nhiệm vụ, hộp thoại đóng lại.
+2.0A1: Nhiệm vụ chưa hoàn thành: Tại bước 2.0.4, nếu người chơi nói chuyện với NPC trả nhiệm vụ nhưng chưa hoàn thành các yêu cầu, hộp thoại có thể hiển thị nhưng không cho phép trả, thay vào đó là nhắc nhở về các mục tiêu còn lại.
+2.0.A2: Phần thưởng không thể nhận (Ví dụ: Túi đồ đầy): Tại bước
+2.0.8 (Nhận thưởng nhiệm vụ), nếu phần thưởng là vật phẩm và túi đồ của người chơi đã đầy, hệ thống sẽ báo lỗi, tạm dừng việc hoàn thành nhiệm vụ cho đến khi người chơi dọn chỗ trống, hoặc có cơ chế thay thế
+(gửi thư, thưởng vào kho tạm...).
+Exceptions:	E1: Lỗi giao tiếp / Hiển thị: Hệ thống không thể bắt đầu hội thoại với NPC hoặc không thể hiển thị chính xác hộp thoại nhiệm vụ/danh sách nhiệm vụ do lỗi hệ thống hoặc lỗi dữ liệu. -> Người chơi tạm thời không thể tương tác với chức năng nhiệm vụ bị lỗi.
+E2: Lỗi cập nhật dữ liệu nhiệm vụ: Hệ thống gặp sự cố khi ghi nhận trạng thái mới của nhiệm vụ (nhận/trả) vào cơ sở dữ liệu (trong Use Case Cập nhật danh nhiệm vụ). -> Trạng thái nhiệm vụ của người chơi có thể không nhất quán.
+E3: Lỗi xử lý phần thưởng: Hệ thống gặp lỗi khi cộng phần thưởng (EXP, tiền, vật phẩm) cho người chơi (trong Use Case Nhận thưởng nhiệm vụ). -> Người chơi có thể không nhận được hoặc nhận sai phần
+thưởng.
+Priority:	High
+Business Rules:	BR1: Mỗi nhiệm vụ phải có định danh duy nhất (Quest ID).
+BR2: Phải định nghĩa rõ ràng các điều kiện tiên quyết để có thể nhận
+một nhiệm vụ (cấp độ tối thiểu/tối đa, nhiệm vụ đã hoàn thành trước đó, phe phái,...).
+	BR3: Mục tiêu của nhiệm vụ phải rõ ràng và có thể theo dõi được bởi hệ thống (ví dụ: số lượng quái vật cần tiêu diệt, vật phẩm cần thu thập, địa điểm cần đến, NPC cần nói chuyện).
+BR4: Phần thưởng khi hoàn thành nhiệm vụ phải được xác định trước (lượng EXP, tiền tệ, vật phẩm cụ thể, điểm danh tiếng,...).
+BR5: Phải có cơ chế để người chơi theo dõi danh sách và tiến độ các nhiệm vụ đang thực hiện (Quest Log/Journal).
+BR6: NPC giao nhiệm vụ và NPC nhận nhiệm vụ (khi hoàn thành) phải
+được chỉ định rõ ràng (có thể là cùng một NPC hoặc khác NPC).
+Other Information:	1.Cân nhắc phân loại nhiệm vụ (ví dụ: Nhiệm vụ chính tuyến (Main Story), Nhiệm vụ phụ (Side Quest), Nhiệm vụ lặp lại (Repeatable), Nhiệm vụ sự kiện (Event Quest)).
+2.Có thể có chức năng chia sẻ nhiệm vụ (Quest Sharing) giữa những người chơi trong cùng nhóm (Party/Group).
+3.Có thể có chức năng từ bỏ/hủy (Abandon) nhiệm vụ đang thực hiện.
+4.Cần thiết kế giao diện người dùng (UI) cho hộp thoại nhiệm vụ
+và danh sách nhiệm vụ một cách rõ ràng, dễ sử dụng.
+UC ID and Name:	UC-4: Hệ thống hội thoại
+Created By:	Nguyễn Quang Huy	Date
+Created:	22/01/2025
+Primary Actor:	Người chơi (Player)	Secondary
+Actors:	NPC (Non-Player Character)
+Trigger:	Người chơi bắt đầu tương tác (nói chuyện) với một NPC trong game,
+hoặc người chơi mở giao diện quản lý/danh sách nhiệm vụ của mình.
+Description:	Usecase này mô tả các tương tác của Người chơi với hệ thống nhiệm vụ của game. Nó bao gồm việc giao tiếp với các NPC để tìm hiểu, chấp nhận nhiệm vụ mới hoặc báo cáo hoàn thành nhiệm vụ cũ, cũng như việc theo dõi tiến trình các nhiệm vụ đang làm và nhận phần thưởng
+tương xứng khi hoàn thành.
+Preconditions:	PRE – 1: Người chơi đang đăng nhập và điều khiển nhân vật trong game.
+PRE – 2: (Để tương tác NV với NPC) Có một NPC trong phạm vi tương tác của Người chơi.
+PRE – 3: (Để nhận NV) Người chơi đáp ứng các điều kiện cần thiết để nhận nhiệm vụ từ NPC (ví dụ: cấp độ yêu cầu, đã hoàn thành nhiệm vụ tiên quyết).
+PRE – 4: (Để trả NV) Người chơi đã hoàn thành tất cả các mục tiêu/yêu
+cầu của nhiệm vụ muốn trả.
+Postconditions:	POST – 1: (Khi nhận NV thành công) Nhiệm vụ mới được thêm vào danh sách/nhật ký nhiệm vụ của Người chơi với trạng thái "đang thực hiện".
+POST – 2: (Khi trả NV thành công) Nhiệm vụ tương ứng trong danh sách được cập nhật trạng thái thành "đã hoàn thành".
+POST – 3: (Khi trả NV thành công) Người chơi nhận được phần thưởng (EXP, tiền, vật phẩm, điểm danh tiếng,...) đã được định nghĩa cho nhiệm vụ đó.
+POST – 4: Giao diện danh sách nhiệm vụ của người chơi phản ánh
+đúng trạng thái mới nhất.
+Normal Flow:	1.0: Nhận Nhiệm Vụ Mới từ NPC
+
+1.Người chơi tiếp cận và bắt đầu hội thoại với một NPC.
+2.Hệ thống thực hiện Use Case Nói chuyện với NPC (<<include>> bởi Kiểm tra NPC...).
+3.Hệ thống thực hiện Use Case Kiểm tra NPC có nhiệm vụ không (<<include>> bởi Hiện hộp thoại...) để xác định xem NPC có nhiệm vụ mới phù hợp cho Người chơi không.
+4.Nếu có nhiệm vụ phù hợp, Hệ thống thực hiện Use Case Hiện hộp thoại nhiệm vụ (<<include>> bởi Người chơi nhận / trả...), hiển thị thông tin về nhiệm vụ (tên, mô tả, mục tiêu, phần
+thưởng).
+	5.(Có thể xảy ra - <<extend>>) Hệ thống cung cấp các Tùy chọn trả lời hội thoại cho người chơi lựa chọn.
+6.Người chơi thực hiện hành động chấp nhận nhiệm vụ thông qua giao diện (thuộc Use Case Người chơi nhận / trả nhiệm vụ).
+7.Hệ thống thực hiện Use Case Cập nhật danh nhiệm vụ (<<include>> bởi Người chơi nhận / trả...), ghi nhận nhiệm vụ mới vào nhật ký của người chơi.
+8.Hộp thoại nhiệm vụ đóng lại, kết thúc tương tác nhận nhiệm vụ.
+
+2.0: Trả Nhiệm Vụ Đã Hoàn Thành cho NPC
+
+1.Người chơi (đã hoàn thành các yêu cầu của nhiệm vụ) tiếp cận và bắt đầu hội thoại với NPC được chỉ định để trả nhiệm vụ.
+2.Hệ thống thực hiện Nói chuyện với NPC.
+3.Hệ thống Kiểm tra NPC có nhiệm vụ không (trong trường hợp này là kiểm tra xem NPC có phải là người nhận nhiệm vụ này không và người chơi đã hoàn thành chưa).
+4.Hệ thống Hiện hộp thoại nhiệm vụ, cho phép người chơi báo cáo hoàn thành.
+5.(Có thể xảy ra - <<extend>>) Hệ thống cung cấp các Tùy chọn trả lời hội thoại.
+6.Người chơi chọn tùy chọn hoàn thành/trả nhiệm vụ (thuộc Use Case Người chơi nhận / trả nhiệm vụ).
+7.Hệ thống thực hiện Cập nhật danh nhiệm vụ, đánh dấu nhiệm vụ là "đã hoàn thành".
+8.(Có thể xảy ra - <<extend>>) Hệ thống kích hoạt Use Case Nhận thưởng nhiệm vụ. Phần thưởng được cộng/thêm vào cho Người chơi.
+9.Hộp thoại nhiệm vụ đóng lại, kết thúc tương tác trả nhiệm vụ.
+Alternative
+Flows:	1.0.A1: NPC không có nhiệm vụ / Người chơi không đủ điều
+kiện: Tại bước 1.0.4, nếu NPC không có nhiệm vụ mới hoặc người
+	chơi không đủ điều kiện, hệ thống sẽ không hiển thị hộp thoại nhận nhiệm vụ, chỉ diễn ra hội thoại thông thường (nếu có).
+1.0A2: Người chơi từ chối nhận nhiệm vụ: Tại bước 1.0.6, người chơi chọn từ chối nhận nhiệm vụ. Hệ thống không cập nhật danh sách nhiệm vụ, hộp thoại đóng lại.
+2.0A1: Nhiệm vụ chưa hoàn thành: Tại bước 2.0.4, nếu người chơi nói chuyện với NPC trả nhiệm vụ nhưng chưa hoàn thành các yêu cầu, hộp thoại có thể hiển thị nhưng không cho phép trả, thay vào đó là nhắc nhở về các mục tiêu còn lại.
+2.0.A2: Phần thưởng không thể nhận (Ví dụ: Túi đồ đầy): Tại bước
+2.0.8 (Nhận thưởng nhiệm vụ), nếu phần thưởng là vật phẩm và túi đồ của người chơi đã đầy, hệ thống sẽ báo lỗi, tạm dừng việc hoàn thành nhiệm vụ cho đến khi người chơi dọn chỗ trống, hoặc có cơ chế thay
+thế (gửi thư, thưởng vào kho tạm...).
+Exceptions:	E1: Lỗi giao tiếp / Hiển thị: Hệ thống không thể bắt đầu hội thoại với NPC hoặc không thể hiển thị chính xác hộp thoại nhiệm vụ/danh sách nhiệm vụ do lỗi hệ thống hoặc lỗi dữ liệu. -> Người chơi tạm thời không thể tương tác với chức năng nhiệm vụ bị lỗi.
+E2: Lỗi cập nhật dữ liệu nhiệm vụ: Hệ thống gặp sự cố khi ghi nhận trạng thái mới của nhiệm vụ (nhận/trả) vào cơ sở dữ liệu (trong Use Case Cập nhật danh nhiệm vụ). -> Trạng thái nhiệm vụ của người chơi có thể không nhất quán.
+E3: Lỗi xử lý phần thưởng: Hệ thống gặp lỗi khi cộng phần thưởng (EXP, tiền, vật phẩm) cho người chơi (trong Use Case Nhận thưởng nhiệm vụ). -> Người chơi có thể không nhận được hoặc nhận sai phần
+thưởng.
+Priority:	High
+Business Rules:	BR1: Mỗi nhiệm vụ phải có định danh duy nhất (Quest ID).
+BR2: Phải định nghĩa rõ ràng các điều kiện tiên quyết để có thể nhận
+một nhiệm vụ (cấp độ tối thiểu/tối đa, nhiệm vụ đã hoàn thành trước đó, phe phái,...).
+	BR3: Mục tiêu của nhiệm vụ phải rõ ràng và có thể theo dõi được bởi hệ thống (ví dụ: số lượng quái vật cần tiêu diệt, vật phẩm cần thu thập, địa điểm cần đến, NPC cần nói chuyện).
+BR4: Phần thưởng khi hoàn thành nhiệm vụ phải được xác định trước (lượng EXP, tiền tệ, vật phẩm cụ thể, điểm danh tiếng,...).
+BR5: Phải có cơ chế để người chơi theo dõi danh sách và tiến độ các nhiệm vụ đang thực hiện (Quest Log/Journal).
+BR6: NPC giao nhiệm vụ và NPC nhận nhiệm vụ (khi hoàn thành)
+phải được chỉ định rõ ràng (có thể là cùng một NPC hoặc khác NPC).
+Other Information:	Cân nhắc phân loại nhiệm vụ (ví dụ: Nhiệm vụ chính tuyến (Main Story), Nhiệm vụ phụ (Side Quest), Nhiệm vụ lặp lại (Repeatable), Nhiệm vụ sự kiện (Event Quest)).
+Có thể có chức năng chia sẻ nhiệm vụ (Quest Sharing) giữa những người chơi trong cùng nhóm (Party/Group).
+Có thể có chức năng từ bỏ/hủy (Abandon) nhiệm vụ đang thực hiện. Cần thiết kế giao diện người dùng (UI) cho hộp thoại nhiệm vụ và danh
+sách nhiệm vụ một cách rõ ràng, dễ sử dụng.
+UC ID and Name:	UC-5: Hệ thống vũ khí
+Created By:	Nguyễn Quang Huy	Date Created:	22/01/2025
+Primary Actor:	Người chơi (Player)	Secondary
+Actors:	None
+Trigger:	Người chơi nhấn một trong các phím số từ 1, 2, 3, 4, hoặc 5 trên bàn
+phím
+Description:	Mô tả hành động Người chơi lựa chọn tức thời vũ khí hoặc kỹ năng sẽ sử dụng từ các ô trang bị nhanh (Active Inventory) bằng cách nhấn phím số tương ứng. Vũ khí/kỹ năng được chọn sẽ sẵn sàng cho hành
+động tấn công tiếp theo.
+Preconditions:	PRE-1: Người chơi đang điều khiển nhân vật trong game.
+PRE-2: Có ít nhất một vũ khí hoặc kỹ năng đã được người chơi gán vào ô trang bị nhanh tương ứng với phím số (1 đến 5) được nhấn. (Việc gán vũ khí/kỹ năng vào ô là một hành động khác, thường thực hiện
+qua giao diện Kho đồ/Bảng kỹ năng).
+Postconditions:	POST-1: Vũ khí/kỹ năng trong ô trang bị nhanh (Active Inventory slot) tương ứng với phím số đã nhấn được đánh dấu là đang hoạt động (active) và sẵn sàng cho hành động tấn công (nhấn chuột trái).
+POST-2: Giao diện người dùng (HUD) được cập nhật để làm nổi bật
+hoặc chỉ rõ vũ khí/kỹ năng nào đang được chọn (active).
+Normal Flow:	1.Người chơi Nhấn phím số (một phím từ 1 đến 5).
+2.Hệ thống xác định ô trang bị nhanh (Active Inventory slot) tương ứng với phím số vừa nhấn.
+3.Hệ thống kiểm tra xem có vũ khí/kỹ năng nào đã được gán trong ô đó hay không.
+4.Nếu ô đó có chứa vũ khí/kỹ năng: a. Hệ thống đánh dấu vũ khí/kỹ năng đó là đang hoạt động (active). Các vũ khí/kỹ năng ở ô khác trở thành không hoạt động. b. Hệ thống cập nhật HUD để hiển thị rõ lựa chọn hiện tại (ví dụ: highlight ô tương ứng).
+5.Nếu ô đó không có vũ khí/kỹ năng nào được gán, trạng thái hoạt
+động của vũ khí/kỹ năng không thay đổi.
+Alternative
+Flows:	Không có luồng thay thế
+Exceptions:	E1 Ô trang bị nhanh trống
+1.Hệ thống không thực hiện hành động nào, có thể phát ra âm thanh báo hiệu nhẹ.
+2.Trạng thái vũ khí/kỹ năng đang hoạt động của người chơi không đổi.
+E2 Lỗi hệ thống khi chọn vũ khí/kỹ năng
+1.Hệ thống không thể đánh dấu vũ khí/kỹ năng trong ô được chọn là hoạt động do lỗi kỹ thuật.
+2.Trạng thái vũ khí/kỹ năng đang hoạt động của người chơi không
+đổi, hệ thống nên ghi nhận lỗi (log error).
+Priority:	High
+Business Rules:	BR1. Chỉ các phím số từ 1 đến 5 mới có chức năng chọn trực tiếp vũ khí/kỹ năng từ các ô Active Inventory tương ứng.
+BR2. Mỗi phím số (1 đến 5) chỉ liên kết với một ô Active Inventory cố định.
+BR3. Hành động chọn vũ khí/kỹ năng bằng phím số phải được thực hiện tức thời, không có độ trễ đáng kể.
+BR4. Giao diện người dùng (HUD) phải có cách hiển thị rõ ràng cho Người chơi biết vũ khí/kỹ năng nào đang được chọn (active).
+BR5. Hệ thống cho phép người chơi gán tối đa 5 vũ khí hoặc kỹ năng vào các ô Active Inventory này (quy tắc của việc gán, không phải
+chọn)
+Other Information:	1.Usecase này chỉ tập trung vào hành động chọn vũ khí/kỹ năng từ các ô đã được gán sẵn. Hành động gán vũ khí/kỹ năng vào các ô này thuộc về một Usecase khác (ví dụ: Quản lý Kho đồ, Quản lý Kỹ năng).
+2.Cần thiết kế giao diện các ô Active Inventory (slots 1-5) trên HUD một cách trực quan, dễ nhận biết trạng thái active.
+UC ID and Name:	UC-6: Hệ thống di chuyển
+Created By:	Nguyễn Quang Huy	Date Created:	22/01/2025
+Primary Actor:	Người chơi (Player)	Secondary Actors:	None
+Trigger:	Người chơi nhấn hoặc nhấn giữ các phím được gán cho chức năng di
+chuyển nhân vật (ví dụ: W, A, S, D, các phím mũi tên).
+Description:	Mô tả quá trình Người chơi điều khiển nhân vật của mình di chuyển
+trong không gian trò chơi bằng cách sử dụng các phím điều khiển. Hệ thống sẽ nhận tín hiệu đầu vào, cập nhật tọa độ của nhân vật, trình
+	chiếu hoạt ảnh di chuyển tương ứng, đồng thời thực hiện kiểm tra và
+xử lý va chạm với các yếu tố môi trường hoặc đối tượng khác.
+Preconditions:	PRE – 1: Người chơi đang ở trong game và điều khiển nhân vật.
+PRE – 2: Nhân vật không đang ở trong trạng thái bị cản trở di chuyển (ví dụ: bị choáng, bị trói, đang thực hiện một hành động khác không cho phép di chuyển).
+Postconditions:	POST – 1: Tọa độ (vị trí) của nhân vật trong thế giới game được cập nhật theo hướng di chuyển và tốc độ tương ứng.
+POST – 2: Model nhân vật hiển thị hoạt ảnh di chuyển phù hợp (ví dụ: đi bộ, chạy) theo hướng di chuyển.
+POST – 3: Nhân vật bị chặn lại hoặc thay đổi quỹ đạo di chuyển khi gặp phải vật cản không thể đi qua do kết quả của việc kiểm tra va
+chạm.
+Normal Flow:	
+1.0: Nhân vật di chuyển theo lệnh người chơi
+1.Người chơi Nhấn hoặc Nhấn và giữ phím di chuyển (ví dụ: W để đi tới, A để đi sang trái...).
+2.Hệ thống nhận tín hiệu từ phím nhấn và xác định hướng di chuyển người chơi mong muốn.
+3.Hệ thống kiểm tra xem nhân vật có đang ở trạng thái cho phép di chuyển không (Kiểm tra PRE-2).
+4.Nếu nhân vật có thể di chuyển: a. Hệ thống kích hoạt Use Case Phát hoạt ảnh (<<include>> bởi Cập nhật vị trí nhân vật), chọn và phát hoạt ảnh di chuyển phù hợp (đi bộ/chạy) theo hướng. b. Hệ thống tính toán vị trí mới tiềm năng của nhân vật dựa trên hướng di chuyển, tốc độ hiện tại và khoảng thời gian giữa các khung hình (delta time). c. Hệ thống kích hoạt Use Case Kiểm tra va chạm (<<include>> bởi Cập nhật vị trí nhân vật), kiểm tra xem vị trí mới tiềm năng có va chạm với vật cản (tường, đồ vật, NPC,...) hay không. d. Dựa trên kết quả kiểm tra va chạm:
+i. Nếu không va chạm: Hệ thống thực hiện Use Case Cập nhật vị trí nhân vật, di chuyển nhân vật đến vị trí mới tiềm năng. ii.
+Nếu có va chạm: Hệ thống tính toán lại vị trí cuối cùng (ví dụ:
+	dừng sát vật cản, trượt dọc theo vật cản) và Cập nhật vị trí nhân vật đến vị trí cuối cùng đó.
+5.Nếu nhân vật không thể di chuyển (do PRE-2), hệ thống bỏ qua các bước cập nhật vị trí và hoạt ảnh.
+6.Khi Người chơi Thả phím di chuyển, hệ thống dừng việc di chuyển theo hướng đó và chuyển hoạt ảnh về trạng thái đứng
+yên (Idle).
+Alternative Flows:	A1: Chạy nhanh (Sprint):
+
+1.Trong khi nhấn phím di chuyển, Người chơi nhấn và giữ thêm phím chạy nhanh (ví dụ: Shift).
+2.Hệ thống tăng tốc độ di chuyển của nhân vật (ảnh hưởng bước 4b).
+3.Hệ thống thay đổi hoạt ảnh sang chạy nhanh (ảnh hưởng bước 4a).
+4.Khi người chơi thả phím chạy nhanh, tốc độ và hoạt ảnh trở về đi bộ bình thường.
+A2: Nhảy (Jump):
+
+1.Người chơi nhấn phím nhảy (ví dụ: Spacebar).
+2.Hệ thống áp dụng một lực hướng lên cho nhân vật (nếu đang đứng trên mặt đất hoặc được phép nhảy).
+3.Hệ thống Phát hoạt ảnh nhảy.
+4.Hệ thống Cập nhật vị trí nhân vật theo cả trục dọc (Y) và ngang (nếu đang di chuyển).
+5.Hệ thống liên tục Kiểm tra va chạm với mặt đất và vật cản trong quá trình nhảy và rơi.
+A3: Di chuyển trên địa hình đặc biệt (Nước, băng, dốc):
+
+1.Khi nhân vật di chuyển vào vùng địa hình đặc biệt.
+	2. Hệ thống áp dụng các thay đổi về tốc độ, hoạt ảnh, hoặc cơ chế vật lý (ví dụ: giảm tốc độ trong nước, trơn trượt trên băng).
+Exceptions:	E1 Nhân vật bị kẹt (Stuck)
+
+1.Hệ thống không thể di chuyển nhân vật ra khỏi vị trí hiện tại do lỗi tính toán va chạm hoặc lỗi thiết kế màn chơi.
+2.Người chơi không thể di chuyển nhân vật. (Cần có cơ chế hỗ trợ như lệnh /unstuck).
+E2 Nhân vật rơi khỏi bản đồ (Fall through map)
+
+1.Hệ thống không phát hiện va chạm đúng cách hoặc có lỗ hổng trong bản đồ, khiến nhân vật rơi xuống khoảng không vô định.
+2.Hệ thống cần phát hiện tình huống này và xử lý (ví dụ: đưa người chơi về vị trí an toàn gần nhất, có thể bị mất máu/tài nguyên).
+E3 Lỗi hiển thị hoạt ảnh
+
+1.Hệ thống không thể tải hoặc phát đúng hoạt ảnh di chuyển.
+2.Người chơi thấy nhân vật di chuyển không có hoạt ảnh (lướt đi) hoặc hoạt ảnh không khớp với hành động.
+Priority:	High
+Business Rules:	BR1. Phải định nghĩa rõ ràng các phím bấm được sử dụng cho việc di chuyển theo các hướng (tiến, lùi, trái, phải).
+BR2. Nhân vật phải có các thông số tốc độ di chuyển cơ bản (đi bộ, chạy).
+BR3. Hệ thống Kiểm tra va chạm phải đáng tin cậy, ngăn chặn việc nhân vật đi xuyên qua các vật thể rắn được định nghĩa trước.
+BR4. Hoạt ảnh di chuyển (Phát hoạt ảnh) phải đồng bộ và phù hợp với
+hướng và tốc độ di chuyển thực tế của nhân vật.
+	BR5. Các trạng thái của nhân vật hoặc môi trường có thể ảnh hưởng
+đến khả năng di chuyển (ví dụ: bị làm chậm, đi trên băng) phải được xử lý đúng.
+Other Information:	1.Hệ thống di chuyển thường phụ thuộc nhiều vào engine vật lý (physics engine) của game.
+2.Âm thanh (tiếng bước chân thay đổi theo bề mặt, tiếng nhảy,...) là một phần quan trọng cần xem xét để tăng tính chân thực.
+3.Có thể có các kỹ năng chủ động hoặc bị động, hoặc các loại
+trang bị ảnh hưởng đến tốc độ và khả năng di chuyển của nhân vật.
+UC ID and Name:	UC-7: Hệ thống chuyển bản đồ
+Created By:	Nguyễn Quang Huy	Date Created:	23/01/2025
+Primary Actor:	Người chơi (Player)	Secondary
+Actors:	None
+Trigger:	Người chơi điều khiển nhân vật di chuyển vào một khu vực cụ thể trên bản đồ hiện tại đã được định nghĩa là điểm/cổng chuyển sang bản đồ
+khác.
+Description:	Mô tả quá trình hệ thống tự động di chuyển Người chơi từ bản đồ (map) hoặc khu vực (zone) hiện tại sang một bản đồ/khu vực mới khi nhân vật đi vào một điểm chuyển tiếp được xác định trước. Quá trình này bao gồm việc kiểm tra các điều kiện cần thiết (nếu có), tải dữ liệu của bản đồ mới, và đặt nhân vật vào vị trí xuất hiện mặc định trên bản
+đồ đó.
+Preconditions:	PRE – 1: Người chơi đang điều khiển nhân vật và ở trong một bản đồ/khu vực của game.
+PRE – 2: Tồn tại một khu vực chuyển tiếp được định nghĩa trên bản
+đồ hiện tại, liên kết đến một bản đồ/khu vực khác.
+Postconditions:	POST – 1: Nhân vật của Người chơi được chuyển sang bản đồ/khu vực mới thành công.
+POST – 2: Vị trí của nhân vật được cập nhật thành vị trí xuất hiện (spawn point) được định nghĩa trước trên bản đồ mới.
+POST – 3: Môi trường, đối tượng, NPC của bản đồ mới được hiển thị cho Người chơi.
+POST – 4: Người chơi có thể tiếp tục điều khiển nhân vật và tương tác trong bản đồ mới.
+POST – 5: Tài nguyên của bản đồ cũ được hệ thống dỡ bỏ khỏi bộ nhớ
+(để tối ưu).
+Normal Flow:	1.0: Tự động chuyển bản đồ khi vào khu vực ( 5 bước )
+1. Người chơi điều khiển nhân vật đi vào khu vực chuyển bản đồ (Người chơi vào khu vực chuyển bản đồ).
+	2.Hệ thống phát hiện sự kiện nhân vật đi vào khu vực này.
+3.Hệ thống thực hiện Use Case Kiểm tra điều kiện chuyển bản đồ (<<include>> bởi Tải bản đồ mới). Ví dụ: kiểm tra cấp độ yêu cầu, nhiệm vụ đã hoàn thành, vật phẩm cần có,... (nếu cổng chuyển bản đồ này có điều kiện).
+4.Nếu Người chơi thỏa mãn tất cả các điều kiện (hoặc không có điều kiện nào): a. (Optional - <<extend>>) Hệ thống có thể bắt đầu Use Case Hiển thị hiệu ứng chuyển cảnh, ví dụ: làm mờ màn hình, hiển thị biểu tượng tải, hoặc chuyển sang màn hình chờ (Loading Screen). b. Hệ thống thực hiện Use Case Tải bản đồ mới (<<include>> bởi Cập nhật vị trí người chơi). Quá trình này bao gồm: i. Dỡ bỏ (unload) tài nguyên của bản đồ hiện tại.
+ii. Tải (load) tài nguyên của bản đồ đích (địa hình, vật thể, ánh sáng, dữ liệu NPC,...). c. Sau khi Tải bản đồ mới hoàn tất, Hệ thống thực hiện Use Case Cập nhật vị trí người chơi, đặt nhân vật vào tọa độ xuất hiện (spawn point) đã định nghĩa cho cổng vào này trên bản đồ mới. d. (Optional - <<extend>>) Hệ thống kết thúc Hiển thị hiệu ứng chuyển cảnh (ví dụ: màn hình sáng trở lại, ẩn màn hình chờ). e. Hệ thống trả lại quyền điều khiển nhân vật cho Người chơi.
+5.Nếu Người chơi không thỏa mãn điều kiện ở Bước 3, hệ thống sẽ ngăn không cho chuyển bản đồ, có thể hiển thị thông báo lỗi
+hoặc chặn đường đi.
+Alternative Flows:	A1: Chuyển bản đồ bằng tương tác:
+
+1.Người chơi di chuyển đến gần một đối tượng chuyển bản đồ (cổng, cửa, NPC...).
+2.Người chơi nhấn phím tương tác.
+3.Hệ thống bắt đầu từ Bước 3 của Luồng chính (Kiểm tra điều kiện...).
+A2: Dịch chuyển nhanh (Fast Travel):
+	1.Người chơi mở bản đồ thế giới hoặc giao diện dịch chuyển nhanh.
+2.Người chơi chọn một điểm dịch chuyển đã mở khóa.
+3.Người chơi xác nhận dịch chuyển.
+4.Hệ thống kiểm tra điều kiện (ví dụ: đủ tiền phí, không trong trạng thái chiến đấu...).
+5.Nếu đủ điều kiện, hệ thống thực hiện từ Bước 4a của Luồng chính.
+A3: Hiển thị màn hình chờ chi tiết:
+
+1.Tại Bước 4a, hệ thống hiển thị một màn hình chờ (Loading Screen) đầy đủ thông tin (hình ảnh bản đồ mới, mẹo chơi, thanh tiến trình tải...).
+2.Màn hình chờ chỉ biến mất ở Bước 4d khi quá trình tải và đặt vị trí hoàn tất.
+Exceptions:	E1 Lỗi tải bản đồ mới
+
+1.Hệ thống không thể tải dữ liệu bản đồ đích thành công (do file lỗi, thiếu file, lỗi mạng...).
+2.Quá trình chuyển bản đồ bị hủy. Hệ thống nên giữ người chơi ở bản đồ hiện tại và hiển thị thông báo lỗi rõ ràng.
+E2 Không tìm thấy điểm xuất hiện
+
+1.Hệ thống tải bản đồ mới xong nhưng không xác định được tọa độ xuất hiện hợp lệ cho người chơi.
+2.Lỗi nghiêm trọng. Hệ thống cần xử lý an toàn (ví dụ: đưa người chơi về điểm an toàn mặc định hoặc bản đồ trước đó, báo lỗi).
+E3 Lỗi dỡ bỏ bản đồ cũ
+	1.Hệ thống gặp lỗi khi giải phóng tài nguyên của bản đồ cũ khỏi bộ nhớ.
+2.Có thể gây giảm hiệu năng hoặc lỗi không mong muốn sau này. Hệ thống cần ghi nhận lỗi (log error).
+E4 Mất kết nối khi đang chuyển bản đồ
+
+1.Người chơi bị mất kết nối mạng trong khi đang ở màn hình chờ hoặc quá trình tải đang diễn ra.
+2.Khi người chơi kết nối lại, hệ thống phải xác định được người chơi đang ở bản đồ nào (cũ hay mới) và đặt họ vào vị trí phù hợp, an toàn.
+Priority:	High
+Business Rules:	BR1. Mỗi điểm chuyển bản đồ phải được định nghĩa rõ ràng về khu vực kích hoạt (trigger zone), bản đồ đích, và tọa độ xuất hiện tương ứng trên bản đồ đích.
+BR2. Các điều kiện (nếu có) để sử dụng một điểm chuyển bản đồ phải được kiểm tra chính xác trước khi cho phép chuyển.
+BR3. Quá trình tải bản đồ (Tải bản đồ mới) phải hoàn tất thành công việc tải các tài nguyên thiết yếu trước khi người chơi được phép tương tác trên bản đồ mới.
+BR4. Tọa độ xuất hiện trên bản đồ mới (Cập nhật vị trí người chơi) phải luôn là một vị trí hợp lệ và an toàn (không bị kẹt, không rơi...). BR5. Nên có cơ chế chuyển cảnh (hiệu ứng mờ, màn hình chờ - Hiển thị hiệu ứng chuyển cảnh) để che đi thời gian tải dữ liệu và tạo cảm
+giác chuyển tiếp mượt mà hơn.
+Other Information:	Thời gian tải bản đồ là yếu tố quan trọng ảnh hưởng đến trải nghiệm người chơi, cần được tối ưu hóa.
+Đối với các game thế giới mở rộng lớn, có thể áp dụng các kỹ thuật tải nền (background streaming) để giảm hoặc loại bỏ hoàn toàn màn hình
+chờ giữa các khu vực liền kề.
+	Cần xem xét việc lưu trạng thái của người chơi và thế giới trước khi
+chuyển bản đồ và khôi phục sau khi chuyển xong.
+UC ID and Name:	UC-8: Hệ thống hoàn thành nhiệm vụ
+Created By:	Nguyễn Quang Huy	Date Created:	23/01/2025
+Primary Actor:	Người chơi (Player)	Secondary
+Actors:	None
+Trigger:	Người chơi, sau khi đã hoàn thành các yêu cầu của một nhiệm vụ, tương tác với NPC được chỉ định và chọn tùy chọn/hội thoại để báo
+cáo hoàn thành nhiệm vụ đó.
+Description:	Mô tả quá trình Người chơi báo cáo việc đã thực hiện xong một nhiệm
+vụ cho NPC liên quan. Hệ thống sẽ tiến hành kiểm tra xác nhận việc hoàn thành các mục tiêu, sau đó cập nhật trạng thái của nhiệm vụ thành
+	"đã hoàn thành", hiển thị thông báo và trao các phần thưởng đã định
+trước cho Người chơi.
+Preconditions:	PRE – 1: Người chơi đang ở trong game và điều khiển nhân vật.
+PRE – 2: Người chơi đã nhận nhiệm vụ này trước đó và trạng thái hiện tại của nhiệm vụ là "đang thực hiện".
+PRE – 3: Người chơi đã thực sự hoàn thành tất cả các mục tiêu được yêu cầu trong mô tả nhiệm vụ (ví dụ: tiêu diệt đủ số quái, thu thập đủ vật phẩm, đến đúng địa điểm,...).
+PRE – 4: Người chơi đang tương tác đúng với NPC được chỉ định là
+người nhận báo cáo hoàn thành cho nhiệm vụ này.
+Postconditions:	POST – 1: Nhiệm vụ tương ứng trong nhật ký/danh sách nhiệm vụ của Người chơi được cập nhật trạng thái thành "đã hoàn thành".
+POST – 2: Người chơi được nhận đầy đủ các phần thưởng (ví dụ: điểm kinh nghiệm (EXP), tiền tệ trong game, vật phẩm, điểm danh tiếng) đã được định nghĩa cho việc hoàn thành nhiệm vụ này.
+POST – 3: Người chơi nhận được thông báo xác nhận đã hoàn thành
+nhiệm vụ và/hoặc thông tin về phần thưởng đã nhận.
+Normal Flow:	1.0: Báo cáo và hoàn thành nhiệm vụ
+1.Người chơi bắt đầu hội thoại/tương tác với NPC trả nhiệm vụ.
+2.Người chơi chọn hành động/lời thoại để báo cáo hoàn thành nhiệm vụ (Người chơi báo cáo nhiệm vụ).
+3.Hệ thống thực hiện Use Case Kiểm tra điều kiện nhiệm vụ (<<include>> bởi Cập nhật trạng thái nhiệm vụ), bao gồm việc xác minh trong dữ liệu game rằng tất cả các mục tiêu của nhiệm vụ (ví dụ: số lượng vật phẩm A trong kho >= X, biến trạng thái B = true) đã được thỏa mãn.
+4.Nếu kết quả kiểm tra ở Bước 3 xác nhận nhiệm vụ ĐÃ HOÀN THÀNH: a. Hệ thống thực hiện Use Case Cập nhật trạng thái nhiệm vụ (<<include>> bởi Trao thưởng), thay đổi trạng thái nhiệm vụ từ "đang thực hiện" thành "đã hoàn thành" trong nhật ký nhiệm vụ của người chơi. b. (Optional - <<extend>>) Hệ
+thống kích hoạt Use Case Hiển thị thông báo, ví dụ: "Nhiệm vụ
+	[Tên nhiệm vụ] đã hoàn thành!". c. Hệ thống thực hiện Use Case Trao thưởng. Phần thưởng (EXP, tiền, vật phẩm...) được cộng/thêm vào dữ liệu của nhân vật/kho đồ của Người chơi. d. (Optional) Hệ thống có thể hiển thị thêm thông báo chi tiết về các phần thưởng đã nhận (ví dụ: "+1000 EXP", "+500 Vàng", "Nhận được [Tên vật phẩm] x1").
+5. Nếu kết quả kiểm tra ở Bước 3 xác nhận nhiệm vụ CHƯA HOÀN THÀNH, hệ thống sẽ không thực hiện Bước 4a, 4b, 4c, 4d. Thay vào đó, hệ thống (thông qua NPC) sẽ thông báo cho
+người chơi rằng nhiệm vụ chưa xong hoặc còn thiếu yêu cầu gì.
+Alternative Flows:	A1: Lựa chọn phần thưởng:
+1.Tại Bước 4c (Trao thưởng), nếu nhiệm vụ cho phép chọn 1 trong nhiều vật phẩm thưởng.
+2.Hệ thống hiển thị một giao diện lựa chọn phần thưởng.
+3.Người chơi chọn vật phẩm mong muốn.
+4.Hệ thống trao vật phẩm đã chọn và các phần thưởng khác (EXP, tiền...).
+A2: Kho đồ đầy khi nhận thưởng vật phẩm:
+
+1.Tại Bước 4c (Trao thưởng), hệ thống xác định phần thưởng có vật phẩm nhưng kho đồ của Người chơi không còn chỗ trống.
+2.Hệ thống vẫn thực hiện Bước 4a, 4b (cập nhật trạng thái, thông báo hoàn thành) và trao các phần thưởng không phải vật phẩm (EXP, tiền).
+3.Hệ thống hiển thị thông báo lỗi "Kho đồ đầy, không thể nhận vật phẩm thưởng. Vui lòng dọn chỗ và thử lại" (hoặc thông báo vật phẩm đã được gửi qua thư tín nếu game có cơ chế đó).
+4.Việc nhận phần thưởng vật phẩm bị tạm hoãn.
+Exceptions:	E1 Lỗi kiểm tra điều kiện hoàn thành
+1.Hệ thống không thể truy cập hoặc xử lý đúng dữ liệu để xác minh trạng thái mục tiêu nhiệm vụ.
+2.Người chơi có thể không trả được nhiệm vụ dù đã hoàn thành, hoặc trả được dù chưa hoàn thành. Hệ thống cần ghi nhận lỗi.
+E2 Lỗi cập nhật trạng thái nhiệm vụ
+1.Hệ thống không lưu được trạng thái "đã hoàn thành" vào cơ sở dữ liệu.
+2.Người chơi có thể vẫn thấy nhiệm vụ là "đang thực hiện" hoặc có thể trả lại nhiệm vụ nhiều lần. Hệ thống cần ghi nhận lỗi.
+E3 Lỗi trao thưởng
+1.Hệ thống gặp lỗi khi cộng EXP, tiền hoặc thêm vật phẩm vào kho đồ người chơi.
+2.Người chơi có thể không nhận được phần thưởng hoặc nhận sai. Hệ thống cần cơ chế kiểm tra và xử lý lỗi này (ví dụ: thử lại, hoàn tác phần nào,...).
+E4 Lỗi hiển thị thông báo
+1.Thông báo hoàn thành hoặc thông tin phần thưởng không hiển thị hoặc hiển thị sai.
+2.Người chơi có thể không biết nhiệm vụ đã xong hay phần
+thưởng nhận được là gì.
+Priority:	High
+Business Rules:	BR1. Hệ thống phải có phương pháp đáng tin cậy để Kiểm tra điều kiện nhiệm vụ dựa trên các mục tiêu cụ thể đã được thiết kế cho từng nhiệm vụ.
+BR2. Sau khi xác nhận hoàn thành, trạng thái nhiệm vụ phải được Cập nhật một cách nhất quán thành "đã hoàn thành".
+BR3. Việc Trao thưởng phải đảm bảo Người chơi nhận đúng và đủ các phần thưởng đã được quy định cho nhiệm vụ đó.
+BR4. Phải xác định rõ NPC nào là người chịu trách nhiệm nhận báo
+cáo hoàn thành cho từng nhiệm vụ.
+	BR5. Hệ thống nên cung cấp phản hồi rõ ràng (Hiển thị thông báo) cho
+Người chơi về việc hoàn thành nhiệm vụ và các phần thưởng nhận được.
+Other Information:	1.Việc hoàn thành một số nhiệm vụ quan trọng có thể mở khóa các tính năng, khu vực, hoặc các nhiệm vụ khác trong game.
+2.Có thể tích hợp với hệ thống Thành tựu (Achievement), ghi nhận việc hoàn thành các cột mốc nhiệm vụ.
+3.Game cần có cơ chế xử lý khi người chơi muốn Hủy (Abandon)
+một nhiệm vụ đang thực hiện (đây là một use case khác).
+UC ID and Name:	UC-9: Hệ thống phần thưởng
+Created By:	Nguyễn Quang Huy	Date Created:	23/01/2025
+Primary Actor:	Người chơi (Player)	Secondary Actors:	None
+Trigger:	Một sự kiện trong game đủ điều kiện để trao phần thưởng cho người
+chơi vừa xảy ra và được hệ thống ghi nhận (ví dụ: Use Case UC-8:
+	Hoàn thành Nhiệm vụ vừa được xác nhận thành công, đánh bại một
+boss cụ thể, đạt được một thành tựu, sự kiện đăng nhập hàng ngày,...).
+Description:	Mô tả quá trình hệ thống xác định, xử lý và trao các phần thưởng đã được định nghĩa trước cho Người chơi sau khi một điều kiện nhận thưởng được thỏa mãn. Quá trình này bao gồm việc xác định phần thưởng dựa trên sự kiện kích hoạt, cập nhật các chỉ số/dữ liệu liên quan của Người chơi (kinh nghiệm, tiền tệ, vật phẩm trong kho đồ), và thông
+báo cho Người chơi biết về phần thưởng họ đã nhận.
+Preconditions:	PRE – 1: Người chơi đang hoạt động trong game.
+PRE – 2: Một sự kiện/hành động đủ điều kiện nhận thưởng vừa được hoàn thành/ghi nhận bởi hệ thống (ví dụ: nhiệm vụ được đánh dấu hoàn thành, boss bị tiêu diệt).
+PRE – 3: Dữ liệu về phần thưởng (loại, số lượng) tương ứng với sự
+kiện/hành động đó đã được định nghĩa trong cấu hình game.
+Postconditions:	POST – 1: Người chơi được cộng/thêm đúng và đủ các loại phần thưởng (EXP, tiền, vật phẩm, điểm...) vào dữ liệu nhân vật/tài khoản của mình.
+POST – 2: Các chỉ số và kho đồ của Người chơi được cập nhật chính xác để phản ánh phần thưởng đã nhận.
+POST – 3: Người chơi nhận được thông báo trên giao diện về các phần
+thưởng mình vừa được nhận.
+Normal Flow:	1.0: Trao phần thưởng cho người chơi
+1.Hệ thống nhận được tín hiệu kích hoạt trao thưởng từ một sự kiện (ví dụ: hoàn thành nhiệm vụ A).
+2.Hệ thống thực hiện Use Case Kiểm tra nhiệm vụ hoàn thành (hoặc kiểm tra sự kiện tương ứng) để xác định nguồn gốc và ngữ cảnh của phần thưởng (<<include>> bởi Xác định phần thưởng).
+3.Hệ thống thực hiện Use Case Xác định phần thưởng (<<include>> bởi Cộng thưởng...), truy xuất danh sách các phần thưởng (EXP, tiền, vật phẩm ID, số lượng,...) được cấu
+hình cho nhiệm vụ/sự kiện ở Bước 2.
+	4.(Optional - <<extend>>) Hệ thống chuẩn bị nội dung và kích hoạt Use Case Hiển thị thông báo phần thưởng để thông báo cho người chơi về những gì họ sắp/đã nhận được.
+5.Hệ thống thực hiện Use Case Cộng thưởng lên UI (Chính xác hơn là "Cộng thưởng vào dữ liệu Người chơi"): a. Cộng điểm kinh nghiệm (EXP) vào tổng EXP của Người chơi. (Nếu EXP đủ lên cấp, một quy trình xử lý lên cấp khác có thể được kích hoạt). b. Cộng tiền tệ (Vàng, Bạc,...) vào số dư của Người chơi.
+c. Kiểm tra kho đồ và thêm vật phẩm thưởng vào các ô trống trong kho đồ của Người chơi. d. Áp dụng các loại phần thưởng khác nếu có (ví dụ: cộng điểm danh tiếng, mở khóa kỹ năng/danh hiệu,...).
+6.Hệ thống cập nhật các thành phần giao diện người dùng liên quan (thanh EXP, hiển thị số tiền, số lượng vật phẩm trong
+kho,...) để phản ánh trạng thái mới sau khi nhận thưởng.
+Alternative Flows:	A1: Kho đồ đầy khi nhận vật phẩm:
+1.Tại Bước 5c, hệ thống phát hiện kho đồ của Người chơi không đủ chỗ trống để chứa (toàn bộ hoặc một phần) vật phẩm thưởng.
+2.Hệ thống vẫn tiến hành cộng các phần thưởng khác (EXP, tiền
+- Bước 5a, 5b, 5d).
+3.Hệ thống hiển thị thông báo lỗi cho Người chơi, nêu rõ vật phẩm nào không nhận được do kho đồ đầy.
+4.Hệ thống xử lý vật phẩm không nhận được theo quy tắc đã định: có thể yêu cầu người chơi dọn kho và nhận lại sau, gửi vật phẩm qua Hộp thư (Mailbox) trong game, hoặc vật phẩm bị mất.
+A2: Phần thưởng có lựa chọn:
+1.Tại Bước 3 (Xác định phần thưởng), hệ thống phát hiện phần thưởng cho phép Người chơi chọn lựa (ví dụ: chọn 1 trong 3 vũ khí).
+2.Trước khi thực hiện Bước 5, hệ thống hiển thị một giao diện lựa chọn phần thưởng.
+3.Người chơi đưa ra lựa chọn.
+	4. Hệ thống tiếp tục Bước 5, chỉ cộng/thêm phần thưởng đã được Người chơi chọn (cùng các phần thưởng cố định khác nếu có).
+Exceptions:	E1 Lỗi xác định/truy xuất phần thưởng
+1.Hệ thống không tìm thấy dữ liệu phần thưởng cho sự kiện kích hoạt, hoặc dữ liệu bị lỗi không đọc được.
+2.Phần thưởng không được trao. Hệ thống cần ghi nhận lỗi và có thể thông báo cho người chơi về sự cố.
+E2 Lỗi cộng EXP/Tiền tệ
+1.Hệ thống gặp lỗi khi cập nhật giá trị EXP hoặc số dư tiền tệ của Người chơi trong cơ sở dữ liệu.
+2.Dữ liệu của Người chơi có thể không chính xác. Hệ thống cần cơ chế đảm bảo tính toàn vẹn hoặc ghi nhận lỗi để xử lý sau.
+E3 Lỗi thêm vật phẩm vào kho đồ
+1.Hệ thống gặp lỗi khi thao tác với dữ liệu kho đồ (ngoài trường hợp kho đầy).
+2.Người chơi không nhận được vật phẩm thưởng. Hệ thống cần ghi nhận lỗi.
+3.E4 Lỗi hiển thị thông báo hoặc cập nhật UI
+4.Thông báo phần thưởng hoặc các cập nhật trên giao diện (HUD, kho đồ) không hiển thị hoặc hiển thị sai thông tin.
+5.Người chơi có thể không nhận biết được mình đã nhận thưởng
+gì.
+Priority:	High
+Business Rules:	BR1. Mọi sự kiện/nhiệm vụ có trao thưởng phải được định nghĩa rõ ràng về loại và số lượng phần thưởng tương ứng.
+BR2. Hệ thống phải đảm bảo Xác định phần thưởng một cách chính xác dựa trên sự kiện/nhiệm vụ nguồn gốc.
+BR3. Quá trình Cộng thưởng... phải đảm bảo tính đúng đắn và toàn
+vẹn của dữ liệu Người chơi (không cộng thừa, không làm mất dữ liệu).
+	BR4. Phải có quy tắc xử lý rõ ràng cho trường hợp không thể trao vật phẩm do kho đồ đầy.
+BR5. Hệ thống nên Hiển thị thông báo phần thưởng một cách rõ ràng,
+dễ hiểu cho Người chơi ngay sau khi phần thưởng được trao.
+Other Information:	1.Phần thưởng trong game có thể rất đa dạng và đến từ nhiều nguồn (nhiệm vụ, diệt quái, thành tựu, sự kiện, đăng nhập,...). Usecase này tập trung vào quy trình sau khi điều kiện thưởng đã được đáp ứng.
+2.Đối với các phần thưởng lặp lại (ví dụ: nhiệm vụ hàng ngày), cần có quy tắc về giới hạn nhận thưởng trong một khoảng thời gian nhất định.
+3.Thiết kế hiệu ứng hình ảnh và âm thanh khi nhận thưởng có thể
+làm tăng sự hài lòng của người chơi
+Tên lớp	Thuộc tính	Kiểu dữ liệu	Mô tả
+MapManager	currentMapName	string	Tên bản đồ hiện tại
+TransitionPortal	targetMap	string	Tên bản đồ cần chuyển tới
+	spawnPoint	Vector2	Tọa độ xuất hiện ở bản đồ mới
+EnvironmentInteracto r	interactionRange	float	Phạm vi tương tác với vật thể môi trường
+Chest	isOpen	bool	Rương đã mở hay chưa
+	containsItem	string	Vật phẩm chứa trong rương
+Switch	isActivated	bool	Trạng thái công tắc
+Door	isLocked	bool	Cửa đã bị khóa hay chưa
+Enemy	health	EnemyHealth	Thông tin máu của kẻ địch
+	ai	EnemyAI	Hệ thống AI điều khiển
+	attackPower	int	Sát thương gây ra
+	detectionRange	float	Phạm vi phát hiện người chơi
+EnemyHealth	currentHP	int	Máu hiện tại của kẻ địch
+	maxHP	int	Máu tối đa
+EnemyAI	state	string	Trạng thái AI (idle, attack...)
+WeaponSystem	equippedWeapon	Weapon	Vũ khí hiện đang trang bị
+Weapon	name	string	Tên vũ khí
+	damage	int	Sát thương
+	range	float	Tầm đánh
+	type	string	Loại vũ khí (melee/range)
+Projectile	speed	float	Tốc độ bay
+	damage	int	Sát thương đạn gây ra
+	direction	Vector2	Hướng bay của đạn
+Player	name	string	Tên người chơi
+	level	int	Cấp độ
+	health	int	Lượng máu
+	weaponSystem	WeaponSystem	Hệ thống vũ khí
+PlayerMovement	speed	float	Tốc độ di chuyển
+	jumpHeight	float	Độ cao khi nhảy
+DialogueManager	currentNode	DialogueNode	Nút hội thoại hiện tại
+DialogueNode	text	string	Nội dung đoạn hội thoại
+	responses	List<DialogueNo de>	Danh sách các câu trả lời tiếp theo
+NPC	name	string	Tên NPC
+	dialogue	DialogueNode	Nút hội thoại đầu tiên của NPC
+QuestManager	activeQuests	List<Quest>	Danh sách nhiệm vụ đang thực hiện
+	completedQuests	List<Quest>	Danh sách nhiệm vụ đã hoàn thành
+Quest	title	string	Tên nhiệm vụ
+	description	string	Mô tả nhiệm vụ
+	goal	QuestGoal	Mục tiêu cần đạt để hoàn thành
+	isCompleted	bool	Đã hoàn thành hay chưa
+QuestGoal	type	string	Loại mục tiêu
+	targetAmount	int	Số lượng yêu cầu
+Thuộc tính	Giá trị / Vai trò
+Tên đối tượng	Player, Kael (mặc định)
+Vai trò	Nhân vật chính, điều khiển bởi người chơi.
+Thuộc tính	HP, Mana, Stamina, Attack, Defense, Level, EXP, Inventory,
+Flappy Duck, Runes
+Hành vi	Di chuyển, tấn công, né tránh, trò chuyện NPC, nhặt vật phẩm,
+sử dụng kỹ năng
+Tương tác	NPC (giao tiếp), Enemy (chiến đấu), Level (di chuyển), Quest,
+Item, Rune
+Lưu trữ	Vị trí, trạng thái nhiệm vụ, trạng thái trang bị, tiến độ cốt truyện
+Mục tiêu	Cứu người thân, hoàn thành nhiệm vụ, nâng cấp Flappy Duck, đánh
+bại Bóng Tối
+Thuộc tính	Giá trị / Vai trò
+Tên đối tượng	Slime, DarkWolf, Fae corrupted, Boss (Shadow Spirit...)
+Vai trò	Thử thách người chơi, cản trở tiến trình nhiệm vụ
+Thuộc tính	HP, Attack, Defense, Speed, EXP drop, Drop Item, Type
+Hành vi	Tuần tra, phát hiện người chơi, tấn công, sử dụng kỹ năng
+Tương tác	Player (combat), Level (spawn tại các khu vực), AI (FSM hoặc
+Behavior Tree)
+Phân loại	Enemy thường, Enemy boss, Enemy bị tha hóa (dính Blight)
+Mục tiêu	Bảo vệ khu vực, tạo căng thẳng chiến đấu, là mục tiêu của các
+nhiệm vụ
+Thuộc tính	Giá trị / Vai trò
+Tên đối tượng	Oakhaven, Whispering Woods, Fae Temple, Corrupted Nexus
+Vai trò	Bối cảnh cho cốt truyện và gameplay
+Thuộc tính	Tên, ID, danh sách NPC/Enemy/Item, điểm vào/ra, nhạc nền,
+boss trigger
+Hành vi	Load / Unload theo tiến trình game, lưu checkpoint
+Tương tác	Player (di chuyển), SceneTransitionManager, QuestTrigger,
+Spawn points
+Loại Level	Làng, rừng, đền cổ, hang động, thế giới Fae
+Chức năng đặc biệt	Một số level có puzzle hoặc boss battle
+Đối tượng	Vai trò chính
+NPC	Cho nhiệm vụ, kể chuyện, hỗ trợ người chơi
+Item	Vật phẩm nhặt được (vàng, thảo dược, chìa khóa, rune fragment,
+vũ khí phụ)
+Rune Fragment	Mảnh năng lượng cổ, dùng để nâng cấp Flappy Duck
+Quest	Động lực chính để dẫn dắt người chơi khám phá
+Checkpoint	/
+Cổng	Điểm lưu game hoặc mở cánh cổng sang level mới
+UI / HUD	Hiển thị thông tin người chơi, nhiệm vụ, tương tác
+FX / Particle	Hiệu ứng phép thuật, runeblade, dịch chuyển, hồi máu...
+Tên lớp
+(ScriptableObject)	Thuộc tính	Kiểu dữ
+liệu	Mô tả
+
+WeaponInfo	weaponPrefab	GameObject	Prefab đại diện cho vũ khí trong
+game
+	weaponCooldown	float	Thời gian hồi chiêu của vũ khí (giây)
+	weaponDamage	int	Sát thương gây ra bởi vũ khí
+	weaponRange	float	Tầm tấn công của vũ khí
+CHƯƠNG 4: TRIỂN KHAI CHƯƠNG TRÌNH
+4.1Lập trình chương trình cốt lõi
+4.1.1.Hệ thống điều khiển nhân vật
+Hệ thống này chịu trách nhiệm xử lý mọi hành động và tương tác của người chơi thông qua nhân vật chính .
+a)Công nghệ cốt lõi:
+-Rigidbody2D: Thành phần vật lý của Unity được sử dụng để xử lý chuyển động của nhân vật một cách chân thực hơn, cho phép tương tác vật lý với môi trường (va chạm, lực tác động). Việc di chuyển được thực hiện bằng cách cập nhật vận tốc (velocity) của Rigidbody2D dựa trên input của người chơi.
+-Input System : Hệ thống quản lý đầu vào linh hoạt của Unity được dùng để nhận tín hiệu từ cả bàn phím (WASD) và tay cầm game (analog stick/D-pad) cho việc di chuyển theo 4 hoặc 8 hướng (trục XY). Các hành động khác như tấn công (chuột trái/nút cò), lướt (Space/nút vai), tương tác (E/A) cũng được định nghĩa và xử lý thông qua hệ thống này, cho phép tùy chỉnh điều khiển dễ dàng.
+-Animator: Thành phần quản lý hoạt ảnh. Script PlayerController sẽ giao tiếp với Animator để chuyển đổi giữa các trạng thái hoạt ảnh tương ứng với hành động của nhân vật.
+b)Triển khai tính năng:
+-Di chuyển: Script PlayerController đọc giá trị input từ Input System, chuẩn hóa vector di chuyển và áp dụng vào Rigidbody2D.velocity nhân với tốc độ di chuyển (moveSpeed) đã định. Đồng thời, cập nhật tham số IsMoving (boolean) và MoveX, MoveY (float) trong Animator để kích hoạt hoạt ảnh di chuyển phù hợp với hướng đi.
+-Tấn công: Khi nhận input tấn công và điều kiện cho phép (ví dụ: đang trong trạng thái sẵn sàng, không đang trong trạng thái khác...), script sẽ kích hoạt trigger Attack trong Animator. Logic tạo vùng sát thương và áp dụng damage (sẽ mô tả ở hệ thống chiến đấu) cũng được gọi từ đây.
+-Tương tác: Khi nhận input tương tác (E/A), script sẽ thực hiện kiểm tra (ví dụ: dùng Physics2D.OverlapCirclehoặc Raycast) trong một phạm vi nhỏ xung quanh nhân vật để tìm các đối tượng có khả năng tương tác (NPC, cửa...). Nếu tìm thấy, nó sẽ gọi phương thức tương tác trên đối tượng đó.
+
+-Hoạt ảnh: Animator Controller của nhân vật được thiết lập với các trạng thái như Idle, Walking, Running (nếu có), Slashing (tấn công), Dashing, Hurt, Die. Các Transition giữa các trạng thái được điều khiển bởi các tham số (Parameters) được cập nhật từ script PlayerController.
+4.1.2.Hệ thống nhiệm vụ
+Để quản lý các trạng thái phức tạp của Duck và AI kẻ địch, dự án sử dụng kiến trúc HSM (Hierarchical State Machine). Khác với FSM thông thường, HSM cho phép các trạng thái thừa kế và phân tầng, giúp giảm thiểu số lượng transitions và làm code sạch hơn.
+4.3.1. Cấu trúc Trạng thái (State Hierarchy): Hệ thống bao gồm một BaseState định nghĩa các phương thức ảo Entry, Update, PhysicsUpdate và Exit. CácDuckState cụ thể sẽ override các hàm này để thực thi logic riêng. Ví dụ: FlyingState xử lý lực đẩy lên, trong khi FallingState xử lý gia tốc trọng trường.
+4.3.2. Đồng bộ hóa trạng thái qua mạng: Trong chế độ Multiplayer, máy chủ (Host) chịu trách nhiệm chạy HSM cho toàn bộ các Duck để đảm bảo tính nhất quán. Các thay đổi về trạng thái được đồng bộ đến Client qua NetworkVariable, giúp hoạt ảnh và vị trí luôn khớp nhau giữa tất cả người chơi.
+4.2. Hệ thống Multiplayer (Netcode)
+Hệ thống này chịu trách nhiệm cho việc thiết lập kết nối, tìm kiếm trận đấu (Matchmaking) và đồng bộ hóa trạng thái giữa các người chơi trong môi trường mạng.
+4.2.1. Quản lý Matchmaking với Unity Lobby & Relay
+MatchmakingManager chịu trách nhiệm khởi tạo dịch vụ Unity Gaming Services, bao gồm Authentication (Đăng nhập ẩn danh), Lobby (Phòng chờ) và Relay (Truyền tải dữ liệu qua trung gian). Khi người chơi bắt đầu tìm trận, hệ thống sẽ thực hiện các bước: 1) Khởi tạo dịch vụ, 2) Tìm kiếm các Lobby đang hoạt động (Fresh Lobbies), 3) Nếu tìm thấy, gia nhập và kết nối qua Relay Join Code; nếu không, tạo một Lobby mới và trở thành Host.
+4.2.2. Điều phối luồng game (Game Flow Control)
+GameFlowManager kế thừa từ NetworkBehaviour để quản lý vòng đời của một trận đấu. Nó sử dụng NetworkVariable<GameState> để đồng bộ trạng thái game (InMenu, Loading, Playing, GameOver) đến toàn bộ Client. Danh sách người chơi được quản lý bởi NetworkList<PlayerNetworkData>, cho phép tự động cập nhật UI khi có người gia nhập hoặc rời phòng.
+4.2.3. Đồng bộ hóa logic và trạng thái (State Sync)
+Trò chơi áp dụng mô hình Server-Authoritative thông qua Netcode for GameObjects. Các hành động quan trọng như trừ HP khi va chạm, nhặt tiền (Coin) hay kết thúc trận đấu đều được tính toán và kiểm tra phía Host/Server, sau đó gửi ClientRpc để thông báo kết quả đến các người chơi khác, đảm bảo tính công bằng và tránh gian lận.
+4.1.3.Hệ thống lưu và tải trạng thái
+Hệ thống này đảm bảo rằng tiến trình của người chơi không bị mất đi giữa các lần chơi hoặc khi di chuyển giữa các khu vực.
+a)Công nghệ:
+-DontDestroyOnLoad: Các đối tượng Manager Singleton (QuestManager, NPCPersistenceManager, InventoryManager, PlayerStateManager...) được đánh dấu DontDestroyOnLoad() trong hàm Awake() để chúng không bị hủy khi chuyển cảnh, giữ lại dữ liệu trong bộ nhớ RAM suốt phiên chơi.
+-PlayerPrefs: Được sử dụng chủ yếu để lưu các cài đặt (âm lượng, độ phân giải) và có thể là dữ liệu save meta rất đơn giản (ví dụ: ID của slot save cuối cùng được sử dụng). Lưu ý quan trọng: Việc lưu trạng thái phức tạp của nhiệm vụ, NPC, inventory không nên dùng PlayerPrefs do hạn chế về bảo mật và kiểu dữ liệu. Thay vào đó, cần dùng cơ chế Serialization.
+-Serialization (Giả định thay cho PlayerPrefs cho dữ liệu phức tạp): Để lưu trạng thái game thực sự (active quests, NPC states, inventory, player stats...) giữa các phiên chơi (tắt game đi bật lại), cần thực hiện Serialization. Các đối tượng Singleton Manager sẽ tập hợp dữ liệu trạng thái hiện tại (từ các cấu trúc dữ liệu như QuestJournal, InventoryData...), chuyển đổi chúng thành một định dạng có thể lưu trữ (như JSON hoặc binary) và ghi ra một tệp tin trong thư mục persistent của game (Application.persistentDataPath). Khi tải game, quy trình ngược lại được thực hiện: đọc file, deserialize dữ liệu và khôi phục trạng thái cho các Manager.
+b)Dữ liệu được lưu (khi Serialize):
+-Trạng thái các nhiệm vụ đang hoạt động và đã hoàn thành (từ QuestManager).
+
+-Trạng thái cần lưu của các NPC (ví dụ: ID nhiệm vụ hiện tại họ đang liên quan, từ NPCPersistenceManager).
+-ID nhiệm vụ cuối cùng hoàn thành (để xử lý chuỗi nhiệm vụ).
+-Trạng thái nhân vật (HP, MP, XP, Level, Gold...).
+-Dữ liệu Inventory.
+-Vị trí người chơi và Map hiện tại.
+4.1.4.Hệ thống level và chuyển cảnh
+Hệ thống này quản lý việc tải các màn chơi (scenes) khác nhau và đảm bảo sự chuyển tiếp mượt mà, liền mạch.
+a)Công nghệ:
+-UnityEngine.SceneManagement.SceneManager: Sử dụng các hàm như LoadSceneAsync() để tải các scene một cách bất đồng bộ, cho phép hiển thị màn hình loading hoặc hiệu ứng chuyển cảnh trong khi chờ đợi.
+-SceneTransitionManager.cs (Script tùy chỉnh): Một lớp Singleton quản lý quá trình chuyển cảnh.
+b)Chức năng:
+-Kích hoạt Chuyển cảnh: Script này được gọi khi người chơi tương tác với cổng dịch chuyển hoặc điểm chuyển map (thường là một trigger collider).
+-Hiệu ứng Chuyển cảnh: Thực hiện các hiệu ứng hình ảnh như làm mờ dần (fade out), hiển thị màn hình loading, sau đó làm rõ dần (fade in) khi scene mới đã sẵn sàng.
+-Đảm bảo Dữ liệu: Vì các Manager chính đã được đánh dấu DontDestroyOnLoad, chúng sẽ tự động tồn tại qua các lần load scene. SceneTransitionManager có thể thực hiện thêm các kiểm tra hoặc gọi các hàm khởi tạo lại cần thiết trên các Manager đó sau khi scene mới load xong.
+-Cập nhật UI: Sau khi scene mới được tải hoàn tất (SceneManager.sceneLoaded event hoặc callback của LoadSceneAsync), SceneTransitionManager sẽ gửi tín hiệu hoặc trực tiếp gọi các hàm cập nhật trên các thành phần UI (như QuestLogUI) để hiển thị thông tin phù hợp với màn chơi mới.
+
+4.2 Mô tả cốt chuyện
+4.2.1. Bối cảnh
+Flappy Duck đưa người chơi vào một không gian kỳ thú, nơi sinh sống của nhiều giống Vịt đặc biệt. Một ngày nọ, vùng đất yên bình của chúng bị đe dọa bởi những thế lực hắc ám, biến đổi môi trường thành một chiến trường trên không đầy cạm bẫy. Người chơi sẽ chọn một trong 5 chiến binh Vịt (Normal, Tiny, Ninja, Soldier, Ghost), mỗi class mang một sức mạnh riêng biệt và cùng nhau đứng lên chống lại những chướng ngại vật và kẻ thù.
+
+4.2.2. Diễn biến chính và Gameplay
+Lối chơi cốt lõi xoay quanh việc người chơi phải bay lượn khéo léo để né tránh các chướng ngại vật. Không chỉ dừng lại ở bay lượn, các chú vịt nay đã được trang bị sức mạnh tấn công (bắn đạn, tàng hình, ném phi tiêu...) để tiêu diệt kẻ thù ngáng đường. Xuyên suốt quá trình chơi qua hệ thống Multiplayer, những người chơi (tối đa 4 người/phòng) sẽ cùng nhau chia lửa, cạnh tranh và phối hợp để đạt điểm số cao nhất.
+
+4.2.3. Cao trào và kết thúc
+Vì đây là thể loại game Arcade/Action Survival, lối chơi chủ yếu xoay quanh sinh tồn và điểm số (High Score). Cao trào của game nằm ở những phút giây căng thẳng khi tốc độ màn chơi tăng cao, chướng ngại vật xuất hiện dày đặc và kẻ thù tấn công dữ dội. Trận đấu kết thúc khi toàn bộ vịt trong phòng hết HP hoặc gặp tai nạn rơi rụng. Những sự kiện hấp dẫn liên tục lặp lại tạo ra vòng lặp gameplay cuốn hút, thôi thúc người chơi thử sức ở những lần chơi tiếp theo.
+4.3Mô tả luật chơi
+Trải nghiệm tương tác trong "Flappy Duck" được thiết kế để mang lại sự chủ động và phản xạ nhanh nhạy cho người chơi, kết hợp nhuần nhuyễn giữa việc sử dụng bàn phím và chuột cho các hành động khác nhau trong nền tảng 2D Arcade.
+4.3.1.Điều khiển di chuyển cơ bản và nâng cao
+Di chuyển Chính: Nền tảng của việc khám phá thế giới và định vị trong chiến đấu là khả năng di chuyển linh hoạt của nhân vật chính. Người chơi sử dụng cụm phím
+`WASD` quen thuộc trên bàn phím để điều khiển nhân vật:
+`W`: Tiến về phía trước (hướng trên màn hình).
+`A`: Di chuyển sang trái.
+`S`: Lùi về phía sau (hướng dưới màn hình).
+`D`: Di chuyển sang phải.
+Cơ chế di chuyển 4 hướng này là chuẩn mực cho các game top-down, đảm bảo sự điều khiển trực quan và dễ dàng làm quen. Kỹ năng Dash (Lướt): Để bổ sung chiều sâu cho hệ thống di chuyển và tạo lợi thế chiến thuật, nhân vật sở hữu khả năng `Dash` – một cú lướt tức thời trong một khoảng cách ngắn. Kỹ năng này được kích hoạt bằng
+
+phím `Cách` (Spacebar). Dash không chỉ giúp người chơi né tránh các đòn tấn công của kẻ thù một cách hiệu quả mà còn hữu ích trong việc vượt qua một số dạng địa hình hoặc bẫy nhỏ, tăng tốc độ di chuyển trong những tình huống cần thiết.
+4.3.2.Tương tác với thế giới và nhân vật
+Tương tác với NPC: Việc giao tiếp với các Nhân vật phi người chơi (NPCs) là yếu tố then chốt để nhận nhiệm vụ và khám phá cốt truyện. Khi nhân vật của người chơi tiến đến đủ gần một NPC có khả năng tương tác, người chơi chủ động bắt đầu cuộc hội thoại bằng cách nhấn phím `E`. Lựa chọn trong Hội thoại: Hệ thống hội thoại thường xuyên đưa ra các lựa chọn phản hồi cho người chơi, làm tăng tính tương tác và chiều sâu của câu chuyện. Người chơi có hai phương thức để đưa ra lựa chọn của mình:Sử dụng Chuột: Di chuyển con trỏ chuột đến dòng hội thoại mong muốn và nhấn `Chuột trái` để chọn. Sử dụng Bàn phím: Dùng phím mũi tên `Lên` và `Xuống` để duyệt qua các lựa chọn, sau đó nhấn phím `Enter` để xác nhận lựa chọn hiện tại. Sự linh hoạt này cho phép người chơi chọn phương thức tương tác phù hợp nhất với thói quen của mình.
+4.3.3.Cơ chế chiến đấu chi tiết
+Hệ thống chiến đấu thời gian thực của "Flappy Duck" yêu cầu sự phối hợp chính xác giữa việc di chuyển, chọn kỹ năng và nhắm mục tiêu tấn công:
+-Lựa chọn Vũ khí/Kỹ năng: Người chơi có thể trang bị tối đa 5 loại vũ khí hoặc kỹ năng vào các ô trang bị nhanh (Active Inventory). Việc chuyển đổi giữa chúng trong thực chiến được thực hiện tức thời bằng cách nhấn các phím số tương ứng từ `1` đến `5`. Ví dụ, nhấn phím `1` để chọn vũ khí ở ô đầu tiên, phím `2` cho ô thứ hai, v.v.
+-Nhắm Mục tiêu bằng Chuột: Điểm đặc biệt của hệ thống là cơ chế nhắm mục tiêu độc lập với hướng di chuyển của nhân vật. Thay vì chỉ tấn công về phía nhân vật đang quay mặt, người chơi phải chủ động sử dụng `con trỏ chuột` (mouse cursor) để xác định chính xác hướng tấn công. Vị trí của con trỏ chuột trên màn hình tại thời điểm tấn công sẽ quyết định hướng bay của đạn, đường vung của kiếm, hoặc đích đến của phép thuật.
+-Thực hiện Tấn công: Sau khi đã chọn vũ khí/kỹ năng mong muốn (bằng phím số) và định hướng tấn công (bằng con trỏ chuột), người chơi ra lệnh tấn công bằng cách nhấn `Chuột trái` (Left Mouse Click). Nhân vật sẽ lập tức thực hiện
+
+hành động tấn công tương ứng với vũ khí/kỹ năng đã chọn theo đúng hướng mà con trỏ chuột đang chỉ tới.
+Như vậy, cơ chế điều khiển trong "Flappy Duck" là sự tổng hòa giữa việc sử dụng bàn phím và chuột để di chuyển trên không liên tục, né tránh chướng ngại vật cùng lúc với việc tấn công đối thủ. Sự kết hợp này tạo ra một vòng lặp gameplay (gameplay loop) năng động, đòi hỏi người chơi không chỉ có kỹ năng di chuyển mà còn phải có khả năng nhắm bắn/định hướng và ra quyết định nhanh chóng trong các tình huống chiến đấu và tương tác.
+4.4.Kiểm thử chức năng
+4.4.1Unit test
+Unit Test (kiểm thử đơn vị) là một phương pháp kiểm thử phần mềm, trong đó các đơn vị hoặc thành phần riêng lẻ nhỏ nhất của game (ví dụ: hàm, lớp, module) được kiểm tra độc lập để đảm bảo chúng hoạt động chính xác như mong đợi.
+Mục đích của Unit Test trong lập trình game: Phát hiện lỗi sớm: Unit test giúp xác định lỗi trong giai đoạn phát triển sớm, trước khi chúng lan rộng và gây ra hậu quả nghiêm trọng hơn. Cải thiện chất lượng code: Viết unit test khuyến khích lập trình viên viết code rõ ràng, dễ đọc và dễ bảo trì hơn. Tăng tốc độ phát triển: Mặc dù viết unit test ban đầu có thể mất thời gian, nhưng nó giúp tiết kiệm thời gian debug và sửa lỗi về sau. Tạo tài liệu cho code: Unit test có thể đóng vai trò như một dạng tài liệu kỹ thuật, mô tả cách các thành phần của game hoạt động. Hỗ trợ tái cấu trúc code: Khi tái cấu trúc code, unit test giúp đảm bảo rằng các thay đổi không làm hỏng chức năng hiện có.
+Các khái niệm quan trọng trong Unit Test: Test case: Một test case là một tập hợp các điều kiện đầu vào, hành động thực hiện và kết quả mong đợi để kiểm tra một chức năng cụ thể. Assertion: Assertion là một câu lệnh kiểm tra xem một điều kiện cụ thể có đúng hay không. Nếu điều kiện sai, assertion sẽ báo lỗi. Test suite: Một test suite là một tập hợp các test case. Test runner: Test runner là một công cụ để chạy các test case và báo cáo kết quả. Code coverage: Code coverage là một chỉ số đo lường phần trăm code được bao phủ bởi các test case.
+a)Unit test kiểm thử Chức năng Tương tác Môi trường
+
+
+Hình 4.1 Unit test Kiểm thử Chức năng Tương tác Môi trường
+
+Phần này trình bày kết quả kiểm thử chi tiết cho module chức năng EnvironmentInteraction, chịu trách nhiệm xử lý các phản hồi của môi trường khi người chơi thực hiện các hành động di chuyển và va chạm trong thế giới game. Mục tiêu kiểm thử (Test requirement) chính là "Kiểm tra phản hồi môi trường khi người chơi di chuyển và va chạm". Quá trình kiểm thử được thực hiện bởi [Tên người tạo - Nguyễn Quang Huy] và kết quả được ghi nhận như trong hình:
+-Tổng cộng có 8 trường hợp kiểm thử (Total Test Cases) đã được thiết kế và thực thi cho chức năng này, bao gồm 5 trường hợp kiểm thử thông thường (Normal - N), 1 trường hợp bất thường (Abnormal - A) và 2 trường hợp kiểm thử biên (Boundary - B).
+-Kết quả tổng quan cho thấy 100% các trường hợp kiểm thử đều thành công (Passed = 8), không có trường hợp nào thất bại (Failed = 0) hoặc chưa được kiểm
+
+thử (Untested = 0). Điều này cho thấy chức năng đã hoạt động ổn định theo các kịch bản được đề ra tại thời điểm kiểm thử.
+b)Unit test kiểm thử Chức năng Hành vi Tấn công của Kẻ thù
+
+Hình 4.2 Unit test Kiểm thử Chức năng Hành vi Tấn công của Kẻ thù
+
+Kết quả kiểm thử thành công 100% cho 8 trường hợp đa dạng (từ thông thường đến bất thường và biên) cho thấy logic cốt lõi điều khiển hành vi tấn công của kẻ thù đã được triển khai chính xác. Kẻ thù phản ứng đúng với các điều kiện về tầm đánh, trạng thái cooldown, vị trí và hành động của người chơi, đồng thời thực hiện tấn công và gây sát thương như mong đợi theo thiết kế cơ bản.
+c)Unit test kiểm thử Chức năng Hành vi Hệ thống Nhiệm vụ
+
+
+Hình 4.3 Unit test Kiểm thử Chức năng Hành vi Hệ thống Nhiệm vụ
+
+Báo cáo kiểm thử chi tiết được trình bày trong Hình 4.3 tập trung đánh giá Hệ thống Nhiệm vụ của trò chơi. Mục tiêu kiểm thử (Test requirement) bao quát toàn diện: "Kiểm tra toàn bộ quy trình nhận và hoàn thành nhiệm vụ với các loại mục tiêu khác nhau". Điều này bao gồm việc xác minh từ lúc người chơi nhận nhiệm vụ, theo dõi tiến trình dựa trên các loại mục tiêu đa dạng (tiêu diệt, thu thập, tương tác, di chuyển), cho đến khi hoàn thành và xử lý các trường hợp đặc biệt như nhiệm vụ chuỗi hay hủy nhiệm vụ. Đợt kiểm thử này bao gồm 8 trường hợp kiểm thử (Total Test Cases), trong đó có 7 trường hợp kiểm thử thông thường (N) và 1 trường hợp bất thường (A - Hủy nhiệm vụ). Kết quả tổng thể rất tích cực khi 100% (8/8) test case đều thành công (Passed), không có lỗi nào được ghi nhận (Failed = 0).
+4.4.2System test
+a)System test kiểm thử Chức năng Tương tác Môi trường
+
+
+Hình 4 4 System test kiểm thử Chức năng Tương tác Môi trường
+
+Kết quả của system test cho chức năng "Tương tác Môi trường" là rất tích cực. Chức năng tương tác cơ bản giữa người chơi và môi trường đang hoạt động đúng như mong đợi. Các yếu tố môi trường như cây cỏ, tường và hồ nước đang phản ứng chính xác với sự di chuyển của người chơi. Không có lỗi nghiêm trọng nào được phát hiện trong phạm vi các test case đã thực hiện. Các pre-condition và expected output đã được định nghĩa rõ ràng và được đáp ứng trong quá trình kiểm thử.
+b)System test kiểm thử Chức năng Hành vi Tấn công của Kẻ thù
+
+
+Hình 4.5 System test kiểm thử Chức năng Hành vi Tấn công của Kẻ thù
+
+Kết quả của system test cho chức năng "CombatSystem" cũng cho thấy một tín hiệu rất tích cực. Tương tự như chức năng "Tương tác Môi trường", cả ba test case được thực hiện cho chức năng tấn công kẻ thù đều đã pass thành công. Chức năng tấn công
+kẻ thù đang hoạt động đúng theo thiết kế, đặc biệt là các khía cạnh không sử dụng mana
+
+và có cơ chế hồi chiêu. Các tình huống kiểm thử cơ bản cho chức năng tấn công đã được thực hiện thành công, bao gồm tấn công thành công, không thể tấn công khi đang trong thời gian hồi chiêu, và không hồi máu khi bị tấn công. Không có lỗi nào được phát hiện trong các test case này.
+c)System test kiểm thử Chức năng Hành vi Hệ thống Nhiệm vụ
+
+
+Hình 4.6 System test kiểm thử Chức năng Hành vi Hệ thống Nhiệm vụ
+
+Kết quả của system test cho chức năng "QuestSystem" cũng rất tốt, với tất cả 4 test case đều pass thành công. Các chức năng chính của hệ thống nhiệm vụ đang hoạt động tốt. Người chơi có thể nhận nhiệm vụ từ NPC, hoàn thành các yêu cầu của nhiệm vụ (thu thập vật phẩm), nộp nhiệm vụ để nhận phần thưởng, và không thể nhận lại các nhiệm vụ đã hoàn thành. Quy trình thực hiện nhiệm vụ diễn ra suôn sẻ theo đúng logic thiết kế. Giao diện và thông báo liên quan đến nhiệm vụ hoạt động chính xác.
+
+4.5Giao diện trò chơi
+4.5.1Giao diện Gameplay cơ bản
+
+Hình 4.7 Giao diện Gameplay cơ bản
+
+Hình 4.7 này minh họa giao diện gameplay cơ bản của trò chơi RPG. Nó hiển thị góc nhìn từ trên xuống của nhân vật người chơi đang cầm một thanh kiếm và đối diện với một kẻ thù Slime trên một vùng đất cỏ xanh. Các yếu tố giao diện chính có thể thấy bao gồm: Thông tin nhiệm vụ hiện tại (Current Quests): Góc trên bên trái màn hình hiển thị "Nhặt vàng: 4/5", cho thấy một nhiệm vụ đang được thực hiện liên quan đến việc thu thập vàng. Thanh công cụ (Toolbar/Hotbar): Ở phía dưới màn hình có một thanh công cụ với các ô vuông, trong đó có một số ô chứa biểu tượng vũ khí. Các ô còn lại có thể là vị trí để gán thêm các vật phẩm hoặc kỹ năng khác. Môi trường trò chơi: Phần lớn diện tích hình ảnh hiển thị môi trường trò chơi với nền cỏ xanh, các khối đất màu nâu, một vũng nước nhỏ màu xanh lam ở góc dưới bên phải, và một vài cây cối cùng hoa.
+
+4.5.2Giao diện hội thoại với NPC
+
+Hình 4.8 Giao diện hội thoại với NPC
+
+Hình 4.8 này minh họa giao diện hội thoại khi người chơi tương tác với một NPC (Non-Player Character) trong trò chơi. Giao diện hội thoại xuất hiện dưới dạng một hộp thoại lớn ở giữa màn hình, phía trên nhân vật người chơi và NPC. Tên và hình ảnh NPC: Ở góc trên bên trái của hộp thoại, có tên của NPC ("NPC Huy") cùng với một hình ảnh nhỏ đại diện cho NPC. Bối cảnh trò chơi: Phía sau hộp thoại vẫn có thể nhìn thấy một phần của môi trường trò chơi, bao gồm nhân vật người chơi, NPC, và cảnh quan xung quanh. Điều này giúp duy trì sự kết nối giữa cuộc hội thoại và thế giới trò chơi. Giao diện hội thoại này đóng vai trò quan trọng trong việc truyền tải cốt truyện, cung cấp nhiệm vụ, hướng dẫn người chơi và tạo sự tương tác giữa người chơi và thế giới ảo trong game RPG. Thiết kế đơn giản và rõ ràng của hộp thoại giúp người chơi dễ dàng theo dõi nội dung hội thoại và đưa ra các lựa chọn tương tác.
+
+4.5.3Giao diện Gameplay với đường đi
+
+Hình 4.9 Giao diện Gameplay với đường đi
+
+Hình 4.9 này tiếp tục minh họa giao diện gameplay của trò chơi RPG, tập trung vào việc di chuyển của nhân vật trong môi trường và sự xuất hiện của các vật thể có thể tương tác. Thông tin nhiệm vụ hiện tại (Current Quests): Góc trên bên trái vẫn hiển thị "Nhặt vàng: 4/5", cho thấy nhiệm vụ hiện tại vẫn đang được tiến hành. Môi trường trò chơi: Hình ảnh này cho thấy nhân vật người chơi đang di chuyển trên một con đường đất màu nâu, được bao quanh bởi nền cỏ xanh, cây cối và các tảng đá. Điểm đáng chú ý là sự xuất hiện của hai ngọn đuốc đang cháy ở phía bên phải con đường. Đây là những vật thể tương tác hoặc đơn giản là yếu tố trang trí trong môi trường. Nhân vật người chơi: Nhân vật vẫn được hiển thị với góc nhìn từ trên xuống, đang cầm thanh kiếm và di chuyển dọc theo con đường.
+
+4.5.4Giao diện Gameplay với nhân vật ẩn sau cây
+
+Hình 4.10 Giao diện Gameplay với nhân vật ẩn sau cây
+
+Hình 4.10 này tiếp tục minh họa giao diện gameplay, cho thấy một tình huống trong đó nhân vật người chơi đang ẩn mình sau một nhóm cây. Hình ảnh này cho thấy cách giao diện trò chơi hiển thị môi trường và vị trí của người chơi, ngay cả khi người chơi đang ẩn sau các vật thể. Thanh công cụ và thông tin nhiệm vụ vẫn luôn hiển thị, đảm bảo người chơi có thể truy cập các thông tin và chức năng quan trọng bất kể tình huống trong game. Việc nhân vật ẩn sau cây có thể là một yếu tố chiến thuật hoặc một phần của việc khám phá môi trường.
+
+4.5.5Giao diện Gameplay với tương tác thu thập
+
+Hình 4.11 Giao diện Gameplay với tương tác thu thập
+
+Hình 4.11 cho thấy Môi trường trò chơi: Hình ảnh này cho thấy nhân vật đang đứng gần một bụi cây màu xanh lá cây. Có vẻ như nhân vật đang thực hiện một hành động tương tác với bụi cây này, có thể là để thu thập quả, lá, hoặc một loại vật phẩm khác. Xung quanh vẫn là nền cỏ xanh và các yếu tố môi trường quen thuộc. Nhân vật người chơi: Nhân vật được hiển thị từ trên xuống, cầm một chiếc cung và đang hướng về phía bụi cây.
+
+4.5.6Giao diện Gameplay với tấn công tầm xa
+
+Hình 4.12 Giao diện Gameplay với tấn công tầm xa
+
+Hình ảnh này minh họa một khía cạnh khác của hệ thống chiến đấu trong game, đó là khả năng sử dụng các đòn tấn công tầm xa hoặc các kỹ năng đặc biệt. Việc ô thứ ba trên thanh công cụ được làm nổi bật có thể cho thấy người chơi đã chọn hoặc kích hoạt kỹ năng này từ thanh công cụ. Giao diện vẫn giữ được tính nhất quán, cho phép người chơi dễ dàng theo dõi thông tin nhiệm vụ và sử dụng các kỹ năng chiến đấu.
+
+CHƯƠNG 5: TỔNG KẾT
+5.1.Kết quả Đạt được
+Sản phẩm hoàn thiện: Tạo ra trò chơi \"Flappy Duck\" với đầy đủ mechanic từ di chuyển, kỹ năng đến chiến đấu chống lại AI đa dạng.
+Hệ thống Multiplayer Netcode: Triển khai thành công hạ tầng mạng sử dụng Unity Netcode for GameObjects, kết hợp Lobby và Relay cho trải nghiệm chơi online ổn định.
+Thiết kế Nhân vật Đặc sắc: Xây dựng hệ thống 5 loại Duck (Normal, Tiny, Ninja, Soldier, Ghost) với các chỉ số và kỹ năng riêng biệt, hỗ trợ đồng bộ hóa trạng thái mượt mà.
+Kiến trúc Mã nguồn Chuyên nghiệp: Áp dụng mô hình State Machine phân cấp (HSM) giúp quản lý logic nhân vật và AI hiệu quả, dễ mở rộng và bảo trì.
+Giao diện Người dùng (UI/UX): Hoàn thiện bộ UI đồng bộ từ Menu chính, phòng chờ Lobby đến màn hình Gameplay và kết quả trận đấu.
+5.2Đóng góp của Đề tài
+-Thực tiễn: Cung cấp một sản phẩm prototype cụ thể, minh họa cho việc ứng dụng lý thuyết và công nghệ vào phát triển game 2D Action RPG.
+-Kỹ thuật: Trình bày một quy trình tương đối hoàn chỉnh từ phân tích, thiết kế đến triển khai và kiểm thử một dự án game nhỏ bằng Unity, có thể làm tài liệu tham khảo cho các sinh viên hoặc nhà phát triển mới.
+
+-Cá nhân: Giúp tác giả củng cố kiến thức chuyên môn, phát triển kỹ năng lập trình C#, kỹ năng sử dụng Unity, tư duy thiết kế hệ thống và khả năng giải quyết vấn đề trong thực tế.
+5.3Hạn chế của Đề tài
+Bên cạnh những kết quả đạt được, đề tài vẫn còn tồn tại một số hạn chế do giới hạn về thời gian, kinh nghiệm và nguồn lực:
+-Nội dung còn hạn chế: Số lượng chướng ngại vật mẫu, chế độ chơi, và đa dạng kẻ thù còn khiêm tốn.
+-Chiều sâu Gameplay: Hệ thống tương tác vật lý và sự kết hợp giữa các class nhân vật còn ở mức cơ bản, cần tối ưu thêm.
+-Tối ưu hóa: Việc tối ưu hiệu năng mới chỉ là bước đầu, game có thể chưa chạy tốt trên các máy cấu hình yếu.
+-Đồ họa và Âm thanh: Tài sản đồ họa và âm thanh chủ yếu phục vụ mục đích chức năng, chưa được đầu tư trau chuốt về mặt nghệ thuật.
+-Kiểm thử: Mặc dù đã thực hiện kiểm thử chức năng, nhưng phạm vi và độ sâu của kiểm thử (ví dụ: kiểm thử hiệu năng, kiểm thử trên nhiều thiết bị) còn hạn chế.
+5.4Hướng Phát triển Tương lai
+Từ nền tảng prototype đã xây dựng, có rất nhiều hướng để tiếp tục phát triển và hoàn thiện "Flappy Duck":
+-Mở rộng thế giới và nội dung: Thêm nhiều khu vực, màn chơi mới với thiết kế đa dạng; bổ sung các loại kẻ thù, trùm (boss) với cơ chế chiến đấu độc đáo; phát triển thêm hệ thống vũ khí, trang bị, vật phẩm.
+-Phát triển hệ thống Cạnh tranh: Xây dựng API và cơ sở dữ liệu để tạo Bảng xếp hạng (Leaderboard) toàn cầu, hệ thống Achievement, và Shop IAP.
+-Mở rộng Class và Skin: Thêm các class nhân vật vịt mới với các cơ chế tấn công và phòng thủ sáng tạo, cùng hệ thống Skin cá nhân hóa người chơi.
+-Cải thiện AI: Làm cho kẻ thù thông minh hơn, có chiến thuật tấn công/phòng thủ đa dạng, biết phối hợp hoặc phản ứng linh hoạt hơn với môi trường và người chơi.
+
+-Đánh bóng sản phẩm: Nâng cấp chất lượng đồ họa, đầu tư vào hiệu ứng hình ảnh (VFX) các đòn đánh, nhạc nền (BGM) và hiệu ứng âm thanh (SFX) chuyên nghiệp.
+-Tối ưu hóa và Kiểm thử toàn diện: Thực hiện các biện pháp tối ưu hóa sâu hơn, kiểm thử trên nhiều nền tảng và cấu hình khác nhau để đảm bảo tính ổn định và hiệu năng.
+-Xem xét các tính năng khác: Khả năng thêm mini-game, hệ thống thành tựu (achievements), hoặc hỗ trợ đa ngôn ngữ.
+
+TÀI LIỆU THAM KHẢO
+Tiếng Việt
+[1]Suvak, Janine (2016). Lập trình Game với Unity, NXB Đại học FPT, Hà Nội.
+Tiếng Anh
+[2]Lanzinger, Franz (2020). 2D Game Development with Unity, CRC Press, Boca Raton, FL.
+[3]Doran, John P.; Casanova, Matt (2017). Game Development Patterns and Best Practices, Packt Publishing, Birmingham, UK.
+[4]Dickinson, Chris (2017). Unity 2017 Game Optimization (2nd ed.), Packt Publishing, Birmingham, UK.
+[5]Halpern, Jared (2018). Developing 2D Games with Unity: Independent Game Programming, Apress, New York, NY.
