@@ -1,0 +1,160 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: New Table Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: New Table
+  m_TableCollectionNameGuidString: d13eb38fefe72408ba54bd663c0f90cf
+  m_Entries:
+  - m_Id: 7216127008768
+    m_Key: online
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727409561600
+    m_Key: offline
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727409561601
+    m_Key: duck
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727409561602
+    m_Key: settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727409561603
+    m_Key: exit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727409561604
+    m_Key: return
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6757647638528
+    m_Key: play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727409561605
+    m_Key: cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727409561606
+    m_Key: findMatch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727409561607
+    m_Key: matchmaking
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727409561608
+    m_Key: graphic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727409561609
+    m_Key: audio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727409561610
+    m_Key: master
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727409561611
+    m_Key: music
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755904
+    m_Key: screenMode
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755905
+    m_Key: brightness
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755906
+    m_Key: contrast
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755907
+    m_Key: level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755908
+    m_Key: levelCompleted
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755909
+    m_Key: coinsEarned
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755910
+    m_Key: home
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755911
+    m_Key: next
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755912
+    m_Key: levelFailed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755913
+    m_Key: replay
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755914
+    m_Key: pause
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755915
+    m_Key: resume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755916
+    m_Key: on
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755917
+    m_Key: off
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755918
+    m_Key: pressAnyKey
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32289927979008
+    m_Key: buy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32289927979009
+    m_Key: back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32289927979010
+    m_Key: resolution
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32712256643072
+    m_Key: reset
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 5975983615629590833
+  references:
+    version: 2
+    RefIds:
+    - rid: 5975983615629590833
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1774075875768

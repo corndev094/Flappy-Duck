@@ -668,6 +668,14 @@ PrefabInstance:
       propertyPath: defaultClickSound
       value: 
       objectReference: {fileID: 8300000, guid: b70d284b6091ae54ebf83151fca04d94, type: 3}
+    - target: {fileID: 8230031957727713669, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 29727409561601
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230031957727713669, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:d13eb38fefe72408ba54bd663c0f90cf
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -857,6 +865,14 @@ PrefabInstance:
       propertyPath: defaultClickSound
       value: 
       objectReference: {fileID: 8300000, guid: b70d284b6091ae54ebf83151fca04d94, type: 3}
+    - target: {fileID: 8230031957727713669, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 29727409561603
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230031957727713669, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:d13eb38fefe72408ba54bd663c0f90cf
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -919,18 +935,6 @@ PrefabInstance:
       value: 147.2798
       objectReference: {fileID: 0}
     - target: {fileID: 1908198467619999932, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1908198467619999932, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1908198467619999932, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1908198467619999932, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -980,27 +984,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2675686670723783168, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 6.239502
+      value: 3.6414948
       objectReference: {fileID: 0}
     - target: {fileID: 3343314660147987165, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
       propertyPath: m_text
       value: Online
       objectReference: {fileID: 0}
-    - target: {fileID: 3343314660147987165, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
-      propertyPath: m_fontSize
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 3343314660147987165, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 2100000, guid: 915802e8e40b7aa43b6ed3b8f9d4568a, type: 2}
-    - target: {fileID: 3343314660147987165, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
-      propertyPath: 'm_fontSharedMaterials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 915802e8e40b7aa43b6ed3b8f9d4568a, type: 2}
     - target: {fileID: 3637834834295006640, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
       propertyPath: m_Name
       value: PlayOnlineBtn
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230031957727713669, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 7216127008768
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230031957727713669, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:d13eb38fefe72408ba54bd663c0f90cf
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1199,6 +1199,14 @@ PrefabInstance:
       propertyPath: defaultClickSound
       value: 
       objectReference: {fileID: 8300000, guid: b70d284b6091ae54ebf83151fca04d94, type: 3}
+    - target: {fileID: 8230031957727713669, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 29727409561602
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230031957727713669, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:d13eb38fefe72408ba54bd663c0f90cf
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1331,6 +1339,14 @@ PrefabInstance:
     - target: {fileID: 3637834834295006640, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
       propertyPath: m_Name
       value: OfflineBtn
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230031957727713669, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 29727409561600
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230031957727713669, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:d13eb38fefe72408ba54bd663c0f90cf
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

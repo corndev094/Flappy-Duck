@@ -4579,6 +4579,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8230031957727713669, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 6757647638528
+      objectReference: {fileID: 0}
+    - target: {fileID: 8230031957727713669, guid: 662e773f3847eed40bcee7d3263f1b60, type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:d13eb38fefe72408ba54bd663c0f90cf
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
