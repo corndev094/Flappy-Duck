@@ -3,13 +3,14 @@ using DG.Tweening;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
 public class LevelResultPopup : ABasePopup {
     [Header("Win Window")]
     [SerializeField] private GameObject winWindow;
     [SerializeField] private Image coinIcon;
-    [SerializeField] private TMP_Text winCoinCountText;
+    [SerializeField] private LocalizeStringEvent winCoinCountText;
     [SerializeField] private Button winHomeButton;
     [SerializeField] private Button nextButton;
 
@@ -17,7 +18,7 @@ public class LevelResultPopup : ABasePopup {
     [Header("Lose Window")]
     [SerializeField] private GameObject loseWindow;
     [SerializeField] private Image heartIcon;
-    [SerializeField] private TMP_Text loseCoinCountText;
+    [SerializeField] private LocalizeStringEvent loseCoinCountText;
     [SerializeField] private Button loseHomeButton;
     [SerializeField] private Button replayButton;
 
@@ -71,8 +72,8 @@ public class LevelResultPopup : ABasePopup {
             nextButton.gameObject.SetActive(true);
         }
 
-        winCoinCountText.text = coin.ToString();
-        loseCoinCountText.text = coin.ToString();
+        winCoinCountText.StringReference.Arguments = new object[] {coin.ToString()};
+        loseCoinCountText.StringReference.Arguments = new object[] {coin.ToString()};
     }
 
     private async void Return()

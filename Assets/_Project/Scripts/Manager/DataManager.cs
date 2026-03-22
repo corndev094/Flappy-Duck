@@ -234,6 +234,19 @@ public class DataManager : Singleton<DataManager> {
 
     #endregion
 
+    #region Localization
+
+    public void SaveLanguage(string language){
+        PlayerPrefs.SetString(ConstantString.LANGUAGE, language);
+    }
+
+    public string GetLanguage()
+    {
+        return PlayerPrefs.GetString(ConstantString.LANGUAGE, "en");
+    }
+
+    #endregion
+
     #region Utility
     [ContextMenu("Create New Data")]
     public void CreateNewData()

@@ -2,6 +2,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Localization;
 
 /// <summary>
 /// Central facade for game operations.
@@ -134,7 +135,6 @@ public class GameFacade : NetworkSingleton<GameFacade> {
 
     public async UniTask WinLevel()
     {
-        Debug.Log("Show popup");
         if (UIManager.Instance.TryGetPopup(Popup.LevelResult, out var menu) && menu != null && menu is LevelResultPopup levelResultMenu)
         {
             levelResultMenu.Setup(true);

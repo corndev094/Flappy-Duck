@@ -10,20 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: New Table_de
+  m_Name: Localization Table_en
   m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
   m_LocaleId:
-    m_Code: de
+    m_Code: en
   m_SharedData: {fileID: 11400000, guid: d13eb38fefe72408ba54bd663c0f90cf, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 5975983640492114043
   m_TableData:
   - m_Id: 32289927979008
-    m_Localized: Kaufen
+    m_Localized: Buy
     m_Metadata:
       m_Items: []
   - m_Id: 6757647638528
-    m_Localized: Spielen
+    m_Localized: Play
     m_Metadata:
       m_Items: []
   - m_Id: 7216127008768
@@ -35,79 +36,79 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561601
-    m_Localized: Ente
+    m_Localized: Duck
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561602
-    m_Localized: Einstellung
+    m_Localized: Setting
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561603
-    m_Localized: Flucht
+    m_Localized: Exit
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561604
-    m_Localized: "Zur\xFCckkehren"
+    m_Localized: Return
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561605
-    m_Localized: Stornieren
+    m_Localized: Cancel
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561606
-    m_Localized: Finde ein passendes Paar...
+    m_Localized: Find a match...
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561607
-    m_Localized: Partnervermittlung
+    m_Localized: Matchmaking
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561608
-    m_Localized: Grafik
+    m_Localized: Graphics
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561609
-    m_Localized: Klang
+    m_Localized: Sound
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561610
-    m_Localized: "Haupts\xE4chlich"
+    m_Localized: Main
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561611
-    m_Localized: Musik
+    m_Localized: Music
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755904
-    m_Localized: Modus
+    m_Localized: Mode
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755905
-    m_Localized: Helligkeit
+    m_Localized: Brightness
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755906
-    m_Localized: Kontrast
+    m_Localized: Contrast
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755908
-    m_Localized: "Schlie\xDFe das Level ab"
+    m_Localized: Level Complete
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755909
-    m_Localized: "Die verdiente M\xFCnze"
+    m_Localized: '{0}\nCOINS EARNED'
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755910
-    m_Localized: Heim
+    m_Localized: Home
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755911
-    m_Localized: "N\xE4chste"
+    m_Localized: Next
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755913
-    m_Localized: Wiederholung
+    m_Localized: Replay
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755914
@@ -115,17 +116,76 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755918
-    m_Localized: "Beliebige Taste dr\xFCcken"
+    m_Localized: Press any key
     m_Metadata:
       m_Items: []
   - m_Id: 32289927979010
-    m_Localized: "Aufl\xF6sung"
+    m_Localized: Resolution
     m_Metadata:
       m_Items: []
   - m_Id: 32712256643072
-    m_Localized: "Zur\xFCcksetzen"
+    m_Localized: Reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755907
+    m_Localized: Level {0}
+    m_Metadata:
+      m_Items:
+      - rid: 5975983640492114043
+  - m_Id: 29727413755912
+    m_Localized: Level Failed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755915
+    m_Localized: Resume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755916
+    m_Localized: On
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755917
+    m_Localized: Off
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32289927979009
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98508295102464
+    m_Localized: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 287939375390720
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 287939379585024
+    m_Localized: French
+    m_Metadata:
+      m_Items: []
+  - m_Id: 287939379585025
+    m_Localized: German
+    m_Metadata:
+      m_Items: []
+  - m_Id: 287939379585026
+    m_Localized: Russian
+    m_Metadata:
+      m_Items: []
+  - m_Id: 287939379585027
+    m_Localized: Spanish
+    m_Metadata:
+      m_Items: []
+  - m_Id: 287939379585028
+    m_Localized: Vietnamese
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 5975983640492114043
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 29727413755907

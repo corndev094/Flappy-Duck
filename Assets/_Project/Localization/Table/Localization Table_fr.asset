@@ -10,64 +10,65 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: New Table_es
+  m_Name: Localization Table_fr
   m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
   m_LocaleId:
-    m_Code: es
+    m_Code: fr
   m_SharedData: {fileID: 11400000, guid: d13eb38fefe72408ba54bd663c0f90cf, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 5975983640492114033
   m_TableData:
   - m_Id: 32289927979008
-    m_Localized: Comprar
+    m_Localized: Acheter
     m_Metadata:
       m_Items: []
   - m_Id: 6757647638528
-    m_Localized: Jugar
+    m_Localized: Jouer
     m_Metadata:
       m_Items: []
   - m_Id: 7216127008768
-    m_Localized: "En l\xEDnea"
+    m_Localized: En ligne
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561600
-    m_Localized: Desconectado
+    m_Localized: Hors ligne
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561601
-    m_Localized: Pato
+    m_Localized: Canard
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561602
-    m_Localized: "Configuraci\xF3n"
+    m_Localized: "Param\xE8tre"
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561603
-    m_Localized: Escapar
+    m_Localized: "S'\xE9chapper"
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561604
-    m_Localized: Devolver
+    m_Localized: Retour
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561605
-    m_Localized: Cancelar
+    m_Localized: Annuler
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561606
-    m_Localized: Encuentra una pareja...
+    m_Localized: Trouver un partenaire...
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561607
-    m_Localized: Casamentero
+    m_Localized: Mise en relation
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561608
-    m_Localized: "Gr\xE1ficos"
+    m_Localized: Graphique
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561609
-    m_Localized: Sonido
+    m_Localized: Son
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561610
@@ -75,15 +76,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 29727409561611
-    m_Localized: "M\xFAsica"
+    m_Localized: Musique
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755904
-    m_Localized: Modo
+    m_Localized: Mode
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755905
-    m_Localized: Brillo
+    m_Localized: "Luminosit\xE9"
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755906
@@ -91,41 +92,100 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755908
-    m_Localized: Completa el nivel
+    m_Localized: "Niveau termin\xE9"
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755909
-    m_Localized: La moneda ganada
+    m_Localized: "{0}\\nPI\xC8CES GAGN\xC9ES"
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755910
-    m_Localized: Hogar
+    m_Localized: Maison
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755911
-    m_Localized: "Pr\xF3ximo"
+    m_Localized: Suivant
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755913
-    m_Localized: "Repetici\xF3n"
+    m_Localized: Rejouer
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755914
-    m_Localized: Pausa
+    m_Localized: Pause
     m_Metadata:
       m_Items: []
   - m_Id: 29727413755918
-    m_Localized: Pulsa cualquier tecla
+    m_Localized: Appuyez sur n'importe quelle touche
     m_Metadata:
       m_Items: []
   - m_Id: 32289927979010
-    m_Localized: "Resoluci\xF3n"
+    m_Localized: "R\xE9solution"
     m_Metadata:
       m_Items: []
   - m_Id: 32712256643072
-    m_Localized: Reiniciar
+    m_Localized: "R\xE9initialiser"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755907
+    m_Localized: Niveau {0}
+    m_Metadata:
+      m_Items:
+      - rid: 5975983640492114033
+  - m_Id: 29727413755912
+    m_Localized: "Niveau \xE9chou\xE9"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755915
+    m_Localized: Reprendre
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755916
+    m_Localized: "Activ\xE9"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 29727413755917
+    m_Localized: "D\xE9sactiv\xE9"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 32289927979009
+    m_Localized: Retour
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98508295102464
+    m_Localized: Langue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 287939375390720
+    m_Localized: Anglais
+    m_Metadata:
+      m_Items: []
+  - m_Id: 287939379585024
+    m_Localized: "Fran\xE7ais"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 287939379585025
+    m_Localized: Allemand
+    m_Metadata:
+      m_Items: []
+  - m_Id: 287939379585026
+    m_Localized: russe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 287939379585027
+    m_Localized: Espagnol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 287939379585028
+    m_Localized: vietnamien
     m_Metadata:
       m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 5975983640492114033
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 29727413755907

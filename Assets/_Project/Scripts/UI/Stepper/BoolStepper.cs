@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Localization;
 
 public class BoolStepper : Stepper<bool> {
     protected override void Start()

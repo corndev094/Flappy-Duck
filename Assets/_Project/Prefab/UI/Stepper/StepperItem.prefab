@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 498344956837720062}
-  - component: {fileID: 36606128743078500}
   m_Layer: 5
   m_Name: StepperItem
   m_TagString: Untagged
@@ -37,14 +36,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &36606128743078500
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2100308821623268031}
-  m_CullTransparentMesh: 1
 --- !u!1 &8196048113460611012
 GameObject:
   m_ObjectHideFlags: 0

@@ -307,7 +307,6 @@ public class LevelMapMenu : ABaseMenu
     /// </summary>
     private async UniTask MoveDuckToLevel(int startLevelId, int endLevelId)
     {
-        Debug.Log($"{startLevelId} -> {endLevelId}");
         if (isDuckMoving) return;
         isDuckMoving = true;
 

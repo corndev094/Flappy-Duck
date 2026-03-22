@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 140346563ca447c4da23f34f061fdf21, type: 3}
   m_Name: ScreenModeList
   m_EditorClassIdentifier: Assembly-CSharp::StringListSO
-  items:
-  - Exclusive
+  list:
   - Windowed
+  - Exclusive

@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d44bd541bbc323e40918503c9315f4b8, type: 3}
   m_Name: FPSList
   m_EditorClassIdentifier: Assembly-CSharp::IntListSO
-  items: 1e0000003c00000078000000f0000000
+  list: 1e0000003c00000078000000

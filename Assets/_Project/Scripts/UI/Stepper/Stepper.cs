@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using NaughtyAttributes;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Localization;
+using UnityEngine.ResourceManagement.ResourceProviders.Simulation;
 using UnityEngine.UI;
 
 public abstract class Stepper<T> : MonoBehaviour
@@ -22,7 +26,11 @@ public abstract class Stepper<T> : MonoBehaviour
     [SerializeField] protected Button previousButton;
     [SerializeField] protected Button nextButton;
     public UnityEvent<T> OnItemSelected;
+
+    [Header("Item References")]
+    [SerializeField] private bool useScritableObject;
     [SerializeField] protected List<T> items = new();
+    [SerializeField] private VariableListSO<T> variableListSO;
 
     [Header("SFX")]
     [SerializeField] private AudioClip navigateSfx;
@@ -33,6 +41,23 @@ public abstract class Stepper<T> : MonoBehaviour
 
     protected virtual void Start()
     {
+        if (useScritableObject)
+        {
+            items = variableListSO.list;
+        }
+
+        previousButton.onClick.AddListener(MovePrevious);
+        nextButton.onClick.AddListener(MoveNext);
+        UpdateButtonInteractable();
+    }
+
+    [Button]
+    private void Setup()
+    {
+        for(var i = 0; i < content.childCount; i++)
+        {
+            DestroyImmediate(content.GetChild(i).gameObject);
+        }
         if (direction == Direction.Horizontal)
         {
             content.pivot = new Vector2(0, 0.5f);
@@ -80,15 +105,6 @@ public abstract class Stepper<T> : MonoBehaviour
             item.name = $"Item {i}: {items[i]}";
             item.GetComponentInChildren<TMP_Text>().SetText(items[i].ToString());
         }
-
-        previousButton.onClick.AddListener(MovePrevious);
-        nextButton.onClick.AddListener(MoveNext);
-        UpdateButtonInteractable();
-    }
-
-    public void SetupList(List<T> list)
-    {
-        items = list;
     }
 
     protected void OnDestroy()
@@ -131,8 +147,7 @@ public abstract class Stepper<T> : MonoBehaviour
         _tweener = content.DOAnchorPos(targetPosition, duration)
             .SetEase(easeType)
             .OnComplete(UpdateButtonInteractable);
-        OnItemSelected?.Invoke(items[_currentSelectedItem]);
-        
+        InvokeEvent();
         UpdateButtonInteractable();
     }
 
@@ -154,7 +169,7 @@ public abstract class Stepper<T> : MonoBehaviour
         }
 
         content.anchoredPosition = targetPosition;
-        OnItemSelected?.Invoke(items[_currentSelectedItem]);
+        InvokeEvent();
         UpdateButtonInteractable();
     }
 
@@ -164,8 +179,9 @@ public abstract class Stepper<T> : MonoBehaviour
         nextButton.interactable = _currentSelectedItem < TotalChildren - 1;
     }
 
-    public void SetSelectedItem(T item, bool animate = true)
+    public async void SetSelectedItem(T item, bool animate = true)
     {
+        await UniTask.Delay(100); // Wait for the layout to be updated
         int index = items.IndexOf(item);
         if (index == -1) return;
         _currentSelectedItem = index;
@@ -179,5 +195,17 @@ public abstract class Stepper<T> : MonoBehaviour
         }
     }
 
+    protected virtual void InvokeEvent()
+    {
+        OnItemSelected?.Invoke(items[_currentSelectedItem]);
+    }
+
     public enum Direction { Horizontal, Vertical }
+
+    [System.Serializable]
+    public struct ItemInfo
+    {
+        public LocalizedString localizedKey;
+        public string displayName;
+    }
 }

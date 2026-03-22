@@ -1,11 +1,14 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Components;
+using UnityEngine.Localization.SmartFormat.PersistentVariables;
 using UnityEngine.UI;
 
 public class LevelItem : MonoBehaviour {
     [SerializeField] private Image thumbnail;
-    [SerializeField] private TMP_Text nameText;
+    [SerializeField] private LocalizeStringEvent localizeTextEvent;
     [SerializeField] private Button levelButton;
 
     private LevelSO levelData;
@@ -15,8 +18,9 @@ public class LevelItem : MonoBehaviour {
     {
         this.levelData = levelData;
         thumbnail.sprite = levelData.Thumbnail;
-        nameText.SetText($"Level {levelData.ID}");
-        
+        localizeTextEvent.StringReference.Arguments = new object[] {levelData.ID.ToString()};
+        localizeTextEvent.RefreshString();
+
         thumbnail.color = isUnlocked ? Color.white : Color.gray;
         
         if (levelButton != null)

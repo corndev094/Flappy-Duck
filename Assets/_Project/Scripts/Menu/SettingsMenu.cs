@@ -12,6 +12,7 @@ using UnityEngine.UI;
 public class SettingsMenu : ABaseMenu {
     [SerializeField] private MainMenu mainMenu;
     [SerializeField] private Button returnBtn;
+    [SerializeField] private Button languageBtn;
     [SerializeField] private Volume globalVolume;
     
     [Header("Data")]
@@ -36,10 +37,10 @@ public class SettingsMenu : ABaseMenu {
     [SerializeField] private Button audioResetBtn;
 
     private ColorAdjustments colorAdjustments;
+    private LanguagePopup languagePopup;
 
     void Awake()
     {
-        Setup();
         if (globalVolume == null) globalVolume = FindFirstObjectByType<Volume>();
         if (globalVolume != null)
         {
@@ -52,6 +53,7 @@ public class SettingsMenu : ABaseMenu {
 
     private void OnEnable() {
         returnBtn.onClick.AddListener(ReturnHome);
+        languageBtn.onClick.AddListener(OnLanguageClicked);
         screenModeStepper.OnItemSelected.AddListener(OnScreenModeChanged);
         resolutionStepper.OnItemSelected.AddListener(OnResolutionChanged);
         fpsStepper.OnItemSelected.AddListener(OnFpsChanged);
@@ -63,10 +65,14 @@ public class SettingsMenu : ABaseMenu {
         contrastSlider.onValueChanged.AddListener(OnContrastChanged);
         graphicResetBtn.onClick.AddListener(ResetGrahpicSettings);
         audioResetBtn.onClick.AddListener(ResetAudioSettings);
+        UIManager.Instance.TryGetPopup(Popup.Language, out var popup);
+        languagePopup = popup as LanguagePopup;
+        languagePopup.onOpen += OnLanguagePopupOpen;
     }
 
     private void OnDisable() {
         returnBtn.onClick.RemoveListener(ReturnHome);
+        languageBtn.onClick.RemoveListener(OnLanguageClicked);
         screenModeStepper.OnItemSelected.RemoveListener(OnScreenModeChanged);
         resolutionStepper.OnItemSelected.RemoveListener(OnResolutionChanged);
         fpsStepper.OnItemSelected.RemoveListener(OnFpsChanged);
@@ -78,19 +84,15 @@ public class SettingsMenu : ABaseMenu {
         contrastSlider.onValueChanged.RemoveListener(OnContrastChanged);
         graphicResetBtn.onClick.RemoveListener(ResetGrahpicSettings);
         audioResetBtn.onClick.RemoveListener(ResetAudioSettings);
+        UIManager.Instance.TryGetPopup(Popup.Language, out var popup);
+        languagePopup = popup as LanguagePopup;
+        languagePopup.onOpen -= OnLanguagePopupOpen;
     }
 
     public async override UniTask Open(Action onOpenFinish = null)
     {
         await base.Open(onOpenFinish);
         UpdateMenu();
-    }
-
-    private void Setup()
-    {
-        screenModeStepper.SetupList(screenModeList.items);
-        resolutionStepper.SetupList(resolutionList.items);
-        fpsStepper.SetupList(fpsList.items);
     }
 
     public void UpdateUI()
@@ -166,6 +168,11 @@ public class SettingsMenu : ABaseMenu {
         await UIManager.Instance.SwitchToMenu(Menu.Main);
     }
 
+    private async void OnLanguageClicked()
+    {
+        await UIManager.Instance.OpenPopup(Popup.Language);
+    }
+
     private void OnMasterVolumeChanged(float value)
     {
         SoundManager.Instance.SetMasterVolume(value);
@@ -219,5 +226,10 @@ public class SettingsMenu : ABaseMenu {
         masterVolumeSlider.value = 1f;
         musicVolumeSlider.value = 1f;
         sfxVolumeSlider.value = 1f;
+    }
+
+    private void OnLanguagePopupOpen()
+    {
+        languagePopup.UpdateUI();
     }
 }

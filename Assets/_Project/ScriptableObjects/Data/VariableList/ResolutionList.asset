@@ -12,13 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 140346563ca447c4da23f34f061fdf21, type: 3}
   m_Name: ResolutionList
   m_EditorClassIdentifier: Assembly-CSharp::StringListSO
-  items:
-  - "800\xD7600"
-  - "1280\xD7960"
-  - "1280\xD7720"
-  - "1280\xD7800"
-  - "1440\xD7900"
-  - "1600\xD7900"
-  - "1680\xD71050"
-  - "1920\xD71080"
-  - "2560\xD71440"
+  list: []

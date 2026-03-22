@@ -15,4 +15,5 @@ public static class ConstantString
     public static string VSYNC = "vsync";
     public static string BRIGHTNESS = "brightness";
     public static string CONTRAST = "contrast";
+    public static string LANGUAGE = "language";
 }

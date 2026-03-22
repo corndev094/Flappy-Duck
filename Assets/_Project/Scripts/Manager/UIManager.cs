@@ -14,6 +14,7 @@ public class UIManager : Singleton<UIManager> {
     [Header("Popups")]
     [SerializeField] private LevelResultPopup levelResultPopup;
     [SerializeField] private PausePopup pausePopup;
+    [SerializeField] private LanguagePopup languagePopup;
 
     [Header("Multiplayer")]
     [SerializeField] private QuickMatchMenu quickMatchMenu;
@@ -55,6 +56,7 @@ public class UIManager : Singleton<UIManager> {
         {
             {Popup.Pause, pausePopup},
             {Popup.LevelResult, levelResultPopup},
+            {Popup.Language, languagePopup}
         };
     }
 
@@ -64,7 +66,7 @@ public class UIManager : Singleton<UIManager> {
 
     void OnValidate()
     {
-        if (mainCanvas == null)
+        if (Application.isPlaying && mainCanvas == null)
         {
             mainCanvas = GetComponent<Canvas>();
             if (mainCanvas != null && mainCanvas.renderMode == RenderMode.ScreenSpaceOverlay && mainCanvas.worldCamera == null)
@@ -181,4 +183,4 @@ public class UIManager : Singleton<UIManager> {
 }
 
 public enum Menu { Main, Settings, LevelMap, DuckSelection, QuickMatch, FilterMatch };
-public enum Popup { Pause, LevelResult }
+public enum Popup { Pause, LevelResult, Language }
