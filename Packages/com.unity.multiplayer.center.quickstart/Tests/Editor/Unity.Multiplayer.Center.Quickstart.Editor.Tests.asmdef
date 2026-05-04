@@ -6,7 +6,8 @@
         "UnityEditor.TestRunner",
         "Unity.Multiplayer.Center.Editor",
         "Unity.Multiplayer.Center.Common",
-        "Unity.Multiplayer.Center.Integrations"
+        "Unity.Multiplayer.Center.Integrations",
+        "Unity.Multiplayer.Center.NetcodeForGameObjectsExample"
     ],
     "includePlatforms": [
         "Editor"

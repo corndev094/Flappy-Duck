@@ -1604,13 +1604,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -5493,6 +5493,18 @@ PrefabInstance:
     - target: {fileID: 6111626472351865507, guid: 235681aa4050351429e81305d1418214, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 520431608
+      objectReference: {fileID: 0}
+    - target: {fileID: 7473706432930892916, guid: 235681aa4050351429e81305d1418214, type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0.9529412
+      objectReference: {fileID: 0}
+    - target: {fileID: 7473706432930892916, guid: 235681aa4050351429e81305d1418214, type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0.8862745
+      objectReference: {fileID: 0}
+    - target: {fileID: 7473706432930892916, guid: 235681aa4050351429e81305d1418214, type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0.69803923
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

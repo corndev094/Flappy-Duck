@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Unity.Netcode;
+using UnityEditor.Localization.Plugins.XLIFF.V20;
 using UnityEngine;
 
 /// <summary>
@@ -151,6 +152,17 @@ public class GameFlowManager : NetworkBehaviour
         return null;
     }
 
+    public PlayerNetworkData? GetOfflinePlayerData()
+    {
+        int index = GetPlayerIndex(OwnerClientId);
+        if (index >= 0)
+        {
+            var data = PlayerList[index];
+            return data;
+        }
+        return null;
+    }
+
     private int GetPlayerIndex(ulong clientId)
     {
         for (int i = 0; i < PlayerList.Count; i++)
@@ -228,6 +240,17 @@ public class GameFlowManager : NetworkBehaviour
             var data = PlayerList[index];
             updateAction(ref data);
             PlayerList[index] = data;
+            Debug.Log(PlayerList[index].Coin);
+        }
+    }
+
+    public void ResetAllPlayerStats()
+    {
+        foreach (var player in PlayerList)
+        {
+            UpdateNetworkPlayerData(player.ClientId, (ref PlayerNetworkData data) => data.Coin = 0);
+            UpdateNetworkPlayerData(player.ClientId, (ref PlayerNetworkData data) => data.IsAlive = true);
+            Debug.Log($"{player.Coin} - {player.IsAlive}");
         }
     }
 

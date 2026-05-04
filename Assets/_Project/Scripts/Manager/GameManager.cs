@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using Cysharp.Threading.Tasks;
+using UnityEditor.Localization.Plugins.XLIFF.V20;
 
 /// <summary>
 /// Control Win Lose
@@ -66,23 +67,33 @@ public class GameManager : NetworkSingleton<GameManager> {
     {
         IsGameOver = true;
         IsGameWin = true;
+        int coin = 0;
 
         if (CurrentPlayingLevel != null)
         {
             // Unlock next level
             DataManager.Instance.SaveHighestLevel(CurrentPlayingLevel.ID + 1);
+            PlayerNetworkData? playerData = GameFlowManager.Instance.GetOfflinePlayerData();
+            coin = playerData.Value.Coin;
+            if (playerData != null)
+                DataManager.Instance.SaveCurrency(ConstantString.COIN, DataManager.Instance.GetCurrency(ConstantString.COIN) + coin);
         }
 
-        GameFacade.Instance.WinLevel().Forget();
+        GameFacade.Instance.WinLevel(coin).Forget();
         OnWin?.Invoke();
     }
 
     public void HandleLoseCondition()
     {
+        int coin = 0;
         IsGameOver = true;
         IsGameWin = false;
-        GameFacade.Instance.LoseLevel().Forget();
         OnLose?.Invoke();
+        PlayerNetworkData? playerData = GameFlowManager.Instance.GetOfflinePlayerData();
+        coin = playerData.Value.Coin;
+        if (playerData != null)
+            DataManager.Instance.SaveCurrency(ConstantString.COIN, DataManager.Instance.GetCurrency(ConstantString.COIN) + coin);
+        GameFacade.Instance.LoseLevel(coin).Forget();
     }
 }
 

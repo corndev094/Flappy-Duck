@@ -16,4 +16,5 @@ public static class ConstantString
     public static string BRIGHTNESS = "brightness";
     public static string CONTRAST = "contrast";
     public static string LANGUAGE = "language";
+    public static string INIT_DATA = "init_data";
 }

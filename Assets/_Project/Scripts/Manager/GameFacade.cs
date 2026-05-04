@@ -37,6 +37,7 @@ public class GameFacade : NetworkSingleton<GameFacade> {
     /// </summary>
     public async UniTask LoadMultiplayerLevel()
     {
+        GameFlowManager.Instance.ResetAllPlayerStats();
         OnPlayerInMatch?.Invoke();
         Debug.Log("Setup for online level ...");
         var levelData = DataManager.Instance.OnlineLevel;
@@ -75,6 +76,7 @@ public class GameFacade : NetworkSingleton<GameFacade> {
     /// </summary>
     public async UniTask PlayLevel(LevelSO data)
     {
+        GameFlowManager.Instance.ResetAllPlayerStats();
         GameManager.Instance.IsGameOver = false;
         GameManager.Instance.IsGameWin = false;
         GameManager.Instance.OnEnterLevel?.Invoke(data);
@@ -133,20 +135,20 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         SoundManager.Instance.PlayBgMusic();
     }
 
-    public async UniTask WinLevel()
+    public async UniTask WinLevel(int coin)
     {
         if (UIManager.Instance.TryGetPopup(Popup.LevelResult, out var menu) && menu != null && menu is LevelResultPopup levelResultMenu)
         {
-            levelResultMenu.Setup(true);
+            levelResultMenu.Setup(true, coin);
             await UIManager.Instance.OpenPopup(Popup.LevelResult);
         }
     }
 
-    public async UniTask LoseLevel()
+    public async UniTask LoseLevel(int coin)
     {
         if (UIManager.Instance.TryGetPopup(Popup.LevelResult, out var menu) && menu != null && menu is LevelResultPopup levelResultMenu)
         {
-            levelResultMenu.Setup(false);
+            levelResultMenu.Setup(false, coin);
             await UIManager.Instance.OpenPopup(Popup.LevelResult);
         }
     }

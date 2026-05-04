@@ -86,12 +86,12 @@ public class LevelResultPopup : ABasePopup {
     private async void Replay()
     {
         // if (GameManager.Instance.IsOnlineMode) await GameFacade.Instance.ReplayLevel();
-        await GameFacade.Instance.ReturnToMenu();
+        Return();
     }
 
     private async void Next()
     {
         // await GameFacade.Instance.NextLevel();
-        await GameFacade.Instance.ReturnToMenu();
+        Return();
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Unity.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DataManager : Singleton<DataManager> {
@@ -27,7 +28,18 @@ public class DataManager : Singleton<DataManager> {
     #region AutoSave
     void Start()
     {
+        InitData();
         if (autoSave) AutoSave().Forget();
+    }
+
+    private void InitData()
+    {
+        if (PlayerPrefs.GetInt(ConstantString.INIT_DATA) == 0)
+        {
+            PlayerPrefs.SetInt(ConstantString.INIT_DATA, 1);
+            PlayerPrefs.Save();
+            SaveUnlockedSkin(DuckSkinID.Normal, true);
+        }
     }
 
     private async UniTask AutoSave()
