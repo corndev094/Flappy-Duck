@@ -1,9 +1,9 @@
 using UnityEngine;
 using System.Collections.Generic;
-using NaughtyAttributes;
+using Sirenix.OdinInspector;
 
 [CreateAssetMenu(fileName = "ThumbnailList", menuName = "GameData/ThumbnalList", order = 0)]
 public class LevelListSO : ScriptableObject {
-    [Expandable]
+    [InlineEditor(Expanded = true)]
     public List<LevelSO> List = new();
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
-using NaughtyAttributes;
+using Sirenix.OdinInspector;
 
 public class Client : NetworkBehaviour {
     public int data;

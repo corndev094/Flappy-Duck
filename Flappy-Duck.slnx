@@ -1,8 +1,6 @@
 ﻿<Solution>
-  <Project Path="NaughtyAttributes.Test.csproj" />
   <Project Path="Dreamteck.Splines.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
-  <Project Path="NaughtyAttributes.Core.csproj" />
   <Project Path="UniTask.csproj" />
   <Project Path="QFSW.QC.Extras.csproj" />
   <Project Path="QFSW.QC.csproj" />
@@ -11,10 +9,10 @@
   <Project Path="UniTask.Linq.csproj" />
   <Project Path="QFSW.QC.Grammar.csproj" />
   <Project Path="QFSW.QC.Editor.csproj" />
+  <Project Path="Sirenix.OdinInspector.Modules.UnityLocalization.Editor.csproj" />
   <Project Path="BuildReportTool.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="Unity.Multiplayer.Center.NetcodeForGameObjectsExample.csproj" />
-  <Project Path="NaughtyAttributes.Editor.csproj" />
   <Project Path="SimpleInspectorAttributesEditor.csproj" />
   <Project Path="LeTai.TrueShadow.csproj" />
   <Project Path="Unity.Multiplayer.Center.Integrations.csproj" />
@@ -22,6 +20,7 @@
   <Project Path="DOTween.Modules.csproj" />
   <Project Path="FpsSetter.Editor.csproj" />
   <Project Path="QFSW.QC.QGUI.csproj" />
+  <Project Path="Sirenix.OdinInspector.Modules.Unity.Addressables.csproj" />
   <Project Path="Dreamteck.Utilities.csproj" />
   <Project Path="QFSW.QC.Serializers.csproj" />
   <Project Path="Unity.Multiplayer.Center.Quickstart.Editor.Tests.csproj" />
@@ -38,7 +37,9 @@
   <Project Path="ToolbarExtender.Editor.csproj" />
   <Project Path="Assembly-CSharp-firstpass.csproj" />
   <Project Path="UniTask.Editor.csproj" />
+  <Project Path="Sirenix.OdinInspector.Modules.UnityMathematics.csproj" />
   <Project Path="Utilities.csproj" />
+  <Project Path="Sirenix.OdinInspector.Modules.UnityLocalization.csproj" />
   <Project Path="QFSW.QC.ScanRules.csproj" />
   <Project Path="UniTask.TextMeshPro.csproj" />
   <Project Path="MissingReferencesSearch.csproj" />

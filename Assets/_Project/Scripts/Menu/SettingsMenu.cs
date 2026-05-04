@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using NaughtyAttributes;
 using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.Audio;

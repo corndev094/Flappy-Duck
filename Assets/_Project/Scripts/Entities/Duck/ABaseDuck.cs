@@ -5,8 +5,8 @@ using System.Threading;
 using System;
 using Nguyen.Event;
 using Unity.Netcode;
-using NaughtyAttributes;
 using System.Linq;
+using Sirenix.OdinInspector;
 
 [RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(Rigidbody2D))]

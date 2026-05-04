@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using NaughtyAttributes;
+using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;

@@ -1,4 +1,3 @@
-using NaughtyAttributes;
 using UnityEditor;
 using UnityEditor.ShortcutManagement;
 using UnityEngine;
