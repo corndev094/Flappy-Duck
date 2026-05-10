@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4665657356642582263}
-  - component: {fileID: -2314984584696973971}
+  - component: {fileID: 5471765709062443887}
   m_Layer: 0
   m_Name: Level_Online
   m_TagString: Untagged
@@ -39,7 +39,7 @@ Transform:
   - {fileID: 4308498344626007925}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-2314984584696973971
+--- !u!114 &5471765709062443887
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -51,14 +51,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3555500174
-  InScenePlacedSourceGlobalObjectIdHash: 3555500174
+  GlobalObjectIdHash: 2019715605
+  InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 0
+  SceneMigrationSynchronization: 1
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
@@ -16032,7 +16032,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4807013250617241213, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 4167805704
+      value: 373199727
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16095,6 +16095,10 @@ PrefabInstance:
     - target: {fileID: 1846857453355617120, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
       propertyPath: m_Name
       value: Coin_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807013250617241213, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2315554394
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16164,7 +16168,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4807013250617241213, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1380708699
+      value: 457942831
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16228,6 +16232,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coin_7
       objectReference: {fileID: 0}
+    - target: {fileID: 4807013250617241213, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 686155518
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16289,6 +16297,10 @@ PrefabInstance:
     - target: {fileID: 1846857453355617120, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
       propertyPath: m_Name
       value: Coin
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807013250617241213, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 386060055
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16352,6 +16364,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coin_8
       objectReference: {fileID: 0}
+    - target: {fileID: 4807013250617241213, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 235576404
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16370,6 +16386,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8948125778644244770}
     m_Modifications:
+    - target: {fileID: -6787828004131711161, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1994797405
+      objectReference: {fileID: 0}
     - target: {fileID: 102073746332995430, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
       propertyPath: m_Name
       value: '[MoveablePipe]MoveablePipe_2'
@@ -16414,7 +16434,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 6347588218174795864, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3039904001
+      objectReference: {fileID: 0}
+    - target: {fileID: 8988008972936475193, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3402013374
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8396663846386312808, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1614640834374747766, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
@@ -16478,6 +16507,10 @@ PrefabInstance:
     - target: {fileID: 1846857453355617120, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
       propertyPath: m_Name
       value: Coin_12
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807013250617241213, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1460337197
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16547,7 +16580,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4807013250617241213, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 736004650
+      value: 2955235036
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16611,6 +16644,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coin_9
       objectReference: {fileID: 0}
+    - target: {fileID: 4807013250617241213, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2159320572
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16629,6 +16666,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8948125778644244770}
     m_Modifications:
+    - target: {fileID: -6787828004131711161, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3132767450
+      objectReference: {fileID: 0}
     - target: {fileID: 102073746332995430, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
       propertyPath: m_Name
       value: '[MoveablePipe]MoveablePipe_3'
@@ -16673,7 +16714,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 6347588218174795864, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2548614110
+      objectReference: {fileID: 0}
+    - target: {fileID: 8988008972936475193, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2131061102
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8396663846386312808, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1614640834374747766, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
@@ -16738,6 +16788,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coin_6
       objectReference: {fileID: 0}
+    - target: {fileID: 4807013250617241213, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3456692329
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16799,6 +16853,10 @@ PrefabInstance:
     - target: {fileID: 1846857453355617120, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
       propertyPath: m_Name
       value: Coin_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807013250617241213, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1448101059
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16868,7 +16926,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4807013250617241213, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 2659750021
+      value: 3467124858
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16932,6 +16990,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coin_13
       objectReference: {fileID: 0}
+    - target: {fileID: 4807013250617241213, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 4210358560
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16950,6 +17012,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8948125778644244770}
     m_Modifications:
+    - target: {fileID: -6787828004131711161, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2753551345
+      objectReference: {fileID: 0}
     - target: {fileID: 102073746332995430, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
       propertyPath: m_Name
       value: '[MoveablePipe]MoveablePipe'
@@ -16994,7 +17060,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 6347588218174795864, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1151413968
+      objectReference: {fileID: 0}
+    - target: {fileID: 8988008972936475193, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1152648589
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8396663846386312808, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1614640834374747766, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
@@ -17059,6 +17134,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coin_10
       objectReference: {fileID: 0}
+    - target: {fileID: 4807013250617241213, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 736630466
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -17120,6 +17199,10 @@ PrefabInstance:
     - target: {fileID: 1846857453355617120, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
       propertyPath: m_Name
       value: Coin_11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807013250617241213, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 388555609
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17183,6 +17266,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coin_4
       objectReference: {fileID: 0}
+    - target: {fileID: 4807013250617241213, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2242114740
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -17244,6 +17331,10 @@ PrefabInstance:
     - target: {fileID: 1846857453355617120, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
       propertyPath: m_Name
       value: Coin_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4807013250617241213, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 2171340616
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17307,6 +17398,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Coin_5
       objectReference: {fileID: 0}
+    - target: {fileID: 4807013250617241213, guid: be2e01f5881fb4d75bb481e65df1e160, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 998390498
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -17325,6 +17420,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8948125778644244770}
     m_Modifications:
+    - target: {fileID: -6787828004131711161, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1934506657
+      objectReference: {fileID: 0}
     - target: {fileID: 102073746332995430, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
       propertyPath: m_Name
       value: '[MoveablePipe]MoveablePipe_1'
@@ -17369,7 +17468,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 6347588218174795864, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 251093027
+      objectReference: {fileID: 0}
+    - target: {fileID: 8988008972936475193, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3886875715
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8396663846386312808, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1614640834374747766, guid: b5c0a72192cdaa140b76606c9eb811dc, type: 3}

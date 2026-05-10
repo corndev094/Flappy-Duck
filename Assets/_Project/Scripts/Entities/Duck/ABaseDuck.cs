@@ -296,7 +296,7 @@ public abstract class ABaseDuck : NetworkBehaviour {
             // collision.TryGetComponent<NetworkObject>(out var networkObject);
             // if (networkObject.IsSpawned) networkObject.Despawn(true);
             Destroy(collision.gameObject);
-            GameFlowManager.Instance.AddScore(OwnerClientId, 1);
+            GameFlowManager.Instance.UpdateCoin(OwnerClientId, GameFlowManager.Instance.GetPlayerData(OwnerClientId).Value.Coin + 1);
         }
         if (!IsServer) return;
         if (collision.TryGetComponent<ABaseEnemy>(out var enemy))

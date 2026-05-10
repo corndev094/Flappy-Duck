@@ -46,7 +46,7 @@ public class OfflineGameMode : IGameMode
         GameManager.Instance.HandleWinCondition();
     }
 
-    public void OnScoreChanged(ulong playerId, int score)
+    public void OnCoinChanged(ulong playerId, int score)
     {
         
     }

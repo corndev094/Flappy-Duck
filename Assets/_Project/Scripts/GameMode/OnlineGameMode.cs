@@ -39,11 +39,11 @@ public class OnlineGameMode : IGameMode
         }
     }
 
-    public void OnScoreChanged(ulong playerId, int score)
+    public void OnCoinChanged(ulong playerId, int coin)
     {
         if (GameFlowManager.Instance != null)
         {
-            GameFlowManager.Instance.AddScore(playerId, score);
+            GameFlowManager.Instance.UpdateCoin(playerId, coin);
         }
     }
 

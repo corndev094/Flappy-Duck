@@ -7,7 +7,7 @@ public class Client : NetworkBehaviour {
 
     private void Start()
     {
-        if (string.IsNullOrEmpty(NetworkManager.Singleton.ConnectedHostname))
+        if (NetworkManager.Singleton.IsServer)
         {
             NetworkManager.Singleton.StartServer();
             Debug.Log("Start as Server");
@@ -17,12 +17,15 @@ public class Client : NetworkBehaviour {
             NetworkManager.Singleton.StartClient();
             Debug.Log("Start as Client");
         }
-    }
 
+        if (NetworkManager.Singleton.IsClient)
+        {
+            RequestDataRpc();
+        }
+    }
 
     // 1. Client gọi hàm này để gửi yêu cầu lên Server
     [Rpc(SendTo.Server)]
-    [Button]
     public void RequestDataRpc(RpcParams rpcParams = default)
     {
         // Lấy ID của Client vừa gửi RPC

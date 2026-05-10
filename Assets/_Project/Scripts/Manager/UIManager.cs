@@ -169,6 +169,15 @@ public class UIManager : Singleton<UIManager> {
         if (popupStack.Count > 0) popupStack.Pop();
     }
 
+    public void CloseAllPopupImmediately()
+    {
+        while (popupStack.Count > 0)
+        {
+            var popup = popupStack.Pop();
+            popup.CloseImmediate();
+        }
+    }
+
     public bool TryGetPopup(Popup popupType, out ABasePopup popup)
     {
         return popups.TryGetValue(popupType, out popup);

@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using Sirenix.OdinInspector;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -15,13 +16,13 @@ public class GameFacade : NetworkSingleton<GameFacade> {
     [SerializeField] private Transform levelContainer;
     [SerializeField] private PreGameCountdown countDown;
 
-    [field: SerializeField] public LevelSO  CurrentPlayingLevel { get; private set; }
-    [field: SerializeField] public DuckBaseData CurrentSelectedDuck { get; set; }
-    [field: SerializeField] public GameObject CurrentLevelPrefab { get; private set; }
-    [field: SerializeField] public Transform LevelContainer => levelContainer;
-    [field: SerializeField] public ABaseDuck ActiveDuck { get; set; }
+    [field: SerializeField, ReadOnly] public LevelSO  CurrentLevelData { get; private set; }
+    [field: SerializeField, ReadOnly] public DuckBaseData CurrentSelectedDuck { get; set; }
+    [field: SerializeField, ReadOnly] public GameObject CurrentLevelPrefab { get; private set; }
+    [field: SerializeField, ReadOnly] public ABaseDuck ActiveDuck { get; set; }
+    [field: SerializeField, ReadOnly] public bool IsPlayingLevel { get; set; }
     
-    public bool IsPlayingLevel { get; set; }
+    public Transform LevelContainer => levelContainer;
 
     public Action OnPlayerInMatch;
     public Action OnPlayerLeaveMatch;
@@ -33,7 +34,7 @@ public class GameFacade : NetworkSingleton<GameFacade> {
     }
 
     /// <summary>
-    /// Online level loading path — called via GameFlowManager ClientRpc on all clients.
+    /// Online level loading path — called via GameFlowManager [Rpc(SendTo.ClientAndHost)] on all clients.
     /// </summary>
     public async UniTask LoadMultiplayerLevel()
     {
@@ -120,7 +121,18 @@ public class GameFacade : NetworkSingleton<GameFacade> {
             {
                 quickMatchMenu.ResetUI();
             }
+
+            if (MatchmakingManager.Instance != null)
+            {
+                await MatchmakingManager.Instance.LeaveLobby();
+            }
         }
+
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
+        {
+            NetworkManager.Singleton.Shutdown();
+        }
+
         SetupUIOnReturnToMainMenu();
         await UniTask.Delay(TimeSpan.FromSeconds(1));
         SceneLoader.Instance.FadeOut().Forget();
@@ -170,26 +182,46 @@ public class GameFacade : NetworkSingleton<GameFacade> {
 
     private async UniTask<ABaseDuck> WaitForDuckSpawn()
     {
-        float timeout = 5f;
+        float timeout = 10f;
         float elapsed = 0f;
+
+        if (NetworkManager.Singleton == null)
+        {
+            EDebug.LogError("NetworkManager.Singleton is null while waiting for duck spawn");
+            return null;
+        }
+
         while (elapsed < timeout)
         {
-            foreach (var netObj in NetworkManager.Singleton.SpawnManager.SpawnedObjects.Values)
+            var nm = NetworkManager.Singleton;
+            if (!nm.IsListening)
             {
-                if (netObj.TryGetComponent<ABaseDuck>(out var duck))
+                await UniTask.Yield();
+                elapsed += Time.deltaTime;
+                continue;
+            }
+
+            // Primary path: the local owned player object is the authoritative duck reference.
+            var localPlayerObject = nm.LocalClient?.PlayerObject;
+            if (localPlayerObject != null && localPlayerObject.TryGetComponent<ABaseDuck>(out var localDuck))
+            {
+                return localDuck;
+            }
+
+            // Fallback path: scan spawned objects in case player object binding is late.
+            foreach (var netObj in nm.SpawnManager.SpawnedObjects.Values)
+            {
+                if (netObj != null && netObj.IsOwner && netObj.TryGetComponent<ABaseDuck>(out var duck))
                 {
-                    if (netObj.IsOwner)
-                    {
-                        return duck;
-                    }
+                    return duck;
                 }
             }
-            
+
             await UniTask.Yield();
             elapsed += Time.deltaTime;
         }
-        
-        EDebug.LogError("Timeout waiting for duck spawn");
+
+        EDebug.LogError($"Timeout waiting for duck spawn after {timeout}s (IsListening: {NetworkManager.Singleton.IsListening}, IsClient: {NetworkManager.Singleton.IsClient}, IsConnectedClient: {NetworkManager.Singleton.IsConnectedClient})");
         return null;
     }
 
@@ -197,8 +229,12 @@ public class GameFacade : NetworkSingleton<GameFacade> {
     {
         var level = Instantiate(data.LevelPrefab, levelContainer);
         level.transform.localPosition = Vector3.zero;
-        CurrentPlayingLevel = data;
+        CurrentLevelData = data;
         CurrentLevelPrefab = level;
+        // foreach (var go in level.GetComponentsInChildren<GameObject>(true))
+        // {
+        //     Debug.Log($"Name: {go.name}   -   Hash: {go.GetComponent<NetworkObject>()?.NetworkObjectId}");
+        // }
     }
 
     /// <summary>
@@ -224,7 +260,7 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         // Reset state
         CameraController.Instance.Target = null;
         CameraController.Instance.transform.position = Vector3.zero;
-        CurrentPlayingLevel = DataManager.Instance.EmptyLevel;
+        CurrentLevelData = DataManager.Instance.EmptyLevel;
         IsPlayingLevel = false;
         CurrentLevelPrefab = null;
     }

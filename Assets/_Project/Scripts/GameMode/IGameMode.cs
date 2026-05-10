@@ -7,6 +7,6 @@ public interface IGameMode
     UniTask StartGame();
     void OnPlayerDied(ulong playerId);
     void OnPlayerWin(ulong playerId);
-    void OnScoreChanged(ulong playerId, int score);
+    void OnCoinChanged(ulong playerId, int score);
     void OnPaused(bool pause);
 }

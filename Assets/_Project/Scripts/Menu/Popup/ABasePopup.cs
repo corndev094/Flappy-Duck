@@ -64,6 +64,12 @@ public abstract class ABasePopup : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public void CloseImmediate()
+    {
+        completionSource?.TrySetResult(null);
+        gameObject.SetActive(false);
+    }
+
     /// <summary>
     /// Opens the popup, waits for a result, and closes it.
     /// </summary>

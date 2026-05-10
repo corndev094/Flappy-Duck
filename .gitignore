@@ -102,4 +102,6 @@ InitTestScene*.unity*
 /Docs
 /Office-Word-MCP-Server
 /opencode.json
-/TestFolder
+/Assets/TestFolder
+/Assets/StompyRobot
+/Assets/.omx

@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Unity.Netcode;
-using UnityEditor.Localization.Plugins.XLIFF.V20;
 using UnityEngine;
 
 /// <summary>
@@ -72,6 +70,9 @@ public class GameFlowManager : NetworkBehaviour
 
         if (IsServer)
         {
+            // New network session: always reset state from previous match/session.
+            CurrentGameState.Value = GameState.InMenu;
+            ClearPlayerList();
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
             NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
 
@@ -99,7 +100,7 @@ public class GameFlowManager : NetworkBehaviour
     private void OnClientConnected(ulong clientId)
     {
         if (!IsServer) return;
-        if (clientId == NetworkManager.Singleton.LocalClientId) return;
+        // if (clientId == NetworkManager.Singleton.LocalClientId) return;
         AddPlayer(clientId);
     }
 
@@ -138,6 +139,11 @@ public class GameFlowManager : NetworkBehaviour
                 break;
             }
         }
+    }
+
+    private void ClearPlayerList()
+    {
+        PlayerList.Clear();
     }
 
     public PlayerNetworkData? GetPlayerData(ulong clientId)
@@ -201,7 +207,7 @@ public class GameFlowManager : NetworkBehaviour
             PlayerList[i] = data;
         }
 
-        // Load Level - Gửi RPC đến tất cả clients
+        // Send load level RPC to all clients
         LoadMultiplayerLevelClientRpc();
     }
 
@@ -211,25 +217,25 @@ public class GameFlowManager : NetworkBehaviour
         NotifyGameStartedClientRpc();
     }
 
-    /// <summary>
-    /// Called when a player dies
-    /// </summary>
     public void NotifyPlayerDied(ulong clientId)
     {
         if (!IsServer) return;
-        UpdateNetworkPlayerData(clientId, (ref PlayerNetworkData data) => data.IsAlive = false);
+        UpdateAliveStatus(clientId, false);
 
         OnPlayerDied?.Invoke(clientId);
         CheckGameOver();
     }
 
-    /// <summary>
-    /// Add score to player
-    /// </summary>
-    public void AddScore(ulong clientId, int score)
+    public void UpdateCoin(ulong clientId, int coin)
     {
         if (!IsServer) return;
-        UpdateNetworkPlayerData(clientId, (ref PlayerNetworkData data) => data.Coin += score);
+        UpdateNetworkPlayerData(clientId, (ref PlayerNetworkData data) => data.Coin = coin);
+    }
+
+    public void UpdateAliveStatus(ulong clientId, bool isAlive)
+    {
+        if (!IsServer) return;
+        UpdateNetworkPlayerData(clientId, (ref PlayerNetworkData data) => data.IsAlive = isAlive);
     }
 
     private void UpdateNetworkPlayerData(ulong clientId, PlayerDataModifier updateAction)
@@ -240,7 +246,6 @@ public class GameFlowManager : NetworkBehaviour
             var data = PlayerList[index];
             updateAction(ref data);
             PlayerList[index] = data;
-            Debug.Log(PlayerList[index].Coin);
         }
     }
 
@@ -248,9 +253,9 @@ public class GameFlowManager : NetworkBehaviour
     {
         foreach (var player in PlayerList)
         {
-            UpdateNetworkPlayerData(player.ClientId, (ref PlayerNetworkData data) => data.Coin = 0);
-            UpdateNetworkPlayerData(player.ClientId, (ref PlayerNetworkData data) => data.IsAlive = true);
-            Debug.Log($"{player.Coin} - {player.IsAlive}");
+            UpdateCoin(player.ClientId, 0);
+            UpdateAliveStatus(player.ClientId, true);
+            Debug.Log($"Reset Player {player.ClientId}: {player.Coin} - {player.IsAlive}");
         }
     }
 
@@ -294,33 +299,21 @@ public class GameFlowManager : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
-    public void UpdateCoinDataClientRpc()
-    {
-        DataManager.Instance.SaveCurrency(ConstantString.COIN, DataManager.Instance.GetCurrency(ConstantString.COIN) + GetPlayerData(OwnerClientId).Value.Coin);
-    }
+    // public void ReturnToMenuServerRpc()
+    // {
+    //     if (!IsServer) return;
 
-    /// <summary>
-    /// Return to main menu
-    /// </summary>
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void ReturnToMenuServerRpc()
-    {
-        if (!IsServer) return;
+    //     // Reset players
+    //     for (int i = 0; i < PlayerList.Count; i++)
+    //     {
+    //         var data = PlayerList[i];
+    //         data.IsAlive = true;
+    //         data.Coin = 0;
+    //         PlayerList[i] = data;
+    //     }
 
-        CurrentGameState.Value = GameState.InMenu;
-
-        // Reset players
-        for (int i = 0; i < PlayerList.Count; i++)
-        {
-            var data = PlayerList[i];
-            data.IsAlive = true;
-            data.Coin = 0;
-            PlayerList[i] = data;
-        }
-
-        // TODO: Load main menu
-    }
+    //     // TODO: Load main menu
+    // }
 
     /// <summary>
     /// Disconnect from network and return to menu
@@ -340,37 +333,33 @@ public class GameFlowManager : NetworkBehaviour
     #region Client RPCs
 
     [ClientRpc]
-    private void LoadMultiplayerLevelClientRpc()
+    public void UpdateCoinDataClientRpc()
     {
-        // Gọi GameFacade để load level trên mỗi client
-        GameFacade.Instance.LoadMultiplayerLevel().Forget();
+        DataManager.Instance.SaveCurrency(ConstantString.COIN, DataManager.Instance.GetCurrency(ConstantString.COIN) + GetPlayerData(OwnerClientId).Value.Coin);
     }
 
-    /// <summary>
-    /// Cleanup level — delegates to GameFacade which handles
-    /// duck despawn, level destroy, and state reset.
-    /// </summary>
-    public void CleanupLevel()
+    [Rpc(SendTo.ClientsAndHost)]
+    private void LoadMultiplayerLevelClientRpc()
     {
-        GameFacade.Instance.CleanupLevelLocal();
+        GameFacade.Instance.LoadMultiplayerLevel().Forget();
     }
 
     /// <summary>
     /// Despawn all player-owned NetworkObjects (ducks) on the server.
     /// Uses SpawnManager to find objects by owner, not by ClientId key.
     /// </summary>
-    [ServerRpc]
-    public void CleanupPlayersServerRpc()
-    {
-        var spawnedObjects = new List<NetworkObject>(NetworkManager.Singleton.SpawnManager.SpawnedObjects.Values);
-        foreach (var netObj in spawnedObjects)
-        {
-            if (netObj != null && netObj.IsPlayerObject)
-            {
-                netObj.Despawn(true);
-            }
-        }
-    }
+    // [ServerRpc]
+    // public void CleanupPlayersServerRpc()
+    // {
+    //     var spawnedObjects = new List<NetworkObject>(NetworkManager.Singleton.SpawnManager.SpawnedObjects.Values);
+    //     foreach (var netObj in spawnedObjects)
+    //     {
+    //         if (netObj != null && netObj.IsPlayerObject)
+    //         {
+    //             netObj.Despawn(true);
+    //         }
+    //     }
+    // }
 
     [ClientRpc]
     private void NotifyGameStartedClientRpc() => OnGameStarted?.Invoke();
@@ -406,6 +395,25 @@ public class GameFlowManager : NetworkBehaviour
     private void HandlePlayerListChanged(NetworkListEvent<PlayerNetworkData> changeEvent)
     {
         OnPlayerListChanged?.Invoke(changeEvent);
+
+        switch (changeEvent.Type)
+        {
+            case NetworkListEvent<PlayerNetworkData>.EventType.Add:
+                Debug.Log($"Player added: {changeEvent.Value.PlayerName}");
+                break;
+            case NetworkListEvent<PlayerNetworkData>.EventType.Remove:
+                Debug.Log($"Player removed: {changeEvent.Value.PlayerName}");
+                break;
+            case NetworkListEvent<PlayerNetworkData>.EventType.RemoveAt:
+                Debug.Log($"Player removed at index: {changeEvent.Index}");
+                break;
+            case NetworkListEvent<PlayerNetworkData>.EventType.Value:
+                Debug.Log($"Player updated: {changeEvent.Value.PlayerName}, Coin: {changeEvent.Value.Coin}, IsAlive: {changeEvent.Value.IsAlive}");
+                break;
+            case NetworkListEvent<PlayerNetworkData>.EventType.Clear:
+                Debug.Log("All players cleared");
+                break;
+        }
     }
 
     #endregion
@@ -413,9 +421,7 @@ public class GameFlowManager : NetworkBehaviour
 
 #region Data Structures
 
-/// <summary>
-/// Network-serializable player data for game flow tracking
-/// </summary>
+
 [Serializable]
 public struct PlayerNetworkData : INetworkSerializable, IEquatable<PlayerNetworkData>
 {
@@ -442,7 +448,7 @@ public struct PlayerNetworkData : INetworkSerializable, IEquatable<PlayerNetwork
 
     public override string ToString()
     {
-        return $"[Player {ClientId}] {PlayerName} | Score: {Coin} | Alive: {IsAlive}";
+        return $"[Player {ClientId}] {PlayerName} | Coin: {Coin} | Alive: {IsAlive}";
     }
 }
 

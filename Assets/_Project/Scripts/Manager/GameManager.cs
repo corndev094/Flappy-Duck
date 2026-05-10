@@ -1,7 +1,6 @@
 using UnityEngine;
 using System;
 using Cysharp.Threading.Tasks;
-using UnityEditor.Localization.Plugins.XLIFF.V20;
 
 /// <summary>
 /// Control Win Lose
@@ -51,11 +50,6 @@ public class GameManager : NetworkSingleton<GameManager> {
     public void NotifyPlayerWin(ulong playerId)
     {
         currentGameMode?.OnPlayerWin(playerId);
-    }
-
-    public void AddScore(ulong playerId, int score)
-    {
-        currentGameMode?.OnScoreChanged(playerId, score);
     }
 
     public void Pause(bool pause)

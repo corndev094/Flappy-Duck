@@ -85,14 +85,10 @@ public class MatchmakingManager : NetworkBehaviour
 
     private void OnApplicationQuit()
     {
-        // Critical: Clean up lobby when application quits
-        // This prevents "ghost" lobbies that clients can find but can't join
         StopLobbyHeartbeat();
 
         if (IsLobbyHost && CurrentLobby != null)
         {
-            // Fire-and-forget: Best effort to delete lobby
-            // Can't await in OnApplicationQuit, but service will attempt deletion
             try
             {
                 LobbyService.Instance.DeleteLobbyAsync(CurrentLobby.Id);
@@ -168,7 +164,6 @@ public class MatchmakingManager : NetworkBehaviour
 
         hostWaitTimer += Time.deltaTime;
 
-        // Validate NetworkManager exists
         if (NetworkManager.Singleton == null)
         {
             Debug.LogError("[Matchmaking] NetworkManager.Singleton is null! Please add NetworkManager to the scene.");
@@ -205,7 +200,7 @@ public class MatchmakingManager : NetworkBehaviour
                 {
                     isWaitingForPlayers = false;
                     isInGracePeriod = false;
-                    ResetMatchingUIClientRpc();
+                    // ResetMatchingUIClientRpc();
                     StartGameAfterDelay().Forget();
                     return;
                 }
@@ -223,15 +218,15 @@ public class MatchmakingManager : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
-    private void ResetMatchingUIClientRpc()
-    {
-        UIManager.Instance.TryGetMenu(Menu.QuickMatch, out var menu);
-        if (menu != null && menu is QuickMatchMenu quickMatchMenu)
-        {
-            quickMatchMenu.ResetUI();
-        }
-    }
+    // [ClientRpc]
+    // private void ResetMatchingUIClientRpc()
+    // {
+    //     UIManager.Instance.TryGetMenu(Menu.QuickMatch, out var menu);
+    //     if (menu != null && menu is QuickMatchMenu quickMatchMenu)
+    //     {
+    //         quickMatchMenu.ResetUI();
+    //     }
+    // }
 
     #endregion
 
@@ -541,7 +536,6 @@ public class MatchmakingManager : NetworkBehaviour
 
     private async UniTask CreateLobbyAndHost()
     {
-        // NetworkManager and UnityTransport already validated in ValidateNetworkSetup()
         var transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
 
         // Create Relay allocation

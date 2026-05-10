@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/MainMenu.unity
     guid: 5a69fd8e3b1a7c74d8163254fd3d114b
+  - enabled: 1
+    path: Assets/_Project/Scenes/SimpleMultiplayer.unity
+    guid: 23a651c62c6ec6942a93c25394b1e424
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 59ca5fe67de444efab0d1175ab0d35bd, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

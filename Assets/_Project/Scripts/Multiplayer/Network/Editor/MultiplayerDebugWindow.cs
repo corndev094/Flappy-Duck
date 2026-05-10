@@ -301,7 +301,8 @@ namespace Multiplayer.Editor
                         }
                         if (GUILayout.Button("Return to Menu (RPC)"))
                         {
-                            gm.ReturnToMenuServerRpc();
+                            Debug.Log("This function temporarily not used");
+                            // gm.ReturnToMenuServerRpc();
                         }
                     }
                     

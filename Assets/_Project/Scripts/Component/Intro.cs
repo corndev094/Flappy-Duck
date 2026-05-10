@@ -44,12 +44,11 @@ public class Intro : MonoBehaviour {
     {
         await pressAnyKeyText.transform.DOScale(1, 1).From(0).AsyncWaitForCompletion();
         textTween = pressAnyKeyText.transform.DOScale(1.2f, 1).SetLoops(-1, LoopType.Yoyo).SetEase(textEase);
-        await textTween.AsyncWaitForKill();
     }
 
     private async void WaitForAnyKey()
     {
-        await UniTask.WaitUntil(() => Keyboard.current.anyKey.wasPressedThisFrame);
+        await UniTask.WaitUntil(() => Keyboard.current.anyKey.wasPressedThisFrame || Mouse.current.leftButton.wasPressedThisFrame || Touchscreen.current.primaryTouch.press.wasPressedThisFrame);
         if (pressButtonSfx != null)SoundManager.Instance.PlaySFX(pressButtonSfx);
         EnterMainMenu();
     }

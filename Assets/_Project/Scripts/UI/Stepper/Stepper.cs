@@ -4,11 +4,9 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Localization;
-using UnityEngine.ResourceManagement.ResourceProviders.Simulation;
 using UnityEngine.UI;
 
 public abstract class Stepper<T> : MonoBehaviour

@@ -36,9 +36,8 @@ public class QuickMatchMenu : ABaseMenu
 
         // Subscribe to events
         matchmaking.OnLeftLobby += HandleLeftLobby;
-        matchmaking.OnMatchmakingCompleted += HandleMatchmakingCompleted;
         matchmaking.OnMatchmakingFailed += HandleMatchmakingFailed;
-
+        // matchmaking.OnMatchmakingCompleted += HandleMatchmakingCompleted;
         // Initial state
         ShowMainMenu();
     }
@@ -52,7 +51,7 @@ public class QuickMatchMenu : ABaseMenu
         if (matchmaking != null)
         {
             matchmaking.OnLeftLobby -= HandleLeftLobby;
-            matchmaking.OnMatchmakingCompleted -= HandleMatchmakingCompleted;
+            // matchmaking.OnMatchmakingCompleted -= HandleMatchmakingCompleted;
             matchmaking.OnMatchmakingFailed -= HandleMatchmakingFailed;
         }
     }
@@ -69,7 +68,7 @@ public class QuickMatchMenu : ABaseMenu
     {
         SetInfoText("Finding match...");
         cancelMatchButton.gameObject.SetActive(true);
-        matchingPanel.SetActive(true);
+        matchingPanel?.SetActive(true);
         canCancel = false;
 
         await GameManager.Instance.StartGame();
@@ -79,7 +78,6 @@ public class QuickMatchMenu : ABaseMenu
     private async void OnCancelMatchClicked()
     {
         if (!canCancel) return; // Prevent multiple clicks
-        SetInfoText("Cancelling matchmaking...");
         canCancel = false;
         await matchmaking.CancelMatchmaking();
         matchingPanel?.SetActive(false);
@@ -92,33 +90,23 @@ public class QuickMatchMenu : ABaseMenu
 
     private void HandleLeftLobby()
     {
+        Debug.Log("Left lobby, resetting UI.");
         ResetUI();
     }
 
-    private async void HandleMatchmakingCompleted(MatchingResult result)
-    {
-        switch (result)
-        {
-            case MatchingResult.Cancelled:
-                SetInfoText("Cancelling ...");
-                canCancel = false;
-                await UniTask.Delay(3000);
-                ResetUI();
-                break;
-            case MatchingResult.Failed:
-                SetInfoText("Failed to find match. Returning ...");
-                canCancel = false;
-                await UniTask.Delay(3000);
-                ResetUI();
-                break;
-            case MatchingResult.Timeout:
-                SetInfoText("Matchmaking timed out. Returning ...");
-                canCancel = false;
-                await UniTask.Delay(3000);
-                ResetUI();
-                break;
-        }
-    }
+    // private async void HandleMatchmakingCompleted(MatchingResult result)
+    // {
+    //     switch (result)
+    //     {
+    //         case MatchingResult.Timeout:
+    //             Debug.Log("Matchmaking timed out.");
+    //             SetInfoText("Matchmaking timed out. Returning ...");
+    //             canCancel = false;
+    //             await UniTask.Delay(3000);
+    //             ResetUI();
+    //             break;
+    //     }
+    // }
 
     private async void HandleMatchmakingFailed(string error)
     {
