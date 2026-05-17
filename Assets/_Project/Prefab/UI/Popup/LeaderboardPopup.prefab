@@ -188,6 +188,7 @@ MonoBehaviour:
     Score: {fileID: 8394960456629188693}
   leaderboardData: {fileID: 11400000, guid: ee4c5ecd845f04be586c83ee6c6ba0bc, type: 2}
   nextBtn: {fileID: 7958437333423625208}
+  dotweenAnimation: {fileID: 0}
 --- !u!1 &1969412004030473151
 GameObject:
   m_ObjectHideFlags: 0

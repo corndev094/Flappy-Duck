@@ -52,10 +52,8 @@ public class LeaderboardPopup : ABasePopup {
         for (int i = 0; i < sortedPlayers.Length; i++)
         {
             var entryData = sortedPlayers[i];
-            if (entryData.PlayerId <= 0) continue;
-
             int playerIndex = GameFlowManager.Instance.GetPlayerIndex(entryData.PlayerId);
-            if (playerIndex == -1) continue;
+            if (playerIndex == -1 || string.IsNullOrEmpty(entryData.PlayerName)) continue;
 
             leaderboardEntries[i].PlayerName.text = $"{playerIndex + 1}. {entryData.PlayerName}";
             leaderboardEntries[i].Score.text = entryData.Score.ToString();

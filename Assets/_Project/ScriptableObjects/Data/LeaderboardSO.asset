@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: LeaderboardSO
   m_EditorClassIdentifier: Assembly-CSharp::LeaderboardSO
   Entries:
-  - playerId: 0
-    playerName: 
-    score: 0
-  - playerId: 0
-    playerName: 
-    score: 0
-  - playerId: 0
-    playerName: 
-    score: 0
-  - playerId: 0
-    playerName: 
-    score: 0
+  - PlayerId: 0
+    PlayerName: Player 0
+    Score: 0
+  - PlayerId: 1
+    PlayerName: Player 1
+    Score: 6
+  - PlayerId: 0
+    PlayerName: 
+    Score: 0
+  - PlayerId: 0
+    PlayerName: 
+    Score: 0

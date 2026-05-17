@@ -32,7 +32,6 @@ public class GameFlowManager : NetworkBehaviour
     public event Action OnGameStarted;
     public event Action OnGameEnded;
     public event Action<NetworkListEvent<PlayerNetworkData>> OnPlayerListChanged;
-    public event Action<ulong> OnUpdatePlayerData;
 
     public int PlayerCount => PlayerList?.Count ?? 0;
 
@@ -270,7 +269,6 @@ public class GameFlowManager : NetworkBehaviour
             updateAction(ref data);
             PlayerList[index] = data;
         }
-        OnUpdatePlayerData?.Invoke(clientId);
     }
 
     public void ResetAllPlayerStats()

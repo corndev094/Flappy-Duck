@@ -31,11 +31,13 @@ public class LeaderboardManager : NetworkSingleton<LeaderboardManager>
         for (int i = 0; i < GameFlowManager.Instance.PlayerList.Count; i++)
         {
             var player = GameFlowManager.Instance.PlayerList[i];
-            var entry = LeaderBoardData.Entries[i];
+            LeaderboardSO.LeaderBoardEntry entry = new LeaderboardSO.LeaderBoardEntry();
 
             entry.PlayerId = player.ClientId;
             entry.PlayerName = player.PlayerName.ToString();
             entry.Score = player.Coin;
+            
+            LeaderBoardData.Entries[i] = entry;  // ✅ Reassign back to array
         }
     }
 }

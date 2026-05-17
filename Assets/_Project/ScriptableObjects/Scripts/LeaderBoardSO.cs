@@ -7,7 +7,7 @@ public class LeaderboardSO : ScriptableObject {
 
     public void Clear() {
         for (int i = 0; i < Entries.Length; i++) {
-            Entries[i].PlayerId = 0;
+            Entries[i].PlayerId = ulong.MaxValue;
             Entries[i].PlayerName = "";
             Entries[i].Score = 0;
         }
