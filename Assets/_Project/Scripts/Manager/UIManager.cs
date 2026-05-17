@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +14,7 @@ public class UIManager : Singleton<UIManager> {
     [SerializeField] private LevelResultPopup levelResultPopup;
     [SerializeField] private PausePopup pausePopup;
     [SerializeField] private LanguagePopup languagePopup;
+    [SerializeField] private LeaderboardPopup leaderboardPopup;
 
     [Header("Multiplayer")]
     [SerializeField] private QuickMatchMenu quickMatchMenu;
@@ -56,7 +56,8 @@ public class UIManager : Singleton<UIManager> {
         {
             {Popup.Pause, pausePopup},
             {Popup.LevelResult, levelResultPopup},
-            {Popup.Language, languagePopup}
+            {Popup.Language, languagePopup},
+            {Popup.Leaderboard, leaderboardPopup}
         };
     }
 
@@ -192,4 +193,4 @@ public class UIManager : Singleton<UIManager> {
 }
 
 public enum Menu { Main, Settings, LevelMap, DuckSelection, QuickMatch, FilterMatch };
-public enum Popup { Pause, LevelResult, Language }
+public enum Popup { Pause, LevelResult, Language, Leaderboard };

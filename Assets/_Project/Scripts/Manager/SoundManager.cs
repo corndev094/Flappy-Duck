@@ -1,7 +1,5 @@
 using Cysharp.Threading.Tasks;
 using System;
-using System.Security.Cryptography;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Pool;
@@ -29,8 +27,11 @@ public class SoundManager : Singleton<SoundManager>
         SetSfxVolume(DataManager.Instance.GetSfxVolume());
         audioSourcePool =
             new ObjectPool<AudioSource>(CreateAS, GetAS, ReleaseAS, DestroyAS, false, 10, 20);
-        if (randomBgTrackOnStart) bgMusic.clip = bgTracks[UnityEngine.Random.Range(0, bgTracks.Length)];
-        else bgMusic.clip = bgTracks[0];
+        if (bgMusic != null && bgTracks.Length > 0)
+        {
+            if (randomBgTrackOnStart) bgMusic.clip = bgTracks[UnityEngine.Random.Range(0, bgTracks.Length)];
+            else bgMusic.clip = bgTracks[0];
+        }
         bgMusic?.Play();
         if (repeatAll) RepeatBgMusic();
     }
@@ -38,16 +39,19 @@ public class SoundManager : Singleton<SoundManager>
 #region AudioSource Pool
         private void DestroyAS(AudioSource obj)
         {
+            if (obj == null) return;
             Destroy(obj.gameObject);
         }
 
         private void ReleaseAS(AudioSource obj)
         {
+            if (obj == null) return;
             obj.gameObject.SetActive(false);
         }
 
         private void GetAS(AudioSource obj)
         {
+            if (obj == null) return;
             obj.gameObject.SetActive(true);
         }
 
@@ -121,7 +125,8 @@ public class SoundManager : Singleton<SoundManager>
 #region Background Music Controls
         public void PlayBgMusic(AudioClip clip = null, float volume = 1)
         {
-            if (clip == null) bgMusic.clip = bgTracks[UnityEngine.Random.Range(0, bgTracks.Length)];
+            if (bgMusic == null) return;
+            if (clip == null && bgTracks.Length > 0) bgMusic.clip = bgTracks[UnityEngine.Random.Range(0, bgTracks.Length)];
             else bgMusic.clip = clip;
             bgMusic.volume = volume;
             bgMusic.mute = false;
@@ -154,19 +159,22 @@ public class SoundManager : Singleton<SoundManager>
 
     private bool IsBgMusicFinished()
     {
+        if (bgMusic == null || bgMusic.clip == null) return false;
         return !bgMusic.isPlaying && Mathf.Approximately(bgMusic.time, bgMusic.clip.length);
     }
 
     private async void RepeatBgMusic()
     {
-        while (true)
+        while (this != null)
         {
             if (IsBgMusicFinished())
             {
-                bgMusic.clip = bgTracks[Array.IndexOf(bgTracks, bgMusic.clip)];
+                if (bgTracks.Length == 0) return;
+
+                int currentIndex = Array.IndexOf(bgTracks, bgMusic.clip);
+                int nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % bgTracks.Length;
+                bgMusic.clip = bgTracks[nextIndex];
                 bgMusic.Play();
-                RepeatBgMusic();
-                return;
             }
             await UniTask.Yield();
         }
@@ -176,7 +184,7 @@ public class SoundManager : Singleton<SoundManager>
 #region SFX Controls
         public void PlaySFX(AudioClip audioClip, float volume = 0.7f, bool randomPitch = false)
         {
-            if (audioClip == null) return;
+            if (audioClip == null || audioSourcePool == null) return;
             AudioSource audioSource = audioSourcePool.Get();
             // audioSource.outputAudioMixerGroup = audioMixer.FindMatchingGroups(MASTER_PARAM)[2];
             audioSource.clip = audioClip;
@@ -189,7 +197,9 @@ public class SoundManager : Singleton<SoundManager>
 
         private async UniTask ReleaseAudioSourceToPoolAfter(AudioSource audioSource, float clipLength)
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(clipLength / audioSource.pitch));
+            float pitch = audioSource == null ? 1f : Mathf.Max(Mathf.Abs(audioSource.pitch), 0.01f);
+            await UniTask.Delay(TimeSpan.FromSeconds(clipLength / pitch));
+            if (audioSource == null || audioSourcePool == null) return;
             audioSourcePool.Release(audioSource);
         }
 #endregion

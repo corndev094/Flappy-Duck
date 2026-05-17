@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Unity.Collections;
@@ -22,7 +21,8 @@ public class DataManager : Singleton<DataManager> {
 
     public LevelSO FindLevelDataById(int id)
     {
-        return LevelList.List.First(l => l.ID == id);
+        if (LevelList == null) return null;
+        return LevelList.List.Find(l => l.ID == id);
     }
 
     #region AutoSave
@@ -44,10 +44,13 @@ public class DataManager : Singleton<DataManager> {
 
     private async UniTask AutoSave()
     {
+        autoSaveCts?.Cancel();
+        autoSaveCts?.Dispose();
+        autoSaveCts = new CancellationTokenSource();
+        var cts = autoSaveCts;
         float time = 0;
-        while (true)
+        while (!cts.IsCancellationRequested)
         {
-            if (autoSaveCts.IsCancellationRequested) break;
             time += Time.deltaTime;
             if (time >= autoSaveAfter)
             {
@@ -56,6 +59,13 @@ public class DataManager : Singleton<DataManager> {
             }
             await UniTask.Yield();
         }
+    }
+
+    private void StopAutoSave()
+    {
+        autoSaveCts?.Cancel();
+        autoSaveCts?.Dispose();
+        autoSaveCts = null;
     }
     #endregion
 
@@ -275,8 +285,14 @@ public class DataManager : Singleton<DataManager> {
     #endregion
 
     #region Unity Events
+    void OnDestroy()
+    {
+        StopAutoSave();
+    }
+
     void OnApplicationQuit()
     {
+        StopAutoSave();
         PlayerPrefs.Save();
     }
     #endregion

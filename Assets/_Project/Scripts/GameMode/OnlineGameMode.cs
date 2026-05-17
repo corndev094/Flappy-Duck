@@ -28,15 +28,12 @@ public class OnlineGameMode : IGameMode
 
     public void OnPlayerDied(ulong playerId)
     {
-        GameFlowManager.Instance.NotifyPlayerDied(playerId);
+        GameFlowManager.Instance?.NotifyPlayerDied(playerId);
     }
 
     public void OnPlayerWin(ulong playerId)
     {
-        if (GameFlowManager.Instance != null)
-        {
-            GameFlowManager.Instance.CheckGameOver();
-        }
+        GameFlowManager.Instance?.NotifyPlayerFinished(playerId);
     }
 
     public void OnCoinChanged(ulong playerId, int coin)
@@ -49,7 +46,13 @@ public class OnlineGameMode : IGameMode
 
     public async UniTask StartGame()
     {
-        var result = await MatchmakingManager.Instance.StartQuickMatchmaking();
+        if (MatchmakingManager.Instance == null)
+        {
+            Debug.LogError("MatchmakingManager.Instance is null");
+            return;
+        }
+
+        await MatchmakingManager.Instance.StartQuickMatchmaking();
     }
 
     public void OnPaused(bool pause)

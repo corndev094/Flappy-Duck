@@ -32,6 +32,7 @@ public class GameFlowManager : NetworkBehaviour
     public event Action OnGameStarted;
     public event Action OnGameEnded;
     public event Action<NetworkListEvent<PlayerNetworkData>> OnPlayerListChanged;
+    public event Action<ulong> OnUpdatePlayerData;
 
     public int PlayerCount => PlayerList?.Count ?? 0;
 
@@ -70,14 +71,21 @@ public class GameFlowManager : NetworkBehaviour
 
         if (IsServer)
         {
+            var nm = NetworkManager.Singleton;
+            if (nm == null)
+            {
+                EDebug.LogError("NetworkManager.Singleton is null in GameFlowManager.OnNetworkSpawn");
+                return;
+            }
+
             // New network session: always reset state from previous match/session.
             CurrentGameState.Value = GameState.InMenu;
             ClearPlayerList();
-            NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
-            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
+            nm.OnClientConnectedCallback += OnClientConnected;
+            nm.OnClientDisconnectCallback += OnClientDisconnected;
 
             // Add server/host player
-            AddPlayer(NetworkManager.Singleton.LocalClientId);
+            AddPlayer(nm.LocalClientId);
         }
     }
 
@@ -160,7 +168,8 @@ public class GameFlowManager : NetworkBehaviour
 
     public PlayerNetworkData? GetOfflinePlayerData()
     {
-        int index = GetPlayerIndex(OwnerClientId);
+        ulong clientId = NetworkManager.Singleton != null ? NetworkManager.Singleton.LocalClientId : OwnerClientId;
+        int index = GetPlayerIndex(clientId);
         if (index >= 0)
         {
             var data = PlayerList[index];
@@ -169,7 +178,7 @@ public class GameFlowManager : NetworkBehaviour
         return null;
     }
 
-    private int GetPlayerIndex(ulong clientId)
+    public int GetPlayerIndex(ulong clientId)
     {
         for (int i = 0; i < PlayerList.Count; i++)
         {
@@ -213,6 +222,7 @@ public class GameFlowManager : NetworkBehaviour
 
     public void OnLevelLoaded()
     {
+        if (!IsServer) return;
         CurrentGameState.Value = GameState.Playing;
         NotifyGameStartedClientRpc();
     }
@@ -224,6 +234,19 @@ public class GameFlowManager : NetworkBehaviour
 
         OnPlayerDied?.Invoke(clientId);
         CheckGameOver();
+    }
+
+    public void NotifyPlayerFinished(ulong clientId)
+    {
+        if (!IsServer || CurrentGameState.Value != GameState.Playing) return;
+        if (GetPlayerIndex(clientId) < 0) return;
+
+        OnPlayerWon?.Invoke(clientId);
+        DeclareWinnerClientRpc(clientId);
+        CurrentGameState.Value = GameState.GameOver;
+        OnGameEnded?.Invoke();
+        UpdateCoinDataClientRpc();
+        Debug.Log($"Winner: {clientId}");
     }
 
     public void UpdateCoin(ulong clientId, int coin)
@@ -247,12 +270,15 @@ public class GameFlowManager : NetworkBehaviour
             updateAction(ref data);
             PlayerList[index] = data;
         }
+        OnUpdatePlayerData?.Invoke(clientId);
     }
 
     public void ResetAllPlayerStats()
     {
-        foreach (var player in PlayerList)
+        if (!IsServer) return;
+        for (int i = 0; i < PlayerList.Count; i++)
         {
+            var player = PlayerList[i];
             UpdateCoin(player.ClientId, 0);
             UpdateAliveStatus(player.ClientId, true);
             Debug.Log($"Reset Player {player.ClientId}: {player.Coin} - {player.IsAlive}");
@@ -263,39 +289,23 @@ public class GameFlowManager : NetworkBehaviour
     {
         if (!IsServer || CurrentGameState.Value != GameState.Playing) return;
         int alivePlayers = 0;
-        ulong lastAlivePlayer = 0;
 
         for (int i = 0; i < PlayerList.Count; i++)
         {
             if (PlayerList[i].IsAlive)
             {
                 alivePlayers++;
-                lastAlivePlayer = PlayerList[i].ClientId;
             }
         }
         Debug.Log("Alive Players Count: " + alivePlayers);
 
-        if (alivePlayers <= 1 && PlayerList.Count > 1)
+        if (alivePlayers == 0 && PlayerList.Count > 0)
         {
-            // Game over
-
-            // Declare winner
-            // if (alivePlayers == 1)
-            // {
-            //     OnPlayerWon?.Invoke(lastAlivePlayer);
-            //     DeclareWinnerClientRpc(lastAlivePlayer);
-            //     Debug.Log("Winner");
-            // }
-            if (alivePlayers == 0)
-            {
-                // if (IsServer) GameFlowManager.Instance.CleanupPlayersServerRpc();
-                DeclareWinnerClientRpc(); // No winner
-                CurrentGameState.Value = GameState.GameOver;
-                Debug.Log("Game Over");
-            }
+            DeclareWinnerClientRpc(ulong.MaxValue); // No winner
+            CurrentGameState.Value = GameState.GameOver;
             OnGameEnded?.Invoke();
-            // Update Data
             UpdateCoinDataClientRpc();
+            Debug.Log("All players lost");
         }
     }
 
@@ -335,7 +345,11 @@ public class GameFlowManager : NetworkBehaviour
     [ClientRpc]
     public void UpdateCoinDataClientRpc()
     {
-        DataManager.Instance.SaveCurrency(ConstantString.COIN, DataManager.Instance.GetCurrency(ConstantString.COIN) + GetPlayerData(OwnerClientId).Value.Coin);
+        var localClientId = NetworkManager.Singleton != null ? NetworkManager.Singleton.LocalClientId : OwnerClientId;
+        var playerData = GetPlayerData(localClientId);
+        if (!playerData.HasValue) return;
+
+        DataManager.Instance.SaveCurrency(ConstantString.COIN, DataManager.Instance.GetCurrency(ConstantString.COIN) + playerData.Value.Coin);
     }
 
     [Rpc(SendTo.ClientsAndHost)]
@@ -365,24 +379,26 @@ public class GameFlowManager : NetworkBehaviour
     private void NotifyGameStartedClientRpc() => OnGameStarted?.Invoke();
 
     [ClientRpc]
-    private void DeclareWinnerClientRpc()
+    private void DeclareWinnerClientRpc(ulong winnerClientId)
     {
-        var id = NetworkManager.Singleton.LocalClientId;
-        bool isWin = true;
-        if (id != ulong.MaxValue)
+        var localClientId = NetworkManager.Singleton != null ? NetworkManager.Singleton.LocalClientId : OwnerClientId;
+        bool hasWinner = winnerClientId != ulong.MaxValue;
+        bool isWin = hasWinner && localClientId == winnerClientId;
+        if (hasWinner)
         {
-            OnPlayerWon?.Invoke(id);
-            isWin = false;
+            OnPlayerWon?.Invoke(winnerClientId);
         }
         OnGameEnded?.Invoke();
         ABasePopup popup = null;
         UIManager.Instance.TryGetPopup(Popup.LevelResult, out popup);
         if (popup != null)
         {
-            var data = GetPlayerData(id);
+            var data = GetPlayerData(localClientId);
+            if (!data.HasValue) return;
+
             LevelResultPopup levelResult = (LevelResultPopup)popup;
             levelResult.Setup(isWin, data.Value.Coin);
-            UIManager.Instance.OpenPopup(Popup.LevelResult).Forget();
+            UIManager.Instance.OpenPopup(Popup.Leaderboard).Forget();
         }
     }
 

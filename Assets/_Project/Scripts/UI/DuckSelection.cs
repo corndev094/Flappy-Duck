@@ -30,7 +30,7 @@ public class DuckSelection : MonoBehaviour
         buyButton.onClick.RemoveListener(Buy);
     }
 
-    public void Setup(DuckSelectionMenu duckSelectionMenu, Sprite thumbnail, DuckBaseData data, bool isBought, int price, Action onSelect = null, Action onBuySuccess = null)
+    public void Setup(DuckSelectionMenu duckSelectionMenu, Sprite thumbnail, DuckBaseData data, bool isBought, int price, Action<DuckBaseData> onSelect = null, Action onBuySuccess = null)
     {
         this.duckSelectionMenu = duckSelectionMenu;
         this.thumbnail.sprite = thumbnail;
@@ -39,7 +39,7 @@ public class DuckSelection : MonoBehaviour
         this.price = price;
 
         priceText.SetText(price.ToString());
-        selectButton.onClick.AddListener(() => onSelect?.Invoke());
+        selectButton.onClick.AddListener(() => onSelect?.Invoke(data));
         this.onBuySuccessAction = onBuySuccess;
 
         UpdateUI();
@@ -69,10 +69,20 @@ public class DuckSelection : MonoBehaviour
         if (isBought)
         {
             buyGameObject.gameObject.SetActive(false);
+            selectButton.gameObject.SetActive(true);
+            if (data.SkinId == GameFacade.Instance.CurrentSelectedDuck?.SkinId)
+            {
+                SetSelected(true);
+            }
+            else
+            {
+                SetSelected(false);
+            }
         }
         else
         {
             buyGameObject.gameObject.SetActive(true);
+            selectButton.gameObject.SetActive(false);
         }
     }
 
@@ -83,7 +93,7 @@ public class DuckSelection : MonoBehaviour
             return;
         }
 
-        if (selected)
+        if (!selected)
         {
             selectButton.image.material = null;
             selectButton.GetComponentInChildren<TMP_Text>().SetText("Select");

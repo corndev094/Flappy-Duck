@@ -207,7 +207,6 @@ GameObject:
   - component: {fileID: 1691768670945362343}
   - component: {fileID: 7533784906720487710}
   - component: {fileID: -5833083770680294789}
-  - component: {fileID: 469077518808861548}
   m_Layer: 0
   m_Name: RamboDuck
   m_TagString: Player
@@ -400,10 +399,19 @@ MonoBehaviour:
   collectSfx: {fileID: 0}
   infiniteStamina: 0
   currentHp:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
   currentStamina:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
   spriteColor:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
     m_InternalValue: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &7533784906720487710
 MonoBehaviour:
@@ -468,21 +476,6 @@ MonoBehaviour:
   UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 0
   AutoSetKinematicOnDespawn: 0
---- !u!114 &469077518808861548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2823841726163977842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d0b25b3f95e5324abc80c09cb29f271, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.ComponentController
-  ShowTopMostFoldoutHeaderGroup: 1
-  StartEnabled: 1
-  Components: []
 --- !u!1 &4914017712690172752
 GameObject:
   m_ObjectHideFlags: 0

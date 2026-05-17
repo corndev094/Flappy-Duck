@@ -97,7 +97,7 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
-/mcp
+/mcps
 /.gemini
 /Docs
 /Office-Word-MCP-Server
@@ -105,3 +105,4 @@ InitTestScene*.unity*
 /Assets/TestFolder
 /Assets/StompyRobot
 /Assets/.omx
+/.omx

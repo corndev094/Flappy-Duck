@@ -536,7 +536,17 @@ public class MatchmakingManager : NetworkBehaviour
 
     private async UniTask CreateLobbyAndHost()
     {
-        var transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+        var nm = NetworkManager.Singleton;
+        if (nm == null)
+        {
+            throw new Exception("NetworkManager not found while creating lobby.");
+        }
+
+        var transport = nm.GetComponent<UnityTransport>();
+        if (transport == null)
+        {
+            throw new Exception("UnityTransport not found while creating lobby.");
+        }
 
         // Create Relay allocation
         var allocation = await RelayService.Instance.CreateAllocationAsync(maxPlayer);
@@ -568,13 +578,13 @@ public class MatchmakingManager : NetworkBehaviour
         transport.SetRelayServerData(AllocationUtils.ToRelayServerData(allocation, "dtls"));
 
         // Start host
-        NetworkManager.Singleton.StartHost();
+        nm.StartHost();
 
         // Wait for host to be fully ready
         await UniTask.Delay((int)(hostStartDelay * 1000));
 
         // Verify host is listening
-        if (!NetworkManager.Singleton.IsListening || !NetworkManager.Singleton.IsServer)
+        if (!nm.IsListening || !nm.IsServer)
         {
             throw new Exception("Host failed to start listening. Please try again.");
         }
@@ -594,7 +604,17 @@ public class MatchmakingManager : NetworkBehaviour
     private async UniTask JoinAsClient()
     {
         // NetworkManager and UnityTransport already validated in ValidateNetworkSetup()
-        var transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+        var nm = NetworkManager.Singleton;
+        if (nm == null)
+        {
+            throw new Exception("NetworkManager not found while joining lobby.");
+        }
+
+        var transport = nm.GetComponent<UnityTransport>();
+        if (transport == null)
+        {
+            throw new Exception("UnityTransport not found while joining lobby.");
+        }
 
         // Refresh lobby data to ensure we have the join code (member-only visibility)
         if (!CurrentLobby.Data.ContainsKey(KEY_JOIN_CODE) || string.IsNullOrEmpty(CurrentLobby.Data[KEY_JOIN_CODE].Value))
@@ -633,23 +653,26 @@ public class MatchmakingManager : NetworkBehaviour
 
         transport.SetRelayServerData(AllocationUtils.ToRelayServerData(joinAlloc, "dtls"));
 
-        NetworkManager.Singleton.StartClient();
+        nm.StartClient();
 
         // Wait for connection with timeout
         float elapsed = 0f;
-        while (!NetworkManager.Singleton.IsConnectedClient && elapsed < connectionTimeout)
+        while (nm != null && !nm.IsConnectedClient && elapsed < connectionTimeout)
         {
             await UniTask.Delay(100);
             elapsed += 0.1f;
         }
 
-        if (!NetworkManager.Singleton.IsConnectedClient)
+        if (nm == null || !nm.IsConnectedClient)
         {
             // Log detailed error info
             Debug.LogError($"[Matchmaking] Connection timeout after {connectionTimeout}s");
-            Debug.LogError($"[Matchmaking] NetworkManager.IsClient: {NetworkManager.Singleton.IsClient}");
-            Debug.LogError($"[Matchmaking] NetworkManager.IsConnectedClient: {NetworkManager.Singleton.IsConnectedClient}");
-            Debug.LogError($"[Matchmaking] NetworkManager.IsListening: {NetworkManager.Singleton.IsListening}");
+            if (nm != null)
+            {
+                Debug.LogError($"[Matchmaking] NetworkManager.IsClient: {nm.IsClient}");
+                Debug.LogError($"[Matchmaking] NetworkManager.IsConnectedClient: {nm.IsConnectedClient}");
+                Debug.LogError($"[Matchmaking] NetworkManager.IsListening: {nm.IsListening}");
+            }
             
             throw new Exception($"Failed to connect to host after {connectionTimeout} seconds. Host may not be ready or network issues.");
         }
@@ -681,9 +704,10 @@ public class MatchmakingManager : NetworkBehaviour
         if (!IsLobbyHost) return;
 
         // Verify player count hasn't dropped during the delay
+        var nm = NetworkManager.Singleton;
         int currentPlayers = GameFlowManager.Instance != null
             ? GameFlowManager.Instance.PlayerCount
-            : NetworkManager.Singleton.ConnectedClientsIds.Count;
+            : nm != null ? nm.ConnectedClientsIds.Count : 0;
 
         if (currentPlayers < minimumPlayersToStart)
         {

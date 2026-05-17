@@ -31,56 +31,70 @@ public class LevelResultPopup : ABasePopup {
     }
 
     protected override async UniTask PlayOpenTransition() {
+        if (openTween == null || openTween.tween == null) return;
         openTween.DORestart();
         await openTween.tween.AsyncWaitForCompletion();
     }
 
      protected override async UniTask PlayCloseTransition() {
+        if (openTween == null || openTween.tween == null) return;
         openTween.DOPlayBackwards();
         await openTween.tween.AsyncWaitForCompletion();
     }
 
     void Start()
     {
-        winHomeButton.onClick.AddListener(Return);
-        loseHomeButton.onClick.AddListener(Return);
-        replayButton.onClick.AddListener(Replay);
-        nextButton.onClick.AddListener(Next);
+        winHomeButton?.onClick.AddListener(Return);
+        loseHomeButton?.onClick.AddListener(Return);
+        replayButton?.onClick.AddListener(Replay);
+        nextButton?.onClick.AddListener(Next);
+    }
+
+    void OnDestroy()
+    {
+        winHomeButton?.onClick.RemoveListener(Return);
+        loseHomeButton?.onClick.RemoveListener(Return);
+        replayButton?.onClick.RemoveListener(Replay);
+        nextButton?.onClick.RemoveListener(Next);
     }
 
     public void Setup(bool isWin, int coin = 0)
     {
         if (isWin)
         {
-            winWindow.SetActive(true);
-            loseWindow.SetActive(false);
+            winWindow?.SetActive(true);
+            loseWindow?.SetActive(false);
         }
         else
         {
-            winWindow.SetActive(false);
-            loseWindow.SetActive(true);
+            winWindow?.SetActive(false);
+            loseWindow?.SetActive(true);
         }
 
         if (GameManager.Instance.IsOnlineMode)
         {
-            replayButton.gameObject.SetActive(false);
-            nextButton.gameObject.SetActive(false);
+            replayButton?.gameObject.SetActive(false);
+            nextButton?.gameObject.SetActive(false);
         }
         else
         {
-            replayButton.gameObject.SetActive(true);
-            nextButton.gameObject.SetActive(true);
+            replayButton?.gameObject.SetActive(true);
+            nextButton?.gameObject.SetActive(true);
         }
 
-        winCoinCountText.StringReference.Arguments = new object[] {coin.ToString()};
-        loseCoinCountText.StringReference.Arguments = new object[] {coin.ToString()};
+        if (winCoinCountText != null) winCoinCountText.StringReference.Arguments = new object[] {coin.ToString()};
+        if (loseCoinCountText != null) loseCoinCountText.StringReference.Arguments = new object[] {coin.ToString()};
     }
 
     private async void Return()
     {
+        Debug.Log("Returning to menu...");
         await UIManager.Instance.CloseTopPopup();
         await GameFacade.Instance.ReturnToMenu();
-        await MatchmakingManager.Instance.LeaveLobby();
+        if (MatchmakingManager.Instance != null)
+        {
+            await MatchmakingManager.Instance.LeaveLobby();
+        }
     }
 
     private async void Replay()

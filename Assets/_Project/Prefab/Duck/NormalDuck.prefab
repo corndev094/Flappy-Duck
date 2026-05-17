@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 614629172392068131}
   - component: {fileID: 6994829280668480668}
   - component: {fileID: -3099252973461861681}
-  - component: {fileID: 4348373501822616239}
   m_Layer: 0
   m_Name: NormalDuck
   m_TagString: Player
@@ -208,12 +207,21 @@ MonoBehaviour:
   hpEvent: {fileID: 11400000, guid: 2df09b8571d3b1549896cd0469adcf32, type: 2}
   hurtSfx: {fileID: 0}
   collectSfx: {fileID: 0}
-  infiniteStamina: 0
+  infiniteStamina: 1
   currentHp:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
   currentStamina:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
     m_InternalValue: 20
   spriteColor:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
     m_InternalValue: {r: 0, g: 0, b: 0, a: 0}
   detectRadius: 7
   detectFilter:
@@ -225,7 +233,7 @@ MonoBehaviour:
     useOutsideNormalAngle: 0
     layerMask:
       serializedVersion: 2
-      m_Bits: 64
+      m_Bits: 0
     minDepth: 0
     maxDepth: 0
     minNormalAngle: 0
@@ -293,21 +301,6 @@ MonoBehaviour:
   UseRigidBodyForMotion: 1
   AutoUpdateKinematicState: 0
   AutoSetKinematicOnDespawn: 0
---- !u!114 &4348373501822616239
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1008738606943811311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d0b25b3f95e5324abc80c09cb29f271, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.ComponentController
-  ShowTopMostFoldoutHeaderGroup: 1
-  StartEnabled: 1
-  Components: []
 --- !u!1 &1722864095139436457
 GameObject:
   m_ObjectHideFlags: 0

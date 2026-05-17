@@ -32,7 +32,7 @@ public class Bullet : NetworkBehaviour
         try
         {
             await UniTask.Delay(TimeSpan.FromSeconds(destroyAfter), cancellationToken: destroyCts.Token);
-            Destroy(gameObject);
+            DespawnOrDestroy();
         }
         catch (OperationCanceledException) { /* Expected */ }
     }
@@ -40,6 +40,7 @@ public class Bullet : NetworkBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") || collision.CompareTag("PhaseTrigger")) return;
+        if (!IsServer) return;
         
         if (collision.TryGetComponent<ABaseEnemy>(out var enemy))
         {
@@ -48,7 +49,21 @@ public class Bullet : NetworkBehaviour
         }
 
         destroyCts.Cancel();
-        Destroy(gameObject);
+        DespawnOrDestroy();
+    }
+
+    private void DespawnOrDestroy()
+    {
+        if (IsServer && TryGetComponent<NetworkObject>(out var networkObject) && networkObject.IsSpawned)
+        {
+            networkObject.Despawn(true);
+            return;
+        }
+
+        if (!IsSpawned)
+        {
+            Destroy(gameObject);
+        }
     }
 
     public override void OnDestroy()

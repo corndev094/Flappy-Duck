@@ -30,9 +30,9 @@ public class QuickMatchMenu : ABaseMenu
         }
 
         // Setup buttons
-        mainMenuButton.onClick.AddListener(OnMainMenuClicked);
-        quickMatchButton.onClick.AddListener(OnQuickMatchClicked);
-        cancelMatchButton.onClick.AddListener(OnCancelMatchClicked);
+        mainMenuButton?.onClick.AddListener(OnMainMenuClicked);
+        quickMatchButton?.onClick.AddListener(OnQuickMatchClicked);
+        cancelMatchButton?.onClick.AddListener(OnCancelMatchClicked);
 
         // Subscribe to events
         matchmaking.OnLeftLobby += HandleLeftLobby;
@@ -44,9 +44,9 @@ public class QuickMatchMenu : ABaseMenu
 
     void OnDestroy()
     {
-        mainMenuButton.onClick.RemoveListener(OnMainMenuClicked);
-        quickMatchButton.onClick.RemoveListener(OnQuickMatchClicked);
-        cancelMatchButton.onClick.RemoveListener(OnCancelMatchClicked);
+        mainMenuButton?.onClick.RemoveListener(OnMainMenuClicked);
+        quickMatchButton?.onClick.RemoveListener(OnQuickMatchClicked);
+        cancelMatchButton?.onClick.RemoveListener(OnCancelMatchClicked);
 
         if (matchmaking != null)
         {
@@ -67,21 +67,34 @@ public class QuickMatchMenu : ABaseMenu
     private async void OnQuickMatchClicked()
     {
         SetInfoText("Finding match...");
-        cancelMatchButton.gameObject.SetActive(true);
+        if (cancelMatchButton != null)
+        {
+            cancelMatchButton.interactable = false;
+            canCancel = false;
+            WaitForJoinedLobby();
+        }
         matchingPanel?.SetActive(true);
-        canCancel = false;
-
         await GameManager.Instance.StartGame();
-        canCancel = true;
+
     }
 
     private async void OnCancelMatchClicked()
     {
+        Debug.Log(canCancel);
         if (!canCancel) return; // Prevent multiple clicks
         canCancel = false;
         await matchmaking.CancelMatchmaking();
         matchingPanel?.SetActive(false);
         canCancel = true;
+    }
+
+    private async void WaitForJoinedLobby()
+    {
+        matchmaking.OnJoinedLobby += _ =>
+        {
+            cancelMatchButton.interactable = true;
+            canCancel = true;
+        };
     }
 
     #endregion
@@ -112,8 +125,8 @@ public class QuickMatchMenu : ABaseMenu
     {
         SetInfoText(error);
         await UniTask.Delay(3000);
-        matchingPanel.SetActive(false);
-        infoText.gameObject.SetActive(false);
+        matchingPanel?.SetActive(false);
+        infoText?.gameObject.SetActive(false);
     }
 
     #endregion
@@ -122,6 +135,7 @@ public class QuickMatchMenu : ABaseMenu
 
     private void SetInfoText(string message)
     {
+        if (infoText == null) return;
         infoText.SetText(message);
         if (!infoText.gameObject.activeSelf) infoText.gameObject.SetActive(true);
     }
@@ -129,14 +143,14 @@ public class QuickMatchMenu : ABaseMenu
     public void ResetUI()
     {
         ShowMainMenu();
-        matchingPanel.SetActive(false);
-        infoText.gameObject.SetActive(false);
-        cancelMatchButton.gameObject.SetActive(true);
+        matchingPanel?.SetActive(false);
+        infoText?.gameObject.SetActive(false);
+        cancelMatchButton?.gameObject.SetActive(true);
     }
 
     private void ShowMainMenu()
     {
-        mainPanel.SetActive(true);
+        mainPanel?.SetActive(true);
     }
 
     #endregion

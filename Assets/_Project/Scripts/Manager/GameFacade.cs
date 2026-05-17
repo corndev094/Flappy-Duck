@@ -4,6 +4,7 @@ using Sirenix.OdinInspector;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Localization;
+using UnityEngine.SocialPlatforms.Impl;
 
 /// <summary>
 /// Central facade for game operations.
@@ -38,7 +39,10 @@ public class GameFacade : NetworkSingleton<GameFacade> {
     /// </summary>
     public async UniTask LoadMultiplayerLevel()
     {
-        GameFlowManager.Instance.ResetAllPlayerStats();
+        if (IsServer && GameFlowManager.Instance != null)
+        {
+            GameFlowManager.Instance.ResetAllPlayerStats();
+        }
         OnPlayerInMatch?.Invoke();
         Debug.Log("Setup for online level ...");
         var levelData = DataManager.Instance.OnlineLevel;
@@ -54,6 +58,13 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         EDebug.Log("Setup bird");
         IsPlayingLevel = true;
         await SetupDuck();
+        if (ActiveDuck == null)
+        {
+            IsPlayingLevel = false;
+            EDebug.LogError("Failed to load multiplayer level because duck spawn failed.");
+            await SceneLoader.Instance.FadeOut();
+            return;
+        }
 
         EDebug.Log("Setup level");
         SetupLevel(levelData);
@@ -68,7 +79,6 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         ActiveDuck.StartFly().Forget();
         ActiveDuck.CanAttack = true;
         if (IsServer) GameFlowManager.Instance.OnLevelLoaded();
-        Debug.Log("Game started");
     }
 
     /// <summary>
@@ -77,7 +87,14 @@ public class GameFacade : NetworkSingleton<GameFacade> {
     /// </summary>
     public async UniTask PlayLevel(LevelSO data)
     {
-        GameFlowManager.Instance.ResetAllPlayerStats();
+        if (NetworkManager.Singleton != null && !NetworkManager.Singleton.IsListening){
+            NetworkManager.Singleton.StartHost();
+        }
+
+        if (GameFlowManager.Instance != null)
+        {
+            GameFlowManager.Instance.ResetAllPlayerStats();
+        }
         GameManager.Instance.IsGameOver = false;
         GameManager.Instance.IsGameWin = false;
         GameManager.Instance.OnEnterLevel?.Invoke(data);
@@ -89,6 +106,13 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         EDebug.Log("Setup bird");
         IsPlayingLevel = true;
         await SetupDuck();
+        if (ActiveDuck == null)
+        {
+            IsPlayingLevel = false;
+            EDebug.LogError("Failed to play level because duck spawn failed.");
+            await SceneLoader.Instance.FadeOut();
+            return;
+        }
 
         EDebug.Log("Setup level");
         SetupLevel(data);
@@ -149,26 +173,34 @@ public class GameFacade : NetworkSingleton<GameFacade> {
 
     public async UniTask WinLevel(int coin)
     {
+        await UIManager.Instance.OpenPopup(Popup.Leaderboard);
         if (UIManager.Instance.TryGetPopup(Popup.LevelResult, out var menu) && menu != null && menu is LevelResultPopup levelResultMenu)
         {
             levelResultMenu.Setup(true, coin);
-            await UIManager.Instance.OpenPopup(Popup.LevelResult);
         }
     }
 
     public async UniTask LoseLevel(int coin)
     {
+        await UIManager.Instance.OpenPopup(Popup.Leaderboard);
         if (UIManager.Instance.TryGetPopup(Popup.LevelResult, out var menu) && menu != null && menu is LevelResultPopup levelResultMenu)
         {
             levelResultMenu.Setup(false, coin);
-            await UIManager.Instance.OpenPopup(Popup.LevelResult);
         }
     }
 
     private async UniTask SetupDuck()
     {
+        if (!await WaitForDuckControllerReady())
+        {
+            return;
+        }
+
         // Online mode must play Normal Duck
-        duckController.GetDuckServerRpc(GameManager.Instance.IsOnlineMode ? DuckSkinID.Normal : CurrentSelectedDuck.SkinId);
+        DuckSkinID skinId = GameManager.Instance.IsOnlineMode || CurrentSelectedDuck == null
+            ? DuckSkinID.Normal
+            : CurrentSelectedDuck.SkinId;
+        duckController.GetDuckServerRpc(skinId);
         ActiveDuck = await WaitForDuckSpawn();
         duckController.CurrentDuck = ActiveDuck;
         if (ActiveDuck == null)
@@ -178,6 +210,38 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         }
         ActiveDuck.CanAttack = false;
         SetupCamera();
+    }
+
+    private async UniTask<bool> WaitForDuckControllerReady()
+    {
+        const float timeout = 5f;
+        float elapsed = 0f;
+
+        while (elapsed < timeout)
+        {
+            if (duckController == null)
+            {
+                EDebug.LogError("DuckController reference is missing on GameFacade.");
+                return false;
+            }
+
+            if (!duckController.TryGetComponent<NetworkObject>(out _))
+            {
+                EDebug.LogError("DuckController must have a NetworkObject component before calling RPCs.");
+                return false;
+            }
+
+            if (duckController.IsSpawned)
+            {
+                return true;
+            }
+
+            await UniTask.Yield();
+            elapsed += Time.deltaTime;
+        }
+
+        EDebug.LogError("Timeout waiting for DuckController NetworkObject to spawn before requesting duck.");
+        return false;
     }
 
     private async UniTask<ABaseDuck> WaitForDuckSpawn()
@@ -221,7 +285,10 @@ public class GameFacade : NetworkSingleton<GameFacade> {
             elapsed += Time.deltaTime;
         }
 
-        EDebug.LogError($"Timeout waiting for duck spawn after {timeout}s (IsListening: {NetworkManager.Singleton.IsListening}, IsClient: {NetworkManager.Singleton.IsClient}, IsConnectedClient: {NetworkManager.Singleton.IsConnectedClient})");
+        var networkManager = NetworkManager.Singleton;
+        EDebug.LogError(networkManager != null
+            ? $"Timeout waiting for duck spawn after {timeout}s (IsListening: {networkManager.IsListening}, IsClient: {networkManager.IsClient}, IsConnectedClient: {networkManager.IsConnectedClient})"
+            : $"Timeout waiting for duck spawn after {timeout}s because NetworkManager.Singleton was destroyed");
         return null;
     }
 
@@ -231,10 +298,7 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         level.transform.localPosition = Vector3.zero;
         CurrentLevelData = data;
         CurrentLevelPrefab = level;
-        // foreach (var go in level.GetComponentsInChildren<GameObject>(true))
-        // {
-        //     Debug.Log($"Name: {go.name}   -   Hash: {go.GetComponent<NetworkObject>()?.NetworkObjectId}");
-        // }
+        LeaderboardManager.Instance.Setup();
     }
 
     /// <summary>

@@ -41,20 +41,32 @@ public abstract class Stepper<T> : MonoBehaviour
     {
         if (useScritableObject)
         {
+            if (variableListSO == null)
+            {
+                Debug.LogError("Stepper is configured to use ScriptableObject but no list is assigned.", this);
+                return;
+            }
             items = variableListSO.list;
         }
 
-        previousButton.onClick.AddListener(MovePrevious);
-        nextButton.onClick.AddListener(MoveNext);
+        previousButton?.onClick.AddListener(MovePrevious);
+        nextButton?.onClick.AddListener(MoveNext);
         UpdateButtonInteractable();
     }
 
     [Button]
     private void Setup()
     {
-        for(var i = 0; i < content.childCount; i++)
+        while (content.childCount > 0)
         {
-            DestroyImmediate(content.GetChild(i).gameObject);
+            if (Application.isPlaying)
+            {
+                Destroy(content.GetChild(0).gameObject);
+            }
+            else
+            {
+                DestroyImmediate(content.GetChild(0).gameObject);
+            }
         }
         if (direction == Direction.Horizontal)
         {
@@ -173,8 +185,8 @@ public abstract class Stepper<T> : MonoBehaviour
 
     protected void UpdateButtonInteractable()
     {
-        previousButton.interactable = _currentSelectedItem > 0;
-        nextButton.interactable = _currentSelectedItem < TotalChildren - 1;
+        if (previousButton != null) previousButton.interactable = _currentSelectedItem > 0;
+        if (nextButton != null) nextButton.interactable = _currentSelectedItem < TotalChildren - 1;
     }
 
     public async void SetSelectedItem(T item, bool animate = true)
@@ -195,6 +207,7 @@ public abstract class Stepper<T> : MonoBehaviour
 
     protected virtual void InvokeEvent()
     {
+        if (_currentSelectedItem < 0 || _currentSelectedItem >= items.Count) return;
         OnItemSelected?.Invoke(items[_currentSelectedItem]);
     }
 

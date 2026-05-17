@@ -39,6 +39,7 @@ public class GameManager : NetworkSingleton<GameManager> {
 
     public async UniTask StartGame()    
     {
+        if (currentGameMode == null) return;
         await currentGameMode.StartGame();
     }
 
@@ -54,7 +55,7 @@ public class GameManager : NetworkSingleton<GameManager> {
 
     public void Pause(bool pause)
     {
-        currentGameMode.OnPaused(pause);
+        currentGameMode?.OnPaused(pause);
     }
 
     public void HandleWinCondition()
@@ -67,10 +68,12 @@ public class GameManager : NetworkSingleton<GameManager> {
         {
             // Unlock next level
             DataManager.Instance.SaveHighestLevel(CurrentPlayingLevel.ID + 1);
-            PlayerNetworkData? playerData = GameFlowManager.Instance.GetOfflinePlayerData();
-            coin = playerData.Value.Coin;
+            PlayerNetworkData? playerData = GameFlowManager.Instance?.GetOfflinePlayerData();
             if (playerData != null)
+            {
+                coin = playerData.Value.Coin;
                 DataManager.Instance.SaveCurrency(ConstantString.COIN, DataManager.Instance.GetCurrency(ConstantString.COIN) + coin);
+            }
         }
 
         GameFacade.Instance.WinLevel(coin).Forget();
@@ -83,10 +86,12 @@ public class GameManager : NetworkSingleton<GameManager> {
         IsGameOver = true;
         IsGameWin = false;
         OnLose?.Invoke();
-        PlayerNetworkData? playerData = GameFlowManager.Instance.GetOfflinePlayerData();
-        coin = playerData.Value.Coin;
+        PlayerNetworkData? playerData = GameFlowManager.Instance?.GetOfflinePlayerData();
         if (playerData != null)
+        {
+            coin = playerData.Value.Coin;
             DataManager.Instance.SaveCurrency(ConstantString.COIN, DataManager.Instance.GetCurrency(ConstantString.COIN) + coin);
+        }
         GameFacade.Instance.LoseLevel(coin).Forget();
     }
 }

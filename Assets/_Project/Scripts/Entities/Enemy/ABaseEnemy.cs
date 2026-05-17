@@ -39,7 +39,16 @@ public abstract class ABaseEnemy : NetworkBehaviour
 
     private void Die()
     {
-        Destroy(this.gameObject);
+        if (IsServer && TryGetComponent<NetworkObject>(out var networkObject) && networkObject.IsSpawned)
+        {
+            networkObject.Despawn(true);
+            return;
+        }
+
+        if (!IsSpawned)
+        {
+            Destroy(gameObject);
+        }
     }
 
     void Reset()

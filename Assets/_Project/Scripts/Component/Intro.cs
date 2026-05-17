@@ -48,7 +48,14 @@ public class Intro : MonoBehaviour {
 
     private async void WaitForAnyKey()
     {
-        await UniTask.WaitUntil(() => Keyboard.current.anyKey.wasPressedThisFrame || Mouse.current.leftButton.wasPressedThisFrame || Touchscreen.current.primaryTouch.press.wasPressedThisFrame);
+        while (true)
+        {
+            bool hasMouse = Mouse.current?.leftButton.wasPressedThisFrame ?? false;
+            bool hasTouch = Touchscreen.current?.primaryTouch.press.wasPressedThisFrame ?? false;
+            bool hasAnyKey = Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame;
+            await UniTask.Yield();
+            if (hasMouse || hasTouch || hasAnyKey) break;
+        }
         if (pressButtonSfx != null)SoundManager.Instance.PlaySFX(pressButtonSfx);
         EnterMainMenu();
     }

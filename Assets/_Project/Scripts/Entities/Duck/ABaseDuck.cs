@@ -7,6 +7,7 @@ using Nguyen.Event;
 using Unity.Netcode;
 using System.Linq;
 using Sirenix.OdinInspector;
+using DG.Tweening;
 
 [RequireComponent(typeof(PlayerInput))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -26,6 +27,10 @@ public abstract class ABaseDuck : NetworkBehaviour {
     [Header("Configurations")]
     [SerializeField] private float invincibleDuration = 0.3f;
     [SerializeField] private float hurtFlashDuration = 0.3f;
+    [SerializeField] private float duckCollisionFlyDelay = 0.12f;
+    [SerializeField] private float duckCollisionShakeDuration = 0.12f;
+    [SerializeField] private float duckCollisionShakeStrength = 0.06f;
+    [SerializeField] private float duckCollisionCooldown = 0.25f;
 
     [Header("Events")]
     [SerializeField] private FloatEventChannelSO staminaEvent;
@@ -54,6 +59,9 @@ public abstract class ABaseDuck : NetworkBehaviour {
     
     private CancellationTokenSource refillStaminaCts;
     private CancellationTokenSource hurtCts;
+    private CancellationTokenSource flyCts;
+    private bool isDead;
+    private double lastDuckCollisionTime;
     
     protected int flyAnimationHash = Animator.StringToHash(DuckAnimationString.FLY);
     protected int shootAnimationHash = Animator.StringToHash(DuckAnimationString.SHOOT);
@@ -62,6 +70,7 @@ public abstract class ABaseDuck : NetworkBehaviour {
     protected Animator anim;
     protected Material hurtMatCopy;
     private SpriteRenderer spriteRenderer;
+    private Vector3 spriteDefaultLocalPosition;
 
     protected const string ATTACK_ACTION = "Attack";
     #endregion
@@ -84,6 +93,7 @@ public abstract class ABaseDuck : NetworkBehaviour {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         if (playerInput == null) playerInput = GetComponent<PlayerInput>();
+        if (sprite != null) spriteDefaultLocalPosition = sprite.transform.localPosition;
     }
 
     public override void OnNetworkSpawn()
@@ -109,6 +119,7 @@ public abstract class ABaseDuck : NetworkBehaviour {
         refillStaminaCts?.Dispose();
         hurtCts?.Cancel();
         hurtCts?.Dispose();
+        flyCts?.Cancel();
         UnSubscribeEvents();
     }
     #endregion
@@ -116,6 +127,7 @@ public abstract class ABaseDuck : NetworkBehaviour {
     #region Initialization
     public void InitializeStats()
     {
+        isDead = false;
         currentHp.Value = data.HP;
         currentStamina.Value = data.Stamina;
     }
@@ -137,8 +149,10 @@ public abstract class ABaseDuck : NetworkBehaviour {
     public void OnJump(InputValue value)
     {
         if (!IsOwner) return;
-        if (value.isPressed && isFlying && canJump && (!infiniteStamina ? CurrentStamina.Value >= data.JumpStamina : true) && JumpCondition())
+        bool touchPressed = Touchscreen.current?.press.wasPressedThisFrame ?? false;
+        if ((value.isPressed || touchPressed) && isFlying && canJump && (!infiniteStamina ? CurrentStamina.Value >= data.JumpStamina : true) && JumpCondition())
         {
+            Debug.Log("Jump input received");
             Jump();
         }
     }
@@ -148,27 +162,49 @@ public abstract class ABaseDuck : NetworkBehaviour {
 
     public async UniTask StartFly() {
         if (!IsOwner) return;
+        flyCts?.Cancel();
+        var cts = new CancellationTokenSource();
+        flyCts = cts;
+        var token = cts.Token;
+
         isFlying = true;
         canJump = true;
         rb.bodyType = RigidbodyType2D.Dynamic;
         rb.linearVelocity = Vector2.zero;
         currentMoveSpeed = data.DefaultMoveSpeed;
-        while (true && rb != null){
-            rb.linearVelocity = isFlying ? new Vector2(currentMoveSpeed, rb.linearVelocity.y) : Vector2.zero;
-            await UniTask.Yield();
+        try
+        {
+            while (!token.IsCancellationRequested && rb != null)
+            {
+                rb.linearVelocity = isFlying ? new Vector2(currentMoveSpeed, rb.linearVelocity.y) : Vector2.zero;
+                await UniTask.Yield(PlayerLoopTiming.Update, token);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // Expected when flight is paused, stopped, or duck is destroyed.
+        }
+        finally
+        {
+            if (ReferenceEquals(flyCts, cts))
+            {
+                flyCts = null;
+            }
+            cts.Dispose();
         }
     }
 
     public void StopFlying()
     {
+        flyCts?.Cancel();
         isFlying = false;
         if (rb.bodyType == RigidbodyType2D.Dynamic) rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.linearVelocity = Vector2.zero;
     }
 
     public void ResumeFlying()
     {
-        isFlying = true;
-        if (rb.bodyType == RigidbodyType2D.Dynamic) rb.bodyType = RigidbodyType2D.Kinematic;
+        StartFly().Forget();
     }
 
     private void Jump() {
@@ -292,13 +328,32 @@ public abstract class ABaseDuck : NetworkBehaviour {
     {
         if (collision.CompareTag("Coin"))
         {
+            if (!IsServer) return;
+
             PlayCollectSfx();
-            // collision.TryGetComponent<NetworkObject>(out var networkObject);
-            // if (networkObject.IsSpawned) networkObject.Despawn(true);
-            Destroy(collision.gameObject);
-            GameFlowManager.Instance.UpdateCoin(OwnerClientId, GameFlowManager.Instance.GetPlayerData(OwnerClientId).Value.Coin + 1);
+            var playerData = GameFlowManager.Instance?.GetPlayerData(OwnerClientId);
+            if (playerData.HasValue)
+            {
+                GameFlowManager.Instance.UpdateCoin(OwnerClientId, playerData.Value.Coin + 1);
+            }
+
+            if (collision.TryGetComponent<NetworkObject>(out var networkObject) && networkObject.IsSpawned)
+            {
+                networkObject.Despawn(true);
+            }
+            else
+            {
+                Destroy(collision.gameObject);
+            }
+            return;
         }
         if (!IsServer) return;
+        if (collision.TryGetComponent<ABaseDuck>(out var otherDuck) && otherDuck != this)
+        {
+            HandleDuckCollision(otherDuck);
+            return;
+        }
+
         if (collision.TryGetComponent<ABaseEnemy>(out var enemy))
         {
             OnBirdCollided?.Invoke(collision);
@@ -309,14 +364,66 @@ public abstract class ABaseDuck : NetworkBehaviour {
         }
         else if (collision.gameObject.CompareTag("Finish"))
         {
+            Debug.Log($"Duck {OwnerClientId} reached the finish line!");
             OnBirdReachedFinish?.Invoke();
             GameManager.Instance.NotifyPlayerWin(OwnerClientId);
             StopFlying();
         }
     }
 
+    private void HandleDuckCollision(ABaseDuck otherDuck)
+    {
+        if (!IsServer || isDead || otherDuck == null || otherDuck.isDead) return;
+
+        double now = Time.timeAsDouble;
+        if (now - lastDuckCollisionTime < duckCollisionCooldown) return;
+        lastDuckCollisionTime = now;
+        otherDuck.lastDuckCollisionTime = now;
+
+        DuckCollisionClientRpc();
+        otherDuck.DuckCollisionClientRpc();
+    }
+
+    [ClientRpc]
+    private void DuckCollisionClientRpc()
+    {
+        ShakeOnDuckCollision();
+        DelayFlyAfterDuckCollision().Forget();
+    }
+
+    private void ShakeOnDuckCollision()
+    {
+        var shakeTarget = sprite != null ? sprite.transform : transform;
+        var defaultLocalPosition = sprite != null ? spriteDefaultLocalPosition : shakeTarget.localPosition;
+        shakeTarget.DOKill();
+        shakeTarget.localPosition = defaultLocalPosition;
+        shakeTarget.DOShakePosition(duckCollisionShakeDuration, duckCollisionShakeStrength, vibrato: 8, randomness: 45f)
+            .OnComplete(() => shakeTarget.localPosition = defaultLocalPosition)
+            .SetLink(gameObject);
+    }
+
+    private async UniTask DelayFlyAfterDuckCollision()
+    {
+        if (!IsOwner || isDead || !isFlying) return;
+
+        try
+        {
+            StopFlying();
+            await UniTask.Delay(TimeSpan.FromSeconds(duckCollisionFlyDelay), cancellationToken: this.GetCancellationTokenOnDestroy());
+            if (!isDead)
+            {
+                StartFly().Forget();
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // Expected if duck despawns during the collision delay.
+        }
+    }
+
     private void TakeDamage(float damage)
     {
+        if (isDead) return;
         currentHp.Value -= damage;
         if (currentHp.Value <= 0) Die();
         else
@@ -343,6 +450,9 @@ public abstract class ABaseDuck : NetworkBehaviour {
 
     private void Die()
     {
+        if (isDead) return;
+        isDead = true;
+
         // Server-side logic
         GameManager.Instance.NotifyPlayerDied(OwnerClientId);
         DieClientRpc();
@@ -357,9 +467,10 @@ public abstract class ABaseDuck : NetworkBehaviour {
         if (!IsOwner) return;
 
         OnBirdDie?.Invoke();
-        if (NetworkManager.Singleton.ConnectedClientsList.Count > 1)
+        var nm = NetworkManager.Singleton;
+        if (nm != null && nm.ConnectedClientsList.Count > 1)
         {
-            var otherClient = NetworkManager.Singleton.ConnectedClientsList.FirstOrDefault(c => c.ClientId != OwnerClientId);
+            var otherClient = nm.ConnectedClientsList.FirstOrDefault(c => c.ClientId != OwnerClientId);
             if (otherClient?.PlayerObject != null)
                 CameraController.Instance.Target = otherClient.PlayerObject.transform;
         }

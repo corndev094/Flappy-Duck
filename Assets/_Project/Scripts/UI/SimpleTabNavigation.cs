@@ -41,9 +41,10 @@ public class SimpleTabNavigation : MonoBehaviour
 
             // Gắn sự kiện click
             int idx = i;
-            tab.tabButton.onClick.AddListener(() => ShowTabAsync(idx).Forget());
+            tab.tabButton?.onClick.AddListener(() => ShowTabAsync(idx).Forget());
 
             // Chuẩn bị CanvasGroup
+            if (tab.tabPanel == null) continue;
             var group = GetOrCreateCanvasGroup(tab.tabPanel);
             group.alpha = i == currentTab ? 1 : 0;
             tab.tabPanel.SetActive(i == currentTab);
@@ -53,18 +54,26 @@ public class SimpleTabNavigation : MonoBehaviour
         }
 
         // Gán panel đầu tiên làm currentPanelGroup
-        currentPanelGroup = GetOrCreateCanvasGroup(tabs[currentTab].tabPanel);
+        if (tabs[currentTab].tabPanel != null)
+        {
+            currentPanelGroup = GetOrCreateCanvasGroup(tabs[currentTab].tabPanel);
+        }
     }
 
     public async UniTask ShowTabAsync(int tabIndex)
     {
-        if (isTransitioning || tabIndex == currentTab || tabIndex < 0 || tabIndex >= tabs.Count)
+        if (isTransitioning || tabs == null || tabIndex == currentTab || tabIndex < 0 || tabIndex >= tabs.Count)
             return;
 
         isTransitioning = true;
         currentTab = tabIndex;
 
         var newPanel = tabs[tabIndex].tabPanel;
+        if (newPanel == null)
+        {
+            isTransitioning = false;
+            return;
+        }
         var newGroup = GetOrCreateCanvasGroup(newPanel);
 
         // Fade out panel cũ

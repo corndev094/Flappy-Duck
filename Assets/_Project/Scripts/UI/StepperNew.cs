@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,6 +39,7 @@ public class StepperNew : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         if (content == null || itemPrefab == null || previousButton == null || nextButton == null)
         {
             Debug.LogError("Missing required references in Stepper component!");
+            enabled = false;
             return;
         }
 
@@ -138,8 +138,8 @@ public class StepperNew : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     private void Start()
     {
-        previousButton.onClick.AddListener(MovePrevious);
-        nextButton.onClick.AddListener(MoveNext);
+        previousButton?.onClick.AddListener(MovePrevious);
+        nextButton?.onClick.AddListener(MoveNext);
         UpdateButtonInteractable();
 
         // Nếu có items, chọn item đầu tiên
@@ -158,8 +158,8 @@ public class StepperNew : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         DestroyItems();
 
         // Hủy các sự kiện
-        previousButton.onClick.RemoveListener(MovePrevious);
-        nextButton.onClick.RemoveListener(MoveNext);
+        previousButton?.onClick.RemoveListener(MovePrevious);
+        nextButton?.onClick.RemoveListener(MoveNext);
     }
 
     /// <summary>
@@ -228,12 +228,13 @@ public class StepperNew : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     private void UpdateButtonInteractable()
     {
-        previousButton.interactable = _currentSelectedItem > 0;
-        nextButton.interactable = _currentSelectedItem < TotalChildren - 1;
+        if (previousButton != null) previousButton.interactable = _currentSelectedItem > 0;
+        if (nextButton != null) nextButton.interactable = _currentSelectedItem < TotalChildren - 1;
     }
 
     private void DestroyItems()
     {
+        if (content == null) return;
         for (int i = content.childCount - 1; i >= 0; i--)
         {
             if (content.GetChild(i) != null)
@@ -322,7 +323,7 @@ public class StepperNew : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     /// <param name="newItems">Danh sách items mới</param>
     public void UpdateItems(List<string> newItems)
     {
-        items = newItems;
+        items = newItems ?? new List<string>();
 
         // Cập nhật layout
         SetupLayout();

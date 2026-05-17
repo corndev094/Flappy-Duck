@@ -24,8 +24,17 @@ public class ButtonEffects : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        if (randomSound) SoundManager.Instance.PlaySFX(clickSounds[Random.Range(0, clickSounds.Length)]);
-        else SoundManager.Instance.PlaySFX(defaultClickSound);
+        if (SoundManager.Instance != null)
+        {
+            if (randomSound && clickSounds != null && clickSounds.Length > 0)
+            {
+                SoundManager.Instance.PlaySFX(clickSounds[Random.Range(0, clickSounds.Length)]);
+            }
+            else
+            {
+                SoundManager.Instance.PlaySFX(defaultClickSound);
+            }
+        }
         if (!swapSprite || clickedSprite == null) return;
         image.sprite = clickedSprite;
     }

@@ -4,8 +4,8 @@ using DanielLochner.Assets.SimpleScrollSnap;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 
 public class DuckSelectionMenu : ABaseMenu {
     [SerializeField] private ShopData shopData;
@@ -19,7 +19,6 @@ public class DuckSelectionMenu : ABaseMenu {
     [SerializeField] private DuckSelection duckSelectionPerfab;
     [SerializeField] private Toggle togglePrefab;
 
-    private DuckBaseData currentSelectedDuck;
     private Sequence shakeSequence;
 
     void Awake()
@@ -30,30 +29,39 @@ public class DuckSelectionMenu : ABaseMenu {
             var toggle = Instantiate(togglePrefab, toggleGroup.transform);
             toggle.group = toggleGroup;
             var duckData = duckList.List[i];
-            thumb.Setup(this, duckData.Thumbnail, duckData, IsSkinBought(duckData.SkinId), shopData.skins.First(_ => _.SkinId == duckData.SkinId).Price, SelectDuck, UpdateUI);
+            int skinIndex = shopData.skins.FindIndex(_ => _.SkinId == duckData.SkinId);
+            if (skinIndex < 0)
+            {
+                Debug.LogWarning($"Missing shop data for duck skin {duckData.SkinId}", this);
+                continue;
+            }
+            var skin = shopData.skins[skinIndex];
+            thumb.Setup(this, duckData.Thumbnail, duckData, IsSkinBought(duckData.SkinId), skin.Price, SelectDuck, UpdateUI);
         }
     }
 
     void OnEnable()
     {
-        currentSelectedDuck = duckList.List[scrollSnap.SelectedPanel];
+        if (duckList == null || duckList.List.Count == 0) return;
         returnBtn.onClick.AddListener(Return);
-        scrollSnap.OnPanelSelected.AddListener(OnSelectDuck);
         UpdateUI();
     }
 
     void OnDisable()
     {
         returnBtn.onClick.RemoveListener(Return);
-        scrollSnap.OnPanelSelected.RemoveListener(OnSelectDuck);
     }
 
     private void UpdateUI()
     {
         coinText.SetText(DataManager.Instance.GetCurrency(ConstantString.COIN).ToString());
+        if (GameFacade.Instance.CurrentSelectedDuck == null)
+        {
+            GameFacade.Instance.CurrentSelectedDuck = duckList.List[0];
+        }
         for (var i = 0; i < duckList.List.Count; i++)
         {
-            if (duckList.List[i].SkinId == currentSelectedDuck.SkinId)
+            if (duckList.List[i].SkinId == GameFacade.Instance.CurrentSelectedDuck.SkinId)
             {
                 scrollSnap.Content.GetChild(i).GetComponent<DuckSelection>().SetSelected(true);
                 continue;
@@ -67,15 +75,10 @@ public class DuckSelectionMenu : ABaseMenu {
         UIManager.Instance.SwitchToMenu(Menu.Main).Forget();
     }
 
-    public void OnSelectDuck(int index)
+    public void SelectDuck(DuckBaseData duckData)
     {
-        currentSelectedDuck = duckList.List[index];
-    }
-
-    public void SelectDuck()
-    {
-        GameFacade.Instance.CurrentSelectedDuck = currentSelectedDuck;
-        DataManager.Instance.SaveLastSelectedDuck((int)(currentSelectedDuck.SkinId));
+        GameFacade.Instance.CurrentSelectedDuck = duckData;
+        DataManager.Instance.SaveLastSelectedDuck((int)(duckData.SkinId));
         UpdateUI();
     }
 
@@ -98,8 +101,8 @@ public class DuckSelectionMenu : ABaseMenu {
         Color targetColor = Color.red;
         float duration = 0.75f;
 
-        shakeSequence.Complete();
-        shakeSequence.Kill();
+        shakeSequence?.Complete();
+        shakeSequence?.Kill();
         shakeSequence = DOTween.Sequence()
             .Append(coinText.transform.DOShakePosition(duration, new Vector3(5f, 0, 0), vibrato: 20))
             .Join(coinText.DOColor(targetColor, duration/3).SetLoops(3))

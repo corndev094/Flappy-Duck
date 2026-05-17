@@ -57,7 +57,8 @@ public class UIResultPanel : MonoBehaviour
         // Set title
         if (titleText != null)
         {
-            bool isWinner = ranking.Length > 0 && ranking[0] == Unity.Netcode.NetworkManager.Singleton.LocalClientId;
+            ulong localClientId = Unity.Netcode.NetworkManager.Singleton?.LocalClientId ?? ulong.MaxValue;
+            bool isWinner = ranking.Length > 0 && ranking[0] == localClientId;
             titleText.text = isWinner ? "🏆 VICTORY!" : "GAME OVER";
             titleText.color = isWinner ? firstPlaceColor : defaultColor;
         }
@@ -77,7 +78,8 @@ public class UIResultPanel : MonoBehaviour
                 string playerName = GetPlayerName(clientId);
                 
                 // Check if this is local player
-                bool isLocalPlayer = clientId == Unity.Netcode.NetworkManager.Singleton.LocalClientId;
+                ulong localClientId = Unity.Netcode.NetworkManager.Singleton?.LocalClientId ?? ulong.MaxValue;
+                bool isLocalPlayer = clientId == localClientId;
                 string indicator = isLocalPlayer ? " (You)" : "";
 
                 sb.AppendLine($"{rank} {playerName}{indicator}");
