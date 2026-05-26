@@ -17,6 +17,13 @@ public abstract class ABasePopup : MonoBehaviour
     protected CanvasGroup canvasGroup;
     private UniTaskCompletionSource<object> completionSource;
 
+    public CanvasGroup CanvasGroup {
+        get {
+            if (canvasGroup == null) canvasGroup = GetComponent<CanvasGroup>();
+            return canvasGroup;
+        }
+    }
+
     #region Unity Lifecycle Methods
     protected virtual void Awake()
     {
@@ -40,12 +47,12 @@ public abstract class ABasePopup : MonoBehaviour
         if (gameObject.activeSelf) return;
 
         gameObject.SetActive(true);
-        canvasGroup.interactable = false;
+        CanvasGroup.interactable = false;
         onOpen?.Invoke();
 
         await PlayOpenTransition();
 
-        canvasGroup.interactable = true;
+        CanvasGroup.interactable = true;
         onOpenFinish?.Invoke();
     }
 
@@ -54,7 +61,7 @@ public abstract class ABasePopup : MonoBehaviour
         if (!gameObject.activeSelf) return;
         completionSource?.TrySetResult(null);
 
-        canvasGroup.interactable = false;
+        CanvasGroup.interactable = false;
         onClose?.Invoke();
         // if (transtionSound != null) SoundManager.Instance.PlaySFX(transtionSound, randomPitch: true);
 

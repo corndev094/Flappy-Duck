@@ -136,7 +136,20 @@ public class SettingsMenu : ABaseMenu {
                 m = FullScreenMode.Windowed;
                 break;
         }
-        Screen.SetResolution(Screen.width, Screen.height, m);
+
+        // Get the saved/current resolution to set both together, avoiding race conditions
+        string resolution = DataManager.Instance.GetResolution();
+        var res = resolution.Split('x');
+        if (res.Length == 2 && int.TryParse(res[0].Trim(), out int width) && int.TryParse(res[1].Trim(), out int height))
+        {
+            Screen.SetResolution(width, height, m);
+            
+        }
+        else
+        {
+            Screen.SetResolution(Screen.width, Screen.height, m);
+        }
+
         DataManager.Instance.SaveScreenMode(mode);
     }
 
@@ -146,8 +159,22 @@ public class SettingsMenu : ABaseMenu {
         if (res.Length != 2) return;
         if (int.TryParse(res[0].Trim(), out int width) && int.TryParse(res[1].Trim(), out int height))
         {
-            Screen.SetResolution(width, height, Screen.fullScreenMode);
+            // Get the saved/current screen mode to set both together, avoiding race conditions
+            string mode = DataManager.Instance.GetScreenMode();
+            FullScreenMode m = Screen.fullScreenMode;
+            switch (mode)
+            {
+                case "Exclusive":
+                    m = FullScreenMode.ExclusiveFullScreen;
+                    break;
+                case "Windowed":
+                    m = FullScreenMode.Windowed;
+                    break;
+            }
+
+            Screen.SetResolution(width, height, m);
             DataManager.Instance.SaveResolution(resolution);
+            Debug.Log("Set resolution: " + resolution);
         }
     }
     private void OnFpsChanged(int fps)
