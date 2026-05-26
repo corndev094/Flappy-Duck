@@ -15,6 +15,8 @@ public class GameFlowManager : NetworkBehaviour
     [SerializeField] private int minPlayersToStart = 2;
     private delegate void PlayerDataModifier(ref PlayerNetworkData data);
 
+    public bool IsManualDisconnect { get; set; }
+
     // Game state
     public NetworkVariable<GameState> CurrentGameState = new(
         GameState.InMenu,
@@ -87,6 +89,14 @@ public class GameFlowManager : NetworkBehaviour
             // Add server/host player
             AddPlayer(nm.LocalClientId);
         }
+        else if (IsClient)
+        {
+            var nm = NetworkManager.Singleton;
+            if (nm != null)
+            {
+                nm.OnClientDisconnectCallback += OnClientDisconnected;
+            }
+        }
     }
 
     public override void OnNetworkDespawn()
@@ -97,6 +107,10 @@ public class GameFlowManager : NetworkBehaviour
         if (IsServer && NetworkManager.Singleton != null)
         {
             NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+            NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
+        }
+        else if (IsClient && NetworkManager.Singleton != null)
+        {
             NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
         }
     }
@@ -114,8 +128,32 @@ public class GameFlowManager : NetworkBehaviour
 
     private void OnClientDisconnected(ulong clientId)
     {
-        if (!IsServer) return;
-        RemovePlayer(clientId);
+        if (IsServer)
+        {
+            RemovePlayer(clientId);
+        }
+
+        var localClientId = NetworkManager.Singleton != null ? NetworkManager.Singleton.LocalClientId : OwnerClientId;
+        if (clientId == localClientId || (IsClient && clientId == NetworkManager.ServerClientId))
+        {
+            HandleLocalPlayerDisconnected();
+        }
+    }
+
+    private void HandleLocalPlayerDisconnected()
+    {
+        if (IsManualDisconnect)
+        {
+            IsManualDisconnect = false;
+            return;
+        }
+
+        Debug.LogWarning($"Local player (ClientId: {NetworkManager.Singleton?.LocalClientId}) disconnected unexpectedly!");
+
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.OpenPopup(Popup.DisconnectedInMatch).Forget();
+        }
     }
 
     private void AddPlayer(ulong clientId)
@@ -330,12 +368,18 @@ public class GameFlowManager : NetworkBehaviour
     /// </summary>
     public void Disconnect()
     {
-        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
+        IsManualDisconnect = true;
+        if (GameFacade.Instance != null)
         {
-            NetworkManager.Singleton.Shutdown();
+            GameFacade.Instance.ReturnToMenu().Forget();
         }
-
-        // TODO: Return to main menu
+        else
+        {
+            if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
+            {
+                NetworkManager.Singleton.Shutdown();
+            }
+        }
     }
 
     #endregion
@@ -398,7 +442,14 @@ public class GameFlowManager : NetworkBehaviour
 
             LevelResultPopup levelResult = (LevelResultPopup)popup;
             levelResult.Setup(isWin, data.Value.Coin);
-            UIManager.Instance.OpenPopup(Popup.Leaderboard).Forget();
+            if (GameManager.Instance.IsOnlineMode)
+            {
+                UIManager.Instance.OpenPopup(Popup.Leaderboard).Forget();
+            }
+            else
+            {
+                UIManager.Instance.OpenPopup(Popup.LevelResult).Forget();
+            }
         }
     }
 
@@ -429,6 +480,25 @@ public class GameFlowManager : NetworkBehaviour
             case NetworkListEvent<PlayerNetworkData>.EventType.Clear:
                 Debug.Log("All players cleared");
                 break;
+        }
+
+        // Check if only one player (or none) is left in an active online match
+        if (changeEvent.Type == NetworkListEvent<PlayerNetworkData>.EventType.Remove ||
+            changeEvent.Type == NetworkListEvent<PlayerNetworkData>.EventType.RemoveAt)
+        {
+            if (GameManager.Instance != null && GameManager.Instance.IsOnlineMode)
+            {
+                if (CurrentGameState.Value == GameState.Playing || 
+                    CurrentGameState.Value == GameState.Loading || 
+                    CurrentGameState.Value == GameState.WaitingInLobby)
+                {
+                    if (PlayerList.Count <= 1)
+                    {
+                        Debug.LogWarning("Only one player left in the online match. Triggering disconnect flow.");
+                        HandleLocalPlayerDisconnected();
+                    }
+                }
+            }
         }
     }
 
