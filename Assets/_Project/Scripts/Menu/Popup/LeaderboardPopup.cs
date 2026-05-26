@@ -1,7 +1,7 @@
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using Mono.CSharp;
+using Unity.Netcode;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,22 +44,60 @@ public class LeaderboardPopup : ABasePopup {
     private void UpdateLeaderboard()
     {
         LeaderboardManager.Instance.CopyDataToScriptableObjects();
+        
         foreach (var entry in leaderboardEntries)
         {
-            entry.EntryContainer.SetActive(false);
+            if (entry.EntryContainer != null)
+            {
+                entry.EntryContainer.SetActive(false);
+            }
         }
+
+        if (leaderboardData == null || leaderboardData.Entries == null) return;
+
         var sortedPlayers = leaderboardData.Entries.OrderByDescending(entry => entry.Score).ToArray();
+        ulong localClientId = NetworkManager.Singleton != null ? NetworkManager.Singleton.LocalClientId : 0;
+        
+        int displayIndex = 0;
         for (int i = 0; i < sortedPlayers.Length; i++)
         {
             var entryData = sortedPlayers[i];
-            if (entryData.PlayerId <= 0) continue;
+            if (entryData.PlayerId == 0) continue; // Default value/empty player id
+            if (displayIndex >= leaderboardEntries.Length) break;
 
-            int playerIndex = GameFlowManager.Instance.GetPlayerIndex(entryData.PlayerId);
-            if (playerIndex == -1) continue;
+            var uiEntry = leaderboardEntries[displayIndex];
+            if (uiEntry.EntryContainer == null || uiEntry.PlayerName == null || uiEntry.Score == null)
+            {
+                displayIndex++;
+                continue;
+            }
 
-            leaderboardEntries[i].PlayerName.text = $"{playerIndex + 1}. {entryData.PlayerName}";
-            leaderboardEntries[i].Score.text = entryData.Score.ToString();
-            leaderboardEntries[i].EntryContainer.SetActive(true);
+            int rank = displayIndex + 1;
+            bool isLocalPlayer = entryData.PlayerId == localClientId;
+            string displayName = isLocalPlayer ? $"<b>{entryData.PlayerName} (Bạn)</b>" : entryData.PlayerName;
+            
+            string rankColorHex;
+            switch (rank)
+            {
+                case 1:
+                    rankColorHex = "#FFD700"; // Gold
+                    break;
+                case 2:
+                    rankColorHex = "#C0C0C0"; // Silver
+                    break;
+                case 3:
+                    rankColorHex = "#CD7F32"; // Bronze
+                    break;
+                default:
+                    rankColorHex = isLocalPlayer ? "#00FF00" : "#FFFFFF"; // Green for local player, White for others
+                    break;
+            }
+
+            uiEntry.PlayerName.text = $"<color={rankColorHex}>{rank}. {displayName}</color>";
+            uiEntry.Score.text = $"<color={rankColorHex}>{entryData.Score}</color>";
+            uiEntry.EntryContainer.SetActive(true);
+            
+            displayIndex++;
         }
     }
 

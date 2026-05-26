@@ -131,12 +131,18 @@ public class GameFacade : NetworkSingleton<GameFacade> {
 
     public async UniTask ReturnToMenu()
     {
+        if (GameFlowManager.Instance != null)
+        {
+            GameFlowManager.Instance.IsManualDisconnect = true;
+        }
+
         OnPlayerLeaveMatch?.Invoke();
         await UIManager.Instance.CloseCurrentMenu();
         await SceneLoader.Instance.FadeIn();
 
         EDebug.Log("Cleaning level ...");
         CleanupLevel();
+        UIManager.Instance.CloseAllPopupImmediately();
 
         if (GameManager.Instance.IsOnlineMode)
         {
@@ -160,32 +166,33 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         SetupUIOnReturnToMainMenu();
         await UniTask.Delay(TimeSpan.FromSeconds(1));
         SceneLoader.Instance.FadeOut().Forget();
-        if (GameManager.Instance.IsOnlineMode)
-        {
-            await UIManager.Instance.OpenMenu(Menu.QuickMatch);
-        }
-        else
-        {
-            await UIManager.Instance.OpenMenu(Menu.LevelMap);
-        }
+        await UIManager.Instance.OpenMenu(Menu.Main);
         SoundManager.Instance.PlayBgMusic();
     }
 
     public async UniTask WinLevel(int coin)
     {
-        await UIManager.Instance.OpenPopup(Popup.Leaderboard);
+        if (GameManager.Instance.IsOnlineMode)
+        {
+            UIManager.Instance.OpenPopup(Popup.Leaderboard).Forget();
+        }
         if (UIManager.Instance.TryGetPopup(Popup.LevelResult, out var menu) && menu != null && menu is LevelResultPopup levelResultMenu)
         {
             levelResultMenu.Setup(true, coin);
+            UIManager.Instance.OpenPopup(Popup.LevelResult).Forget();
         }
     }
 
     public async UniTask LoseLevel(int coin)
     {
-        await UIManager.Instance.OpenPopup(Popup.Leaderboard);
+        if (GameManager.Instance.IsOnlineMode)
+        {
+            UIManager.Instance.OpenPopup(Popup.Leaderboard).Forget();
+        }
         if (UIManager.Instance.TryGetPopup(Popup.LevelResult, out var menu) && menu != null && menu is LevelResultPopup levelResultMenu)
         {
             levelResultMenu.Setup(false, coin);
+            UIManager.Instance.OpenPopup(Popup.LevelResult).Forget();
         }
     }
 

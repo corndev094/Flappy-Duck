@@ -1,15 +1,31 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "LeaderboardSO", menuName = "LeaderboardSO", order = 0)]
 public class LeaderboardSO : ScriptableObject {
-    public LeaderBoardEntry[] Entries = new LeaderBoardEntry[4];
+    public List<LeaderBoardEntry> Entries = new();
 
     public void Clear() {
-        for (int i = 0; i < Entries.Length; i++) {
-            Entries[i].PlayerId = 0;
-            Entries[i].PlayerName = "";
-            Entries[i].Score = 0;
+        Entries.Clear();
+    }
+
+    public void AddOrUpdateEntry(ulong playerId, string playerName, int score) {
+        if (Entries == null) {
+            Entries = new List<LeaderBoardEntry>();
+        }
+        int index = Entries.FindIndex(e => e.PlayerId == playerId);
+        if (index >= 0) {
+            var entry = Entries[index];
+            entry.PlayerName = playerName;
+            entry.Score = score;
+            Entries[index] = entry;
+        } else {
+            Entries.Add(new LeaderBoardEntry {
+                PlayerId = playerId,
+                PlayerName = playerName,
+                Score = score
+            });
         }
     }
 
