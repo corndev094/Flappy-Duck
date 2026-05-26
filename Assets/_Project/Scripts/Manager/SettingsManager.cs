@@ -10,6 +10,7 @@ public class SettingsManager : Singleton<SettingsManager>
         {
             settingsMenu.gameObject.SetActive(true);
             settingsMenu.UpdateMenu();
+            settingsMenu.gameObject.SetActive(false);
         }
     }
 }

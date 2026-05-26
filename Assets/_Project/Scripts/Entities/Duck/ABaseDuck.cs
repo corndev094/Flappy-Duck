@@ -328,9 +328,29 @@ public abstract class ABaseDuck : NetworkBehaviour {
     {
         if (collision.CompareTag("Coin"))
         {
+            // Client Side
+            if (IsOwner)
+            {
+                EffectManager.Instance.PlayEffectLocal(EffectType.CoinCollect, transform.position);
+            }
+
+            // This prevents the coin from appearing collected but remaining due to network latency.
+            if (collision.TryGetComponent<SpriteRenderer>(out var coinSprite))
+            {
+                coinSprite.enabled = false;
+            }
+            var childSprites = collision.GetComponentsInChildren<SpriteRenderer>();
+            foreach (var s in childSprites)
+            {
+                s.enabled = false;
+            }
+            if (collision.TryGetComponent<Collider2D>(out var coinCollider))
+            {
+                coinCollider.enabled = false;
+            }
+
             if (!IsServer) return;
 
-            PlayCollectSfx();
             var playerData = GameFlowManager.Instance?.GetPlayerData(OwnerClientId);
             if (playerData.HasValue)
             {
@@ -440,7 +460,7 @@ public abstract class ABaseDuck : NetworkBehaviour {
         if (IsOwner)
         {
             PrimeTween.Tween.ShakeLocalRotation(Camera.main.transform, data.TakeDamageCamShakeSettings);
-            PlayHurtSfx();
+            EffectManager.Instance.PlayEffectNetworked(EffectType.PlayerHurt, transform.position);
         }
         hurtCts?.Cancel();
         hurtCts?.Dispose();
@@ -521,20 +541,6 @@ public abstract class ABaseDuck : NetworkBehaviour {
         if (!IsOwner) return;
         hpEvent.RaiseEvent(Mathf.Clamp01(CurrentHP.Value / data.HP));
     }
-
-    #region 
-
-    private void PlayHurtSfx()
-    {
-        SoundManager.Instance.PlaySFX(hurtSfx);
-    }
-
-    private void PlayCollectSfx()
-    {
-        SoundManager.Instance.PlaySFX(collectSfx);
-    }
-
-    #endregion
 
     #endregion
 }

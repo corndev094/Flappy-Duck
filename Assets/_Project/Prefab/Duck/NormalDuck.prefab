@@ -169,8 +169,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2793213539
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 2838201992
+  InScenePlacedSourceGlobalObjectIdHash: 2793213539
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -203,6 +203,10 @@ MonoBehaviour:
   bulletPrefab: {fileID: 491079668120448986, guid: d6887fe4caefe51498ee63aa584b7078, type: 3}
   invincibleDuration: 0.3
   hurtFlashDuration: 0.3
+  duckCollisionFlyDelay: 0.12
+  duckCollisionShakeDuration: 0.12
+  duckCollisionShakeStrength: 0.06
+  duckCollisionCooldown: 0.25
   staminaEvent: {fileID: 11400000, guid: c5a5558d048316c4cada8ed21806bed0, type: 2}
   hpEvent: {fileID: 11400000, guid: 2df09b8571d3b1549896cd0469adcf32, type: 2}
   hurtSfx: {fileID: 0}
@@ -454,8 +458,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -345710473
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 93e7ed427a48b426f9f32e122a579bcb, type: 3}

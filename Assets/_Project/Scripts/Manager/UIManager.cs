@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using TMPro;
@@ -15,6 +16,7 @@ public class UIManager : Singleton<UIManager> {
     [SerializeField] private PausePopup pausePopup;
     [SerializeField] private LanguagePopup languagePopup;
     [SerializeField] private LeaderboardPopup leaderboardPopup;
+    [SerializeField] private DisconnectedInMatchPopup disconnectedInMatchPopup;
 
     [Header("Multiplayer")]
     [SerializeField] private QuickMatchMenu quickMatchMenu;
@@ -52,12 +54,14 @@ public class UIManager : Singleton<UIManager> {
             {Menu.QuickMatch, quickMatchMenu},
             {Menu.FilterMatch, filterMatchMenu},
         };
+
         popups = new()
         {
             {Popup.Pause, pausePopup},
             {Popup.LevelResult, levelResultPopup},
             {Popup.Language, languagePopup},
-            {Popup.Leaderboard, leaderboardPopup}
+            {Popup.Leaderboard, leaderboardPopup},
+            {Popup.DisconnectedInMatch, disconnectedInMatchPopup}
         };
     }
 
@@ -78,21 +82,23 @@ public class UIManager : Singleton<UIManager> {
     }
 
     #region Menu
-    private async UniTask GenericSwitchMenu(ABaseMenu targetMenu)
+    private async UniTask GenericSwitchMenu(ABaseMenu targetMenu, Func<UniTask> onTransition = null)
     {
         if (CurrentMenu != null)
         {
             await CurrentMenu.Close();
         }
+
+        if (onTransition != null) await onTransition();
         await targetMenu.Open();
         CurrentMenu = targetMenu;
     }
 
-    public async UniTask SwitchToMenu(Menu menuType)
+    public async UniTask SwitchToMenu(Menu menuType,  Func<UniTask> onTransition = null)
     {
         if (menus.TryGetValue(menuType, out ABaseMenu targetMenu))
         {
-            await GenericSwitchMenu(targetMenu);
+            await GenericSwitchMenu(targetMenu, onTransition);
         }
         else
         {
@@ -193,4 +199,4 @@ public class UIManager : Singleton<UIManager> {
 }
 
 public enum Menu { Main, Settings, LevelMap, DuckSelection, QuickMatch, FilterMatch };
-public enum Popup { Pause, LevelResult, Language, Leaderboard };
+public enum Popup { Pause, LevelResult, Language, Leaderboard, DisconnectedInMatch };
