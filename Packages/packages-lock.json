@@ -18,6 +18,16 @@
       },
       "url": "https://package.openupm.com"
     },
+    "com.coffee.ui-particle": {
+      "version": "4.12.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.particlesystem": "1.0.0",
+        "com.unity.ugui": "1.0.0"
+      },
+      "url": "https://package.openupm.com"
+    },
     "com.kyrylokuzyk.primetween": {
       "version": "1.3.3",
       "depth": 0,

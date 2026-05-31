@@ -164,6 +164,17 @@ public class DataManager : Singleton<DataManager> {
     {
         return PlayerPrefs.GetInt(ConstantString.LAST_DUCK_LEVEL_POS, 1);
     }
+
+    public void SaveCoinCollected(int coinPointId, bool collected)
+    {
+        PlayerPrefs.SetInt(string.Format("game.coin_collected_{0}", coinPointId), collected ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+
+    public bool IsCoinCollected(int coinPointId)
+    {
+        return PlayerPrefs.GetInt(string.Format("game.coin_collected_{0}", coinPointId), 0) == 1;
+    }
     #endregion
 
     #region Graphic Settings

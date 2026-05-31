@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -6500343955987629792}
   - component: {fileID: -1621458411997946932}
   - component: {fileID: -1116151357209971711}
+  - component: {fileID: 2494967351376377926}
   m_Layer: 6
   m_Name: StickToPipeEnemy
   m_TagString: Enemy
@@ -34,7 +35,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: -0.60225, y: 0.60225, z: 0.60225}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 3407508644036721145}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &449911383755989754
@@ -259,3 +261,54 @@ MonoBehaviour:
   duration: 0.5
   easeType: 4
   playOnAwake: 1
+--- !u!114 &2494967351376377926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7232936860822599141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07e2ee24fc854f6aa3d0cc2344c4c359, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StickToPipeEnemy
+  ShowTopMostFoldoutHeaderGroup: 1
+  data: {fileID: 11400000, guid: 5d46ac0b95b57cc4fa71edfde736c9d7, type: 2}
+  refillStaminaForPlayer: 0
+  isInvincible: 1
+  currentHp: 0
+  bulletPrefab: {fileID: 7984528123944881787, guid: 92f98edaaed3c447ab283762e06bd3c9, type: 3}
+  shootGameObject: {fileID: 3407508644036721145}
+  shootTimeElapse: 1
+--- !u!1 &8031389224562595731
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3407508644036721145}
+  m_Layer: 6
+  m_Name: ShootPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3407508644036721145
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8031389224562595731}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: -0.86602545, w: 0.49999994}
+  m_LocalPosition: {x: 1.09, y: 1.92, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3496891968868382594}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120}

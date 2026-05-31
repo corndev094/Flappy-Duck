@@ -227,6 +227,9 @@ MonoBehaviour:
   refillStaminaForPlayer: 0
   isInvincible: 1
   currentHp: 0
+  bulletPrefab: {fileID: 0}
+  shootGameObject: {fileID: 0}
+  shootTimeElapse: 1
 --- !u!1 &669269950155208572
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,6 +420,9 @@ MonoBehaviour:
   refillStaminaForPlayer: 0
   isInvincible: 1
   currentHp: 0
+  bulletPrefab: {fileID: 0}
+  shootGameObject: {fileID: 0}
+  shootTimeElapse: 1
 --- !u!1 &1465785276903844435
 GameObject:
   m_ObjectHideFlags: 0
@@ -5410,6 +5416,9 @@ MonoBehaviour:
   refillStaminaForPlayer: 0
   isInvincible: 1
   currentHp: 0
+  bulletPrefab: {fileID: 0}
+  shootGameObject: {fileID: 0}
+  shootTimeElapse: 1
 --- !u!1 &2034015031844805335
 GameObject:
   m_ObjectHideFlags: 0
@@ -5599,6 +5608,9 @@ MonoBehaviour:
   refillStaminaForPlayer: 0
   isInvincible: 1
   currentHp: 0
+  bulletPrefab: {fileID: 0}
+  shootGameObject: {fileID: 0}
+  shootTimeElapse: 1
 --- !u!1 &2754205816863039707
 GameObject:
   m_ObjectHideFlags: 0
@@ -5793,6 +5805,9 @@ MonoBehaviour:
   refillStaminaForPlayer: 0
   isInvincible: 1
   currentHp: 0
+  bulletPrefab: {fileID: 0}
+  shootGameObject: {fileID: 0}
+  shootTimeElapse: 1
 --- !u!1 &3403518180149596062
 GameObject:
   m_ObjectHideFlags: 0
@@ -6043,6 +6058,9 @@ MonoBehaviour:
   refillStaminaForPlayer: 0
   isInvincible: 1
   currentHp: 0
+  bulletPrefab: {fileID: 0}
+  shootGameObject: {fileID: 0}
+  shootTimeElapse: 1
 --- !u!1 &3703003761340743902
 GameObject:
   m_ObjectHideFlags: 0
@@ -6199,6 +6217,9 @@ MonoBehaviour:
   refillStaminaForPlayer: 0
   isInvincible: 1
   currentHp: 0
+  bulletPrefab: {fileID: 0}
+  shootGameObject: {fileID: 0}
+  shootTimeElapse: 1
 --- !u!1 &3746574556248155789
 GameObject:
   m_ObjectHideFlags: 0
@@ -6383,6 +6404,9 @@ MonoBehaviour:
   refillStaminaForPlayer: 0
   isInvincible: 1
   currentHp: 0
+  bulletPrefab: {fileID: 0}
+  shootGameObject: {fileID: 0}
+  shootTimeElapse: 1
 --- !u!1 &4038413525956593341
 GameObject:
   m_ObjectHideFlags: 0
@@ -6464,15 +6488,15 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -1
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 436569f7b7ec9d94f9501a1f1a2fca08, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8f5098b14140cb647807068f68f28671, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 212.3, y: 3.43}
+  m_Size: {x: 19.2, y: 3.43}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
 --- !u!1 &4273499861170915509
 GameObject:
@@ -6691,6 +6715,9 @@ MonoBehaviour:
   refillStaminaForPlayer: 0
   isInvincible: 1
   currentHp: 0
+  bulletPrefab: {fileID: 0}
+  shootGameObject: {fileID: 0}
+  shootTimeElapse: 1
 --- !u!1 &4886895214813705911
 GameObject:
   m_ObjectHideFlags: 0
@@ -11688,6 +11715,9 @@ MonoBehaviour:
   refillStaminaForPlayer: 0
   isInvincible: 1
   currentHp: 0
+  bulletPrefab: {fileID: 0}
+  shootGameObject: {fileID: 0}
+  shootTimeElapse: 1
 --- !u!1 &4996018097125260658
 GameObject:
   m_ObjectHideFlags: 0
@@ -11935,6 +11965,9 @@ MonoBehaviour:
   refillStaminaForPlayer: 0
   isInvincible: 1
   currentHp: 0
+  bulletPrefab: {fileID: 0}
+  shootGameObject: {fileID: 0}
+  shootTimeElapse: 1
 --- !u!1 &5144846387851697698
 GameObject:
   m_ObjectHideFlags: 0
@@ -12124,6 +12157,9 @@ MonoBehaviour:
   refillStaminaForPlayer: 0
   isInvincible: 1
   currentHp: 0
+  bulletPrefab: {fileID: 0}
+  shootGameObject: {fileID: 0}
+  shootTimeElapse: 1
 --- !u!1 &5396469893507556655
 GameObject:
   m_ObjectHideFlags: 0
@@ -12280,6 +12316,9 @@ MonoBehaviour:
   refillStaminaForPlayer: 0
   isInvincible: 1
   currentHp: 0
+  bulletPrefab: {fileID: 0}
+  shootGameObject: {fileID: 0}
+  shootTimeElapse: 1
 --- !u!1 &6879279914167226272
 GameObject:
   m_ObjectHideFlags: 0
@@ -12574,6 +12613,9 @@ MonoBehaviour:
   refillStaminaForPlayer: 0
   isInvincible: 1
   currentHp: 0
+  bulletPrefab: {fileID: 0}
+  shootGameObject: {fileID: 0}
+  shootTimeElapse: 1
 --- !u!1 &7593607462113265927
 GameObject:
   m_ObjectHideFlags: 0
@@ -12854,6 +12896,9 @@ MonoBehaviour:
   refillStaminaForPlayer: 0
   isInvincible: 1
   currentHp: 0
+  bulletPrefab: {fileID: 0}
+  shootGameObject: {fileID: 0}
+  shootTimeElapse: 1
 --- !u!1 &8101979191667915063
 GameObject:
   m_ObjectHideFlags: 0
@@ -13136,6 +13181,9 @@ MonoBehaviour:
   refillStaminaForPlayer: 0
   isInvincible: 1
   currentHp: 0
+  bulletPrefab: {fileID: 0}
+  shootGameObject: {fileID: 0}
+  shootTimeElapse: 1
 --- !u!1001 &3083574777929199393
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13146,7 +13194,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1168482041379706968, guid: 6c079c459cc0f4691a320def6c2247f0, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 4206018569
+      value: 177859355
       objectReference: {fileID: 0}
     - target: {fileID: 1763967380114248290, guid: 6c079c459cc0f4691a320def6c2247f0, type: 3}
       propertyPath: m_Name
@@ -13212,7 +13260,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1168482041379706968, guid: 6c079c459cc0f4691a320def6c2247f0, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 4206018569
+      value: 3977819664
       objectReference: {fileID: 0}
     - target: {fileID: 1326975789576465875, guid: 6c079c459cc0f4691a320def6c2247f0, type: 3}
       propertyPath: attackInterval
@@ -13418,7 +13466,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6500343955987629792, guid: 20cb9df66969147cca9c1b715a699d44, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1738585339
+      value: 452374009
       objectReference: {fileID: 0}
     - target: {fileID: 3496891968868382594, guid: 20cb9df66969147cca9c1b715a699d44, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13484,7 +13532,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6500343955987629792, guid: 20cb9df66969147cca9c1b715a699d44, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1738585339
+      value: 985049076
       objectReference: {fileID: 0}
     - target: {fileID: 3496891968868382594, guid: 20cb9df66969147cca9c1b715a699d44, type: 3}
       propertyPath: m_LocalPosition.x

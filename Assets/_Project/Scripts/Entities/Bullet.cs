@@ -9,6 +9,8 @@ public class Bullet : NetworkBehaviour
     [SerializeField] private float damage = 1f;
     [SerializeField] private float shootSpeed = 5f;
     [SerializeField] private float destroyAfter = 3;
+    [SerializeField] private LayerMask mask;
+    
 
     public Action<ABaseEnemy> OnShootedEnemy;
     public float Damage { get => damage; set => damage = value; }

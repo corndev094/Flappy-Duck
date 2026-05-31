@@ -2,6 +2,7 @@ Shader "Custom/TransparentHoleCircle"
 {
     Properties
     {
+        [HideInInspector] _MainTex ("Sprite Texture", 2D) = "white" {}
         _Color ("Background Color", Color) = (0,0.5,1,1)
         _Center ("Center (UV)", Vector) = (0.5, 0.5, 0, 0)
         _Radius ("Radius (0-1)", Range(0,1)) = 0.25
@@ -24,6 +25,7 @@ Shader "Custom/TransparentHoleCircle"
             struct appv { float4 vertex : POSITION; float2 uv : TEXCOORD0; };
             struct v2f { float2 uv : TEXCOORD0; float4 vertex : SV_POSITION; };
 
+            sampler2D _MainTex;
             float4 _Color;
             float4 _Center;
             float _Radius;

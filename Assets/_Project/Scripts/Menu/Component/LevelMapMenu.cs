@@ -18,16 +18,19 @@ public class LevelMapMenu : ABaseMenu
     [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private RectTransform duckIcon; // Icon con vịt di chuyển
     [SerializeField] private Button returnBtn, playBtn;
-    [SerializeField] private CoinCollectionUI coinCollectionUI; // UI hiện thông báo nhận coin
+    [SerializeField] private ParticleSystem bubblePs; // Hiệu ứng bong bóng khi di chuyển
 
     [Header("Asset References")]
     [SerializeField] private LevelItem levelThumbPrefab;
     [SerializeField] private LevelListSO levelListData;
+    
 
     [Header("Configuration")]
     [SerializeField] private float moveDuration = 1.5f; // Thời gian di chuyển của con vịt giữa các level
     [SerializeField] private Ease moveEase = Ease.InOutQuad;
-    [SerializeField] private int coinRewardAmount = 1; // lượng coin nhận được mỗi lần thu thập
+    
+    [Header("Audio")] 
+    [SerializeField] private AudioClip whooshClip;
 
     private List<LevelItem> spawnedLevels = new List<LevelItem>();
     private bool isDuckMoving = false;
@@ -52,10 +55,9 @@ public class LevelMapMenu : ABaseMenu
         returnBtn.onClick.AddListener(Return);
         playBtn.onClick.AddListener(OnPlay);
 
-        if (coinCollectionUI != null)
+        if (bubblePs != null)
         {
-            coinCollectionUI.OnCoinCollected += OnCoinCollected_Handler;
-            coinCollectionUI.Hide(); // ẩn đi cho lần đầu vào map
+            bubblePs.Stop();
         }
 
         InitializeMap();
@@ -65,8 +67,6 @@ public class LevelMapMenu : ABaseMenu
     {
         returnBtn.onClick.RemoveListener(Return);
         playBtn.onClick.RemoveListener(OnPlay);
-        if (coinCollectionUI != null)
-            coinCollectionUI.OnCoinCollected -= OnCoinCollected_Handler;
     }
 
     #endregion
@@ -142,6 +142,7 @@ public class LevelMapMenu : ABaseMenu
             bool isUnlocked = levelData.ID <= highestLevel;
             thumb.Setup(levelData, OnLevelItemClick, isUnlocked);
             thumb.SetLevelMapMenu(this);
+            thumb.SetActiveAura(levelData.ID == highestLevel);
         }
     }
 
@@ -197,23 +198,7 @@ public class LevelMapMenu : ABaseMenu
         MoveDuckToLevel(currentDuckLevel, data.ID).Forget();
     }
 
-    private void OnCoinCollected_Handler(int amount)
-    {
-        DataManager.Instance.SaveCurrency(ConstantString.COIN, DataManager.Instance.GetCurrency(ConstantString.COIN) + amount);
-        
-        if (splinePointDataList[currentPointIndex].pointType == SplinePointType.Coin)
-        {
-            splinePointDataList[currentPointIndex].isCollected = true;
-        }
-        
-        if (coinCollectionUI != null)
-        {
-            coinCollectionUI.Hide();
-        }
 
-        // Sau khi nhận coin, tiếp tục chu trình di chuyển
-        CheckNextPointType();
-    }
 
     #endregion
 
@@ -230,26 +215,26 @@ public class LevelMapMenu : ABaseMenu
         UpdateData();
 
         int highestLevel = DataManager.Instance.GetHighestLevel();
-        int lastDuckLevel = DataManager.Instance.GetLastDuckLevelPos();
+        int originalLastDuckLevel = DataManager.Instance.GetLastDuckLevelPos();
 
         // Handle post-level-win state: if the current level was just unlocked,
         // ensure the duck position is updated correctly
-        HandlePostLevelWinState(highestLevel, lastDuckLevel);
+        HandlePostLevelWinState(highestLevel, originalLastDuckLevel);
 
-        UpdateDuckPosition(lastDuckLevel);
-        // ScrollToDuck();
+        // Position the duck at the start level of the transition (originalLastDuckLevel)
+        UpdateDuckPosition(originalLastDuckLevel);
 
         // Check if we need to move to the newly unlocked level
-        if (highestLevel > lastDuckLevel && highestLevel <= levelListData.List.Count)
+        bool levelExists = levelListData.List.Exists(l => l.ID == highestLevel);
+        if (highestLevel > originalLastDuckLevel && levelExists)
         {
-            Debug.Log($"{lastDuckLevel} -> {highestLevel}");
-            MoveDuckToLevel(lastDuckLevel, highestLevel).Forget();
+            Debug.Log($"{originalLastDuckLevel} -> {highestLevel}");
+            MoveDuckToLevel(originalLastDuckLevel, highestLevel).Forget();
         }
         else
         {
-            UpdateDuckPosition(highestLevel);
-            // Sau khi đặt vịt, kiểm tra xem có thể di chuyển tiếp không (ví dụ: tới coin)
-            // CheckNextPointType();
+            int currentLastDuckLevel = DataManager.Instance.GetLastDuckLevelPos();
+            UpdateDuckPosition(currentLastDuckLevel);
         }
     }
 
@@ -268,14 +253,15 @@ public class LevelMapMenu : ABaseMenu
             {
                 pointData.pointType = SplinePointType.Level;
                 pointData.pointId = levelListData.List[i].ID;
+                pointData.isCollected = false;
             }
             else
             {
-                pointData.pointType = SplinePointType.Coin;
-                pointData.pointId = i + 1; // ID cho coin có thể là index
+                pointData.pointType = SplinePointType.Special;
+                pointData.pointId = i + 1;
+                pointData.isCollected = false;
             }
 
-            pointData.isCollected = false; // Cần logic load trạng thái đã thu thập coin từ DataManager
             splinePointDataList.Add(pointData);
         }
     }
@@ -287,8 +273,10 @@ public class LevelMapMenu : ABaseMenu
     private void HandlePostLevelWinState(int highestLevel, int lastDuckLevel)
     {
         // If the highest level was just unlocked (highestLevel > lastDuckLevel),
-        // update the last duck position to the newly unlocked level
-        if (highestLevel > lastDuckLevel && highestLevel <= levelListData.List.Count)
+        // ensure the level actually exists in levelListData.List before saving
+        bool levelExists = levelListData != null && levelListData.List.Exists(l => l.ID == highestLevel);
+
+        if (highestLevel > lastDuckLevel && levelExists)
         {
             // Ensure the duck position is updated to the newly unlocked level
             DataManager.Instance.SaveLastDuckLevelPos(highestLevel);
@@ -321,7 +309,7 @@ public class LevelMapMenu : ABaseMenu
             isDuckMoving = false;
             return;
         }
-        if (startIndex >= pathSpline.pointCount || endIndex >= pathSpline.pointCount)
+        if (startIndex >= pathSpline.pointCount || endIndex >= pathSpline.pointCount || startIndex < 0 || endIndex < 0)
         {
             Debug.LogWarning("Không đủ điểm trên Spline để di chuyển vịt.");
             isDuckMoving = false;
@@ -333,19 +321,25 @@ public class LevelMapMenu : ABaseMenu
 
         UpdateDuckFlip(endIndex > startIndex);
 
+        if (bubblePs != null) bubblePs.Play();
+        SoundManager.Instance.PlaySFX(whooshClip, 1.5f);
+
         await DOVirtual.Float((float)startPercent, (float)endPercent, moveDuration, value =>
         {
             Vector3 pos = pathSpline.EvaluatePosition(value);
+            ScrollToDuck(pos, smooth: false);
             duckIcon.position = pos;
-            ScrollToDuck();
+            Vector3 localPos = duckIcon.localPosition;
+            localPos.z = 0;
+            duckIcon.localPosition = localPos;
         }).SetEase(moveEase).AsyncWaitForCompletion();
+
+        if (bubblePs != null) bubblePs.Stop();
 
         DataManager.Instance.SaveLastDuckLevelPos(endLevelId);
         currentPointIndex = endIndex;
         UpdateData();
         isDuckMoving = false;
-
-        // CheckNextPointType();
     }
     
     /// <summary>
@@ -370,13 +364,21 @@ public class LevelMapMenu : ABaseMenu
 
         UpdateDuckFlip(endIndex > startIndex);
 
+        if (bubblePs != null) bubblePs.Play();
+        SoundManager.Instance.PlaySFX(whooshClip, 1.5f);
+
         if (beforeMoveTask != null) await beforeMoveTask();
         await DOVirtual.Float((float)startPercent, (float)endPercent, moveDuration, value =>
         {
             Vector3 pos = pathSpline.EvaluatePosition(value);
+            ScrollToDuck(pos, smooth: false);
             duckIcon.position = pos;
-            ScrollToDuck();
+            Vector3 localPos = duckIcon.localPosition;
+            localPos.z = 0;
+            duckIcon.localPosition = localPos;
         }).SetEase(moveEase).AsyncWaitForCompletion();
+
+        if (bubblePs != null) bubblePs.Stop();
 
         currentPointIndex = endIndex;
         if (splinePointDataList[endIndex].pointType == SplinePointType.Level)
@@ -396,10 +398,11 @@ public class LevelMapMenu : ABaseMenu
 
         double percent = pathSpline.GetPointPercent(index);
         Vector3 targetPos = pathSpline.EvaluatePosition(percent);
-        do
-        {
-            duckIcon.position = targetPos;
-        } while (duckIcon.position != targetPos);
+        ScrollToDuck(targetPos, smooth: false);
+        duckIcon.position = targetPos;
+        Vector3 localPos = duckIcon.localPosition;
+        localPos.z = 0;
+        duckIcon.localPosition = localPos;
     }
 
     private void UpdateDuckFlip(bool facingRight)
@@ -412,14 +415,14 @@ public class LevelMapMenu : ABaseMenu
         }
     }
 
-    private void ScrollToDuck()
+    private void ScrollToDuck(Vector3 worldPosition, bool smooth = false)
     {
         if (scrollRect == null || levelsContainer == null) return;
 
         RectTransform contentRect = levelsContainer as RectTransform;
         if (contentRect == null) return;
 
-        Vector3 duckLocalPos = contentRect.InverseTransformPoint(duckIcon.position);
+        Vector3 duckLocalPos = contentRect.InverseTransformPoint(worldPosition);
         float viewportWidth = scrollRect.viewport.rect.width;
         float contentWidth = contentRect.rect.width;
 
@@ -429,55 +432,16 @@ public class LevelMapMenu : ABaseMenu
         float maxX = 0;
         targetX = Mathf.Clamp(targetX, minX, maxX);
 
-        contentRect.DOAnchorPosX(targetX, 0.5f).SetEase(Ease.OutQuad);
-    }
-
-    #endregion
-
-    #region Gameplay Logic
-
-    private void CheckNextPointType()
-    {
-        int nextPointIndex = currentPointIndex + 1;
-
-        if (nextPointIndex < splinePointDataList.Count)
+        if (smooth)
         {
-            SplinePointData nextPoint = splinePointDataList[nextPointIndex];
-
-            if (nextPoint.pointType == SplinePointType.Coin && !nextPoint.isCollected)
-            {
-                HandleCoinPoint(nextPointIndex).Forget();
-            }
-            else if (nextPoint.pointType == SplinePointType.Level)
-            {
-                int nextLevelId = nextPoint.pointId;
-                int highestLevel = DataManager.Instance.GetHighestLevel();
-                if (nextLevelId <= highestLevel)
-                {
-                    HandleLevelPoint(nextPointIndex).Forget();
-                }
-            }
+            contentRect.DOAnchorPosX(targetX, 0.5f).SetEase(Ease.OutQuad);
         }
-    }
-
-    private async UniTaskVoid HandleLevelPoint(int pointIndex)
-    {
-        if (isDuckMoving) return;
-        
-        await MoveDuckToPointIndex(currentPointIndex, pointIndex);
-        
-        CheckNextPointType();
-    }
-
-    private async UniTaskVoid HandleCoinPoint(int pointIndex)
-    {
-        if (isDuckMoving) return;
-
-        await MoveDuckToPointIndex(currentPointIndex, pointIndex);
-
-        if (coinCollectionUI != null)
+        else
         {
-            coinCollectionUI.Show(coinRewardAmount);
+            contentRect.DOKill();
+            Vector2 anchoredPos = contentRect.anchoredPosition;
+            anchoredPos.x = targetX;
+            contentRect.anchoredPosition = anchoredPos;
         }
     }
 

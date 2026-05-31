@@ -10,6 +10,8 @@ public class LevelItem : MonoBehaviour {
     [SerializeField] private Image thumbnail;
     [SerializeField] private LocalizeStringEvent localizeTextEvent;
     [SerializeField] private Button levelButton;
+    [SerializeField] private ParticleSystem auraPs;
+    
 
     private LevelSO levelData;
     private LevelMapMenu levelMapMenu;
@@ -38,5 +40,21 @@ public class LevelItem : MonoBehaviour {
     public void SetLevelMapMenu(LevelMapMenu menu)
     {
         levelMapMenu = menu;
+    }
+
+    public void SetActiveAura(bool isActive)
+    {
+        if (auraPs != null)
+        {
+            auraPs.gameObject.SetActive(isActive);
+            if (isActive)
+            {
+                auraPs.Play();
+            }
+            else
+            {
+                auraPs.Stop();
+            }
+        }
     }
 }

@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 
-public class StaticEnemy : ABaseEnemy {
-    
+public class StaticEnemy : ABaseEnemy
+{
+
 }
