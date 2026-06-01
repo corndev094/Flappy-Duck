@@ -393,6 +393,10 @@ MonoBehaviour:
   bulletPrefab: {fileID: 491079668120448986, guid: df29faddd5a7442419a265d57d808662, type: 3}
   invincibleDuration: 0.3
   hurtFlashDuration: 0.3
+  duckCollisionFlyDelay: 0.12
+  duckCollisionShakeDuration: 0.12
+  duckCollisionShakeStrength: 0.06
+  duckCollisionCooldown: 0.25
   staminaEvent: {fileID: 11400000, guid: c5a5558d048316c4cada8ed21806bed0, type: 2}
   hpEvent: {fileID: 11400000, guid: 2df09b8571d3b1549896cd0469adcf32, type: 2}
   hurtSfx: {fileID: 0}

@@ -244,7 +244,7 @@ public class DataManager : Singleton<DataManager> {
     }
 
     public float GetMasterVolume(){
-        return PlayerPrefs.GetFloat(ConstantString.SOUND_MASTER, 1f);
+        return PlayerPrefs.GetFloat(ConstantString.SOUND_MASTER, 0.3f);
     }
 
     public void SaveMusicVolume(float volume){
@@ -253,7 +253,7 @@ public class DataManager : Singleton<DataManager> {
     }
 
     public float GetMusicVolume(){
-        return PlayerPrefs.GetFloat(ConstantString.SOUND_MUSIC, 1f);
+        return PlayerPrefs.GetFloat(ConstantString.SOUND_MUSIC, 0.3f);
     }
 
     public void SaveSfxVolume(float volume){
@@ -262,7 +262,7 @@ public class DataManager : Singleton<DataManager> {
     }
 
     public float GetSfxVolume(){
-        return PlayerPrefs.GetFloat(ConstantString.SOUND_SFX, 1f);
+        return PlayerPrefs.GetFloat(ConstantString.SOUND_SFX, 0.3f);
     }
 
     #endregion

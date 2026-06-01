@@ -441,7 +441,7 @@ public abstract class ABaseDuck : NetworkBehaviour {
         }
     }
 
-    private void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
         if (isDead) return;
         currentHp.Value -= damage;

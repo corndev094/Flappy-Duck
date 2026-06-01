@@ -384,3 +384,4 @@ MonoBehaviour:
   damage: 0.2
   shootSpeed: 20
   destroyAfter: 1
+  targetTag: Enemy

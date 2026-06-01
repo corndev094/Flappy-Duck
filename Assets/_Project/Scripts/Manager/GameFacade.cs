@@ -16,6 +16,8 @@ public class GameFacade : NetworkSingleton<GameFacade> {
     [SerializeField] private PipeSpawner pipeSpawner;
     [SerializeField] private Transform levelContainer;
     [SerializeField] private PreGameCountdown countDown;
+    [SerializeField] private GameObject beginnerTutGameObject;
+    
 
     [field: SerializeField, ReadOnly] public LevelSO  CurrentLevelData { get; private set; }
     [field: SerializeField, ReadOnly] public DuckBaseData CurrentSelectedDuck { get; set; }
@@ -123,10 +125,17 @@ public class GameFacade : NetworkSingleton<GameFacade> {
         await SceneLoader.Instance.FadeOut();
         await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
         SoundManager.Instance.PlayBgMusic(data.BackgroundMusic);
+        
+        PlayBeginnerTut();
         await countDown.StartCountdown(3);
-
         ActiveDuck.StartFly().Forget();
         ActiveDuck.CanAttack = true;
+    }
+
+    private void PlayBeginnerTut()
+    {
+        bool shown = PlayerPrefs.GetInt(ConstantString.SHOWN_BEGINNER_TUT, 0) == 1;
+        if (!shown) beginnerTutGameObject.gameObject.SetActive(true);
     }
 
     public async UniTask ReturnToMenu()

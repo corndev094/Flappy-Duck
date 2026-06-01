@@ -212,7 +212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StaticEnemy
   ShowTopMostFoldoutHeaderGroup: 1
   data: {fileID: 11400000, guid: 2701d032713593640884aedcbfad8338, type: 2}
-  refillStaminaForPlayer: 4
+  refillStaminaForPlayer: 1
   isInvincible: 0
   currentHp: 0
 --- !u!114 &-3626196442455024151
